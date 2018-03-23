@@ -4,7 +4,7 @@ Title: a bunch of convenience functions for Biscuit, POETIC, and whatnot
 Description: A test harness for bsseq loading of Biscuit output, summarization
              of WGBS data over defined regions and in mappable samples, with or
              without imputation and dropping of mostly-NA rows, etc. 
-Version: 0.1.2
+Version: 0.1.3
 Date: 2018-03-23
 Authors@R: person("Tim", "Triche, Jr.", role=c("aut", "cre"), email="tim.triche@gmail.com")
 Author: Tim Triche, Jr. [aut, cre]

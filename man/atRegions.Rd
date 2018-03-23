@@ -4,7 +4,7 @@
 \alias{atRegions}
 \title{summarize a bsseq dataset over defined regions (for e.g. cBioPortal)}
 \usage{
-atRegions(bsseq, regions, mappings = NULL, nm = "POETICname")
+atRegions(bsseq, regions, mappings = NULL, nm = "POETICname", ...)
 }
 \arguments{
 \item{bsseq}{a bsseq object}
@@ -14,6 +14,8 @@ atRegions(bsseq, regions, mappings = NULL, nm = "POETICname")
 \item{mappings}{a mapping table, with rownames(mappings) == colnames(bsseq)}
 
 \item{nm}{column of the mapping table to map to (default "POETICname")}
+
+\item{...}{other arguments to pass on to summarizeBsSeqOver}
 }
 \description{
 summarize a bsseq dataset over defined regions (for e.g. cBioPortal)
