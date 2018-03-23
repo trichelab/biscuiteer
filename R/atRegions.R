@@ -9,8 +9,9 @@
 #'
 #' @export
 atRegions <- function(bsseq, regions, mappings=NULL, nm="POETICname") { 
-  regional <- summarizeBsSeqOver(bsseq, regions)[as.character(regions), ]
+  regional <- summarizeBsSeqOver(bsseq, regions)
   regions <- regions[which(as.character(regions) %in% rownames(regional))]
+  regional <- regional[as.character(regions), ]
   rownames(regional) <- names(regions) 
   if (!is.null(mappings)) colnames(regional) <- mappings[colnames(regional), nm]
   return(regional)
