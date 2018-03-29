@@ -21,6 +21,8 @@
 load.biscuit.unmerged <- function(filename, sampleNames=NULL, hdf5=FALSE) {
 
   params <- checkBiscuitBED(filename, sampleNames, merged=FALSE)
+  chh <- ifelse(base::grepl("c(p?)g", ignore=TRUE), "CpG", "CpH")
+  message("Reading unmerged ", chh, " input from ", filename, "...")
   unmerged.dt <- fread(params$input, sep="\t", sep2=",", na.string=".") 
   colnames(unmerged.dt) <- params$colNames
   unmerged.dt[, "start"] <- unmerged.dt[, "start"] + 1 # quirk

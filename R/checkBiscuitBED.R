@@ -16,14 +16,9 @@ checkBiscuitBED <- function(filename, sampleNames=NULL, merged=NULL) {
   input <- filename
   if (base::grepl(".gz$", filename)) input <- paste("zcat", input)
   if (base::grepl(".bz2$", filename)) input <- paste("bzcat", input)
-  if (base::grepl("zcat", input)) {
-    headinput <- paste(input, "| head")
-  } else {
-    headinput <- paste("head", input)
-  } 
 
   # read the first few samples and see if we have a problem
-  small.dt <- fread(headinput, sep="\t", sep2=",", na.string=".") 
+  small.dt <- fread(input, sep="\t", sep2=",", na.string=".", nrows=10)
   if (is.null(merged)) merged <- base::grepl("merged", ignore=TRUE, filename)
   colsPerSample <- ifelse(merged, 3, 2)
   nsamples <- (ncol(small.dt) - 3) / colsPerSample
@@ -42,6 +37,7 @@ checkBiscuitBED <- function(filename, sampleNames=NULL, merged=NULL) {
   colNames <- base::gsub(" ", "", c(cols, sampcols)) # quirk
   betacols <- paste0("beta", seq_len(nSamples))
   covgcols <- paste0("covg", seq_len(nSamples))
+  message(filename, " looks valid for import.")
 
   params <- list(input=input,
                  sampleNames=sampleNames,

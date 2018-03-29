@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarizeBsSeqOver.R
 \name{summarizeBsSeqOver}
 \alias{summarizeBsSeqOver}
-\title{like it says on the tin...}
+\title{Pretty much what it says on the tin.  Summarize methylation over regions.}
 \usage{
 summarizeBsSeqOver(bsseq, segs, dropNA = TRUE, impute = FALSE)
 }
@@ -11,13 +11,13 @@ summarizeBsSeqOver(bsseq, segs, dropNA = TRUE, impute = FALSE)
 
 \item{segs}{the regions to summarize over}
 
-\item{dropNA}{whether to drop rows where > 50% of samples are NaN (TRUE)}
+\item{dropNA}{whether to drop rows with > half of samples NaN (TRUE)}
 
 \item{impute}{whether to impute NAs (FALSE)}
 }
 \value{
-matrix    a matrix of regional "beta values"
+matrix    a matrix of regional methylation fractions
 }
 \description{
-like it says on the tin...
+Pretty much what it says on the tin.  Summarize methylation over regions.
 }

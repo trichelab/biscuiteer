@@ -1,11 +1,11 @@
-#' like it says on the tin...
+#' Pretty much what it says on the tin.  Summarize methylation over regions.
 #'
 #' @param   bsseq     the BSseq object to summarize 
 #' @param   segs      the regions to summarize over 
-#' @param   dropNA    whether to drop rows where > 50% of samples are NaN (TRUE)
+#' @param   dropNA    whether to drop rows with > half of samples NaN (TRUE)
 #' @param   impute    whether to impute NAs (FALSE) 
 #'
-#' @return  matrix    a matrix of regional "beta values"
+#' @return  matrix    a matrix of regional methylation fractions
 #'
 #' @import  DelayedMatrixStats
 #' @import  bsseq 

@@ -19,6 +19,7 @@ load.biscuit.merged <- function(filename, sampleNames=NULL, hdf5=FALSE) {
   params <- checkBiscuitBED(filename, sampleNames, merged=TRUE)
   ncolumns <- 3 + (3 * params$nSamples)
   dropcols <- seq(6, ncolumns, 3)
+  message("Reading merged CpG input from ", filename, "...")
   merged.dt <- fread(params$input, sep="\t", sep2=",", na.string=".", 
                      drop=dropcols)
   colnames(merged.dt) <- params$colNames
