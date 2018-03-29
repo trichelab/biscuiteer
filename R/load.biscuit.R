@@ -21,9 +21,6 @@
 #' @export
 load.biscuit <- function(filename, sampleNames=NULL, hdf5=FALSE, merged=NULL) {
 
-  input <- filename
-  if (base::grepl(".gz$", filename)) input <- paste("zcat", input)
-  if (base::grepl(".bz2$", filename)) input <- paste("bzcat", input)
   if (is.null(merged)) merged <- base::grepl("merged", ignore=TRUE, filename)
   if (merged) { 
     load.biscuit.merged(filename, sampleNames, hdf5)

@@ -7,12 +7,12 @@
 fexpit(x, sqz)
 }
 \arguments{
-\item{x}{a vector of values between (-Inf, +Inf)}
+\item{x}{a vector of values between -Inf and +Inf}
 
 \item{sqz}{the amount by which to 'squeeze', default is .000001}
 }
 \value{
-\preformatted{   a vector of values in [0, 1]
+\preformatted{   a vector of values between 0 and 1 inclusive
 }
 }
 \description{

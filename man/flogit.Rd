@@ -7,12 +7,12 @@
 flogit(x, sqz = 0.000001)
 }
 \arguments{
-\item{x}{a vector of values in \link{0, 1}}
+\item{x}{a vector of values between 0 and 1 inclusive}
 
 \item{sqz}{the amount by which to 'squeeze', default is .000001}
 }
 \value{
-\preformatted{   a vector of values between (-Inf, +Inf) 
+\preformatted{   a vector of values between -Inf and +Inf
 }
 }
 \description{
