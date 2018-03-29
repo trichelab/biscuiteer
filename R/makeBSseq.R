@@ -8,6 +8,7 @@
 #' @return an in-core BSseq object
 #' 
 #' @import GenomicRanges
+#' @import S4Vectors
 #' @import bsseq 
 #'
 #' @seealso makeBSseq_HDF5

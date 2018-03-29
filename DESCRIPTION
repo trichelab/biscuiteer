@@ -12,9 +12,9 @@ Maintainer: Tim Triche, Jr. <tim.triche@gmail.com>
 URL: https://github.com/ttriche/biscuitEater
 BugReports: https://github.com/ttriche/biscuitEater/issues
 License: Gnu GPL
-Depends: R (>= 3.0.0)
+Depends: R (>= 3.0.0), bsseq
 Imports: data.table, 
-         bsseq, 
+         S4Vectors, 
          impute, 
          HDF5Array,
          GenomicRanges,

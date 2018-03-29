@@ -8,6 +8,7 @@
 #' @return an HDF5-backed BSseq object
 #' 
 #' @import GenomicRanges
+#' @import S4Vectors
 #' @import HDF5Array
 #' @import bsseq 
 #'
