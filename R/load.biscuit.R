@@ -21,6 +21,7 @@
 #' @export
 load.biscuit <- function(filename, sampleNames=NULL, hdf5=FALSE, merged=NULL) {
 
+  message("Preparing to load biscuit output from ", filename, "...")
   if (is.null(merged)) merged <- base::grepl("merged", ignore=TRUE, filename)
   if (merged) { 
     load.biscuit.merged(filename, sampleNames, hdf5)
