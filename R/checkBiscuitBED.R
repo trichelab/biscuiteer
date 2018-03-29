@@ -6,8 +6,6 @@
 #' 
 #' @return            parameters for makeBSseq or makeBSseq_hdf5
 #'
-#' @import data.table
-#'
 #' @seealso load.biscuit
 #'
 #' @export
@@ -18,19 +16,18 @@ checkBiscuitBED <- function(filename, sampleNames=NULL, merged=NULL) {
   if (base::grepl(".bz2$", filename)) input <- paste("bzcat", input)
 
   # read the first few samples and see if we have a problem
-  small.dt <- fread(input, sep="\t", sep2=",", na.string=".", nrows=10)
+  preamble <- read.table(filename, sep="\t", na.strings=".", nrows=10)
   if (is.null(merged)) merged <- base::grepl("merged", ignore=TRUE, filename)
   colsPerSample <- ifelse(merged, 3, 2)
-  nsamples <- (ncol(small.dt) - 3) / colsPerSample
+  nSamples <- (ncol(preamble) - 3) / colsPerSample
   if (!is.null(sampleNames)) {
     if (length(sampleNames) != nsamples) {
       stop("Length of `sampleNames` does not match number of samples! Exiting.")
     }
   } else {
-    sampleNames <- paste0("sample", seq_len(nsamples))
+    sampleNames <- paste0("sample", seq_len(nSamples))
   }
-  
-  nSamples <- length(sampleNames)
+
   cols <- c("chr","start","end")
   sampcols <- apply(expand.grid(c("beta","covg"), seq_len(nSamples)), 
                     1, paste, collapse="")
