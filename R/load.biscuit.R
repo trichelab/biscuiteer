@@ -7,13 +7,11 @@
 #' @param hdf5        make the object HDF5-backed? (FALSE) 
 #' @param merged      is the file a merged CpG file? (if NULL, will guess) 
 #' 
-#' @return            a BSseq object from the bsseq package
+#' @return            a bsseq::BSseq object, possibly HDF5-backed
 #'
 #' @import bsseq
-#' @import HDF5Array
-#' @import data.table
-#' @import GenomicRanges
 #'
+#' @seealso BSseq
 #' @seealso checkBiscuitBED
 #' @seealso load.biscuit.merged
 #' @seealso load.biscuit.unmerged

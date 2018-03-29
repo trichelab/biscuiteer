@@ -8,6 +8,7 @@
 #' @return            a BSseq object from the bsseq package
 #'
 #' @import bsseq
+#' @import Rsamtools
 #' @import data.table
 #' @import GenomicRanges
 #'
@@ -23,7 +24,21 @@ load.biscuit.unmerged <- function(filename, sampleNames=NULL, hdf5=FALSE) {
   params <- checkBiscuitBED(filename, sampleNames, merged=FALSE)
   chh <- ifelse(base::grepl("c(p?)g", filename, ignore=TRUE), "CpG", "CpH")
   message("Reading unmerged ", chh, " input from ", filename, "...")
-  unmerged.dt <- fread(params$input, sep="\t", sep2=",", na.string=".") 
+
+  if (params$use_tabix) { 
+    # for files that tend to fill up /tmp or /shm, scan as tabix, yielding
+    tabixed <- open(TabixFile(filename, yieldSize=params$yield))
+    to.dt <- function(elt) data.table(read.table(textConnection(elt), sep="\t"))
+    unmerged.dt <- data.table(params$preamble)[0,]
+    loci <- 0
+    while(length(res <- scanTabix(tbx)[[1]])) {
+      loci <- loci + length(res)
+      unmerged.dt <- rbind(unmerged.dt, Map(to.dt, res))
+      message(loci, " ", chh, " loci processed")
+    }
+  } else { 
+    unmerged.dt <- fread(params$input, sep="\t", sep2=",", na.string=".") 
+  }
   colnames(unmerged.dt) <- params$colNames
   unmerged.dt[, "start"] <- unmerged.dt[, "start"] + 1 # quirk
   message("Loaded data from ", filename, ". Creating bsseq object...")

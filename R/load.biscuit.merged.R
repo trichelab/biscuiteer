@@ -7,6 +7,7 @@
 #' 
 #' @return            a BSseq object from the bsseq package
 #'
+#' @import LaF
 #' @import bsseq
 #' @import data.table
 #' @import HDF5Array

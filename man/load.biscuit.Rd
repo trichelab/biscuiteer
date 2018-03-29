@@ -18,7 +18,7 @@ load.biscuit(filename, sampleNames = NULL, hdf5 = FALSE, merged = NULL)
 \item{merged}{is the file a merged CpG file? (if NULL, will guess)}
 }
 \value{
-\preformatted{       a BSseq object from the bsseq package
+\preformatted{       a bsseq::BSseq object, possibly HDF5-backed
 }
 }
 \description{
@@ -27,6 +27,8 @@ e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and 9 columns total,
 while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns
 }
 \seealso{
+BSseq
+
 checkBiscuitBED
 
 load.biscuit.merged
