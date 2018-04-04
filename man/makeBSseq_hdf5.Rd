@@ -15,7 +15,7 @@ makeBSseq_hdf5(dt, betacols, covgcols, pData, sparse = NULL)
 
 \item{pData}{a DataFrame (usually from checkBiscuitBED)}
 
-\item{sparse}{make the object Matrix-backed? (NULL; if beneficial)}
+\item{sparse}{make the object Matrix-backed? (NULL)}
 }
 \value{
 an HDF5-backed BSseq object

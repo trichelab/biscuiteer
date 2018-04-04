@@ -4,7 +4,7 @@
 #' @param betacols      the beta column names (from checkBiscuitBED) 
 #' @param covgcols      the coverage column names (from checkBiscuitBED) 
 #' @param pData         a DataFrame (usually from checkBiscuitBED)
-#' @param sparse        make the object Matrix-backed? (NULL; if beneficial)
+#' @param sparse        make the object Matrix-backed? (NULL)
 #'
 #' @return an in-core BSseq object
 #' 
