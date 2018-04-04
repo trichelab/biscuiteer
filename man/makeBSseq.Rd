@@ -4,16 +4,18 @@
 \alias{makeBSseq}
 \title{make an in-core BSseq object from the results of reading a Biscuit BED file}
 \usage{
-makeBSseq(dt, betacols, covgcols, sampleNames)
+makeBSseq(dt, betacols, covgcols, pData, sparse = NULL)
 }
 \arguments{
 \item{dt}{a data.table (from the BED file)}
 
-\item{betacols}{the beta column names}
+\item{betacols}{the beta column names (from checkBiscuitBED)}
 
-\item{covgcols}{the coverage column names}
+\item{covgcols}{the coverage column names (from checkBiscuitBED)}
 
-\item{sampleNames}{the sample names}
+\item{pData}{a DataFrame (usually from checkBiscuitBED)}
+
+\item{sparse}{make the object Matrix-backed? (NULL; if beneficial)}
 }
 \value{
 an in-core BSseq object

@@ -3,8 +3,9 @@
 #' since data.table tends to run into problems with .gzipped joint CpH files. 
 #'
 #' @param filename    the file (compressed or not, doesn't matter) to load
-#' @param sampleNames sample names for the bsseq object (if NULL, will create)
+#' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
 #' @param merged      is the file a merged CpG file? (if NULL, will guess) 
+#' @param sparse      make the object Matrix-backed? (NULL; do so if beneficial)
 #' @param tabix       for files > `tabix` lines long, use TabixFile (5e7)
 #' 
 #' @return            parameters for makeBSseq or makeBSseq_hdf5
@@ -14,7 +15,11 @@
 #' @seealso load.biscuit
 #'
 #' @export
-checkBiscuitBED <- function(filename, sampleNames=NULL, merged=NULL, tabix=5e7){
+checkBiscuitBED <- function(filename,
+                            sampleNames=NULL,
+                            merged=NULL, 
+                            sparse=NULL,
+                            tabix=5e7){
 
   input <- filename
   if (base::grepl(".gz$", filename)) input <- paste("zcat", input)
@@ -28,11 +33,16 @@ checkBiscuitBED <- function(filename, sampleNames=NULL, merged=NULL, tabix=5e7){
   colsPerSample <- ifelse(merged, 3, 2)
   nSamples <- (ncol(preamble) - 3) / colsPerSample
   if (!is.null(sampleNames)) {
-    if (length(sampleNames) != nSamples) {
-      stop("Length of `sampleNames` does not match number of samples! Exiting.")
+    if (is(sampleNames, "DataFrame") | is(sampleNames, "data.frame")) {
+      stopifnot(ncol(sampleNames) == nSamples)
+      pData <- DataFrame(sampleNames)
+    } else {
+      stopifnot(length(sampleNames) == nSamples)
+      pData <- DataFrame(sampleName=sampleNames)
     }
   } else {
     sampleNames <- paste0("sample", seq_len(nSamples))
+    pData <- DataFrame(sampleName=sampleNames)
   }
 
   cols <- c("chr","start","end")
@@ -46,13 +56,13 @@ checkBiscuitBED <- function(filename, sampleNames=NULL, merged=NULL, tabix=5e7){
 
   params <- list(input=input,
                  preamble=preamble,
-                 sampleNames=sampleNames,
                  nSamples=nSamples,
                  colNames=colNames,
                  betacols=betacols,
                  covgcols=covgcols,
                  use_tabix=use_tabix,
                  nlines=nlines,
+                 pData=pData,
                  yield=1e5)
   return(params) 
 

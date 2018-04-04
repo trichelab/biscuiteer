@@ -1,18 +1,18 @@
 #' Pretty much what it says on the tin.  Summarize methylation over regions.
 #'
 #' @param   bsseq     the BSseq object to summarize 
-#' @param   segs      the regions to summarize over 
-#' @param   dropNA    whether to drop rows with > half of samples NaN (TRUE)
-#' @param   impute    whether to impute NAs (FALSE) 
+#' @param   segs      regions to summarize over (a GRanges; no GRangesLists yet)
+#' @param   dropNA    whether to drop rows with > half of samples NaN (FALSE)
+#' @param   impute    whether to impute NAs/NaNs (FALSE) 
 #'
 #' @return  matrix    a matrix of regional methylation fractions
 #'
 #' @import  DelayedMatrixStats
-#' @import  bsseq 
 #' @import  impute
+#' @import  bsseq 
 #' 
 #' @export
-summarizeBsSeqOver <- function(bsseq, segs, dropNA=TRUE, impute=FALSE) { 
+summarizeBsSeqOver <- function(bsseq, segs, dropNA=FALSE, impute=FALSE) { 
   segs <- subsetByOverlaps(segs, bsseq)
   res <- bsseq::getMeth(bsseq, regions=segs, what="perRegion", type="raw")
   rownames(res) <- as.character(segs)

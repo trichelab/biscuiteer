@@ -4,16 +4,16 @@
 \alias{summarizeBsSeqOver}
 \title{Pretty much what it says on the tin.  Summarize methylation over regions.}
 \usage{
-summarizeBsSeqOver(bsseq, segs, dropNA = TRUE, impute = FALSE)
+summarizeBsSeqOver(bsseq, segs, dropNA = FALSE, impute = FALSE)
 }
 \arguments{
 \item{bsseq}{the BSseq object to summarize}
 
-\item{segs}{the regions to summarize over}
+\item{segs}{regions to summarize over (a GRanges; no GRangesLists yet)}
 
-\item{dropNA}{whether to drop rows with > half of samples NaN (TRUE)}
+\item{dropNA}{whether to drop rows with > half of samples NaN (FALSE)}
 
-\item{impute}{whether to impute NAs (FALSE)}
+\item{impute}{whether to impute NAs/NaNs (FALSE)}
 }
 \value{
 matrix    a matrix of regional methylation fractions

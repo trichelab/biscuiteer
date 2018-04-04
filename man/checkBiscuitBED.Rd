@@ -7,14 +7,16 @@ By default, files with over 50 million loci will be processed iteratively,
 since data.table tends to run into problems with .gzipped joint CpH files.}
 \usage{
 checkBiscuitBED(filename, sampleNames = NULL, merged = NULL,
-  tabix = 50000000)
+  sparse = NULL, tabix = 50000000)
 }
 \arguments{
 \item{filename}{the file (compressed or not, doesn't matter) to load}
 
-\item{sampleNames}{sample names for the bsseq object (if NULL, will create)}
+\item{sampleNames}{sample names (if NULL, create; if data.frame, make pData)}
 
 \item{merged}{is the file a merged CpG file? (if NULL, will guess)}
+
+\item{sparse}{make the object Matrix-backed? (NULL; do so if beneficial)}
 
 \item{tabix}{for files > \code{tabix} lines long, use TabixFile (5e7)}
 }

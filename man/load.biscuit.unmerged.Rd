@@ -5,14 +5,17 @@
 \title{a bsseq loader for Biscuit cg/ch output (BED-like format, 2 cols/sample)
 e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and thus 9 columns}
 \usage{
-load.biscuit.unmerged(filename, sampleNames = NULL, hdf5 = FALSE)
+load.biscuit.unmerged(filename, sampleNames = NULL, hdf5 = FALSE,
+  sparse = NULL)
 }
 \arguments{
 \item{filename}{the file (compressed or not, doesn't matter) to load}
 
-\item{sampleNames}{sample names for the bsseq object (if NULL, will create)}
+\item{sampleNames}{sample names (if NULL, create; if data.frame, make pData)}
 
-\item{hdf5}{make the object HDF5-backed? (FALSE)}
+\item{hdf5}{make the object HDF5-backed? (FALSE; use in-core storage)}
+
+\item{sparse}{make the object Matrix-backed? (NULL; do so if beneficial)}
 }
 \value{
 \preformatted{       a BSseq object from the bsseq package

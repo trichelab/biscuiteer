@@ -2,13 +2,16 @@
 #' e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and thus 9 columns
 #'
 #' @param filename    the file (compressed or not, doesn't matter) to load
-#' @param sampleNames sample names for the bsseq object (if NULL, will create)
-#' @param hdf5        make the object HDF5-backed? (FALSE) 
+#' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
+#' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
+#' @param sparse      make the object Matrix-backed? (NULL; do so if beneficial)
 #' 
 #' @return            a BSseq object from the bsseq package
 #'
 #' @import bsseq
+#' @import Matrix
 #' @import Rsamtools
+#' @import HDF5Array
 #' @import data.table
 #' @import GenomicRanges
 #'
@@ -19,7 +22,10 @@
 #' @seealso checkBiscuitBED
 #'
 #' @export
-load.biscuit.unmerged <- function(filename, sampleNames=NULL, hdf5=FALSE) {
+load.biscuit.unmerged <- function(filename,
+                                  sampleNames=NULL,
+                                  hdf5=FALSE,
+                                  sparse=NULL) {
 
   params <- checkBiscuitBED(filename, sampleNames, merged=FALSE)
   chh <- ifelse(base::grepl("c(p?)g", filename, ignore=TRUE), "CpG", "CpH")
@@ -44,9 +50,19 @@ load.biscuit.unmerged <- function(filename, sampleNames=NULL, hdf5=FALSE) {
   message("Loaded data from ", filename, ". Creating bsseq object...")
 
   if (hdf5) { 
-    with(params, makeBSseq_hdf5(unmerged.dt, betacols, covgcols, sampleNames))
+    with(params, 
+         makeBSseq_hdf5(unmerged.dt, 
+                        betacols, 
+                        covgcols, 
+                        pData, 
+                        sparse))
   } else { 
-    with(params, makeBSseq(unmerged.dt, betacols, covgcols, sampleNames))
-  }
+    with(params, 
+         makeBSseq(unmerged.dt, 
+                   betacols, 
+                   covgcols, 
+                   pData,
+                   sparse))
+  } 
 
 }
