@@ -4,14 +4,14 @@
 #' @param y       the value with which to fill the holes (default is 0)
 #' @param sparse  make the result Matrix-backed? (FALSE)
 #'
-#' @return    x, but with holes filled, and as a matrix
+#' @return x, but with holes filled, and as a (possibly sparse) matrix
 #'
 #' @export
 fixNAs <- function(x, y=0, sparse=FALSE) { 
-  if (sparse | is.null(sparse)) {
-    x <- sparseMatrix(x)
-  } else {
+  if (is.null(sparse) | sparse == FALSE) {
     x <- as.matrix(x)
+  } else {
+    x <- sparseMatrix(x)
   }
   x[is.na(x)] <- y
   return(x)

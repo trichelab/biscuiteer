@@ -14,7 +14,7 @@ fixNAs(x, y = 0, sparse = FALSE)
 \item{sparse}{make the result Matrix-backed? (FALSE)}
 }
 \value{
-x, but with holes filled, and as a matrix
+x, but with holes filled, and as a (possibly sparse) matrix
 }
 \description{
 helper function to play nice with BSseq's expectations about the M matrix
