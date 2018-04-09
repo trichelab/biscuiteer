@@ -4,7 +4,7 @@
 #' @param filename    the file (compressed or not, doesn't matter) to load
 #' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
 #' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
-#' @param sparse      make the object Matrix-backed? (NULL; do so if beneficial)
+#' @param sparse      make the object Matrix-backed? (FALSE; do so if beneficial)
 #' 
 #' @return            a BSseq object from the bsseq package
 #'
@@ -19,7 +19,7 @@
 load.biscuit.merged <- function(filename, 
                                 sampleNames=NULL, 
                                 hdf5=FALSE,
-                                sparse=NULL) {
+                                sparse=FALSE) {
 
   params <- checkBiscuitBED(filename, sampleNames, merged=TRUE, sparse=sparse)
   ncolumns <- 3 + (3 * params$nSamples)

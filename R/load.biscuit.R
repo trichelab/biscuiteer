@@ -6,7 +6,7 @@
 #' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
 #' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
 #' @param merged      is the file a merged CpG file? (if NULL, will guess) 
-#' @param sparse      are there a lot of zero-coverage sites? (NULL; guess)
+#' @param sparse      are there a lot of zero-coverage sites? (FALSE)
 #' 
 #' @return            a bsseq::BSseq object, possibly Matrix- or HDF5-backed
 #'
@@ -22,7 +22,7 @@ load.biscuit <- function(filename,
                          sampleNames=NULL, 
                          hdf5=FALSE, 
                          merged=NULL, 
-                         sparse=NULL) {
+                         sparse=FALSE) {
 
   message("Preparing to load biscuit output from ", filename, "...")
   if (is.null(merged)) merged <- base::grepl("merged", ignore=TRUE, filename)

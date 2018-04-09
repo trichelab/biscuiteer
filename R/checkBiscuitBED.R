@@ -5,7 +5,7 @@
 #' @param filename    the file (compressed or not, doesn't matter) to load
 #' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
 #' @param merged      is the file a merged CpG file? (if NULL, will guess) 
-#' @param sparse      make the object Matrix-backed? (NULL; do so if beneficial)
+#' @param sparse      make the object Matrix-backed? (FALSE)
 #' @param tabix       for files > `tabix` lines long, use TabixFile (5e7)
 #' 
 #' @return            parameters for makeBSseq or makeBSseq_hdf5
@@ -18,7 +18,7 @@
 checkBiscuitBED <- function(filename,
                             sampleNames=NULL,
                             merged=NULL, 
-                            sparse=NULL,
+                            sparse=FALSE,
                             tabix=5e7){
 
   input <- filename

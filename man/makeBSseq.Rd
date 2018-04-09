@@ -4,7 +4,7 @@
 \alias{makeBSseq}
 \title{make an in-core BSseq object from the results of reading a Biscuit BED file}
 \usage{
-makeBSseq(dt, betacols, covgcols, pData, sparse = NULL)
+makeBSseq(dt, betacols, covgcols, pData, sparse = FALSE)
 }
 \arguments{
 \item{dt}{a data.table (from the BED file)}
@@ -15,7 +15,7 @@ makeBSseq(dt, betacols, covgcols, pData, sparse = NULL)
 
 \item{pData}{a DataFrame (usually from checkBiscuitBED)}
 
-\item{sparse}{make the object Matrix-backed? (NULL)}
+\item{sparse}{make the object Matrix-backed? (FALSE)}
 }
 \value{
 an in-core BSseq object

@@ -2,6 +2,7 @@
 
 export(atRegions)
 export(checkBiscuitBED)
+export(combine.biscuit)
 export(fexpit)
 export(fixNAs)
 export(flogit)
