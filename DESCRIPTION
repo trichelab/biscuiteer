@@ -4,7 +4,7 @@ Title: a bunch of convenience functions for Biscuit, POETIC, and whatnot
 Description: A test harness for bsseq loading of Biscuit output, summarization
              of WGBS data over defined regions and in mappable samples, with or
              without imputation and dropping of mostly-NA rows, etc. 
-Version: 0.7.1
+Version: 0.7.3
 Date: 2018-04-09
 Authors@R: person("Tim", "Triche, Jr.", role=c("aut", "cre"), email="tim.triche@gmail.com")
 Author: Tim Triche, Jr. [aut, cre]
@@ -22,6 +22,8 @@ Imports: data.table,
          GenomicRanges,
          DelayedMatrixStats,
          Homo.sapiens,
+         fastseg,
+         HMMcopy,
          gtools
 Suggests: covr, testthat
 RoxygenNote: 6.0.1
