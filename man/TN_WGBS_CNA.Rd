@@ -24,3 +24,14 @@ TN_WGBS_CNA(stub0, stub1 = NULL, bsgc = NULL, maps = NULL, ...)
 \description{
 Wrapper for matched tumor-normal bigWig coverage processing & segmentation
 }
+\examples{
+  stubs <- c("P01-010", "P01-012", "P01-015", "P01-016", "P01-017")
+  stubs <- c(stubs, "P01-018", "P01-020", "P01-021")
+  names(stubs) <- paste0(stubs, "-T06-T-P01")
+  names(stubs)[1] <- "P01-010-T07-T-P01"
+  segs <- list()
+  for(i in names(stubs)) segs[[i]] <- TN_WGBS_CNA(stubs[[i]])$segs # robust
+  segs <- GRangesList(segs) # to feed to grToSeg and get full .seg output
+  for(i in names(segs)) export(segs[[i]], paste0(i, ".CN.hg19.bw"))
+
+}

@@ -14,7 +14,7 @@
 #' @import fastseg
 #' @import Homo.sapiens
 #' 
-#' @example 
+#' @examples
 #' 
 #'   library(fastseg)
 #'   library(HMMcopy) 
