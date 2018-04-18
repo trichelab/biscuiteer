@@ -4,21 +4,18 @@
 \alias{checkBiscuitBED}
 \title{A BED checker for Biscuit cg/ch output (BED-like format, 2 or 3 cols/sample).
 By default, files with over 50 million loci will be processed iteratively,
-since data.table tends to run into problems with .gzipped joint CpH files.}
+since data.table tends to run into problems with .gzipped joint CpH files.
+This function absolutely assumes that BED files are tabixed. No exceptions!}
 \usage{
-checkBiscuitBED(filename, sampleNames = NULL, merged = NULL,
-  sparse = FALSE, tabix = 50000000)
+checkBiscuitBED(filename, sampleNames = NULL, yieldSize = 50000000,
+  merged = NULL)
 }
 \arguments{
-\item{filename}{the file (compressed or not, doesn't matter) to load}
+\item{filename}{the file (compressed and tabixed, with header) to load}
 
 \item{sampleNames}{sample names (if NULL, create; if data.frame, make pData)}
 
-\item{merged}{is the file a merged CpG file? (if NULL, will guess)}
-
-\item{sparse}{make the object Matrix-backed? (FALSE)}
-
-\item{tabix}{for files > \code{tabix} lines long, use TabixFile (5e7)}
+\item{yieldSize}{for files > \code{yieldSize} lines long, chunk the file (5e7)}
 }
 \value{
 \preformatted{       parameters for makeBSseq or makeBSseq_hdf5
@@ -28,7 +25,9 @@ checkBiscuitBED(filename, sampleNames = NULL, merged = NULL,
 A BED checker for Biscuit cg/ch output (BED-like format, 2 or 3 cols/sample).
 By default, files with over 50 million loci will be processed iteratively,
 since data.table tends to run into problems with .gzipped joint CpH files.
+This function absolutely assumes that BED files are tabixed. No exceptions!
 }
 \seealso{
-load.biscuit
+\preformatted{      load.biscuit
+}
 }

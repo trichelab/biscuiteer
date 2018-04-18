@@ -29,9 +29,7 @@ unionize <- function(bs1, ..., hdf5=FALSE) {
 
   # keep only shared
   message("Pruning...") 
-  typicalSeqlevels <- paste0("chr", c(1:22, "X", "Y"))
-  sharedSeqlevels <- intersect(seqlevels(bs1), seqlevels(bs2))
-  keptSeqlevels <- intersect(typicalSeqlevels, sharedSeqlevels)
+  keptSeqLevels <- intersect(seqlevels(bs1), seqlevels(bs2))
   bs1 <- keepSeqlevels(bs1, keptSeqlevels, pruning.mode="coarse")
   bs2 <- keepSeqlevels(bs2, keptSeqlevels, pruning.mode="coarse")
 
