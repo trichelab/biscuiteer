@@ -35,13 +35,20 @@ unionize <- function(bs1, ..., parallel=TRUE) {
   keptSeqlevels <- intersect(seqlevels(bs1), seqlevels(bs2))
   bs1 <- keepSeqlevels(bs1, keptSeqlevels, pruning.mode="coarse")
   bs2 <- keepSeqlevels(bs2, keptSeqlevels, pruning.mode="coarse")
+  unionizeChrom <- function(sub1, sub2) unionize(sub1, sub2, parallel=FALSE)
 
-  if (parallel & length(keptSeqlevels) > 1) {
-    unionizeChrom <- function(sub1, sub2) unionize(sub1, sub2, parallel=FALSE)
-    sort(do.call(rbind, 
-                 mcmapply(unionizeChrom, 
+  if (length(keptSeqlevels) > 1) {
+    if (parallel) {
+      sort(do.call(rbind, 
+                   mcmapply(unionizeChrom, 
+                            split(bs1, seqnames(bs1)),
+                            split(bs2, seqnames(bs2)))))
+    } else { 
+      sort(do.call(rbind, 
+                   mapply(unionizeChrom, 
                           split(bs1, seqnames(bs1)),
                           split(bs2, seqnames(bs2)))))
+    }
   } else { 
     
     message("Merging colData...") 
