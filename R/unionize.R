@@ -61,20 +61,15 @@ unionize <- function(bs1, ..., parallel=FALSE, onlyChrs=NULL) {
     }
   } else { 
     
-    message("Merging colData...") 
     bigpd <- rbind(colData(bs1), colData(bs2))
-
-    message("Merging rowRanges...") 
     biggrl <- GRangesList(
       bs1=suppressWarnings(GenomicRanges::setdiff(granges(bs1), granges(bs2))),
       bss=suppressWarnings(GenomicRanges::intersect(granges(bs1),granges(bs2))),
       bs2=suppressWarnings(GenomicRanges::setdiff(granges(bs2), granges(bs1)))
     )
-
-    message("Merging methylated read matrices...") 
+    message("  merging methylated read matrices...") 
     M <- unionizeBSseq(bs1, bs2, biggrl, what="M", parallel=parallel)
-    
-    message("Merging read coverage matrices...") 
+    message("  merging read coverage matrices...") 
     Cov <- unionizeBSseq(bs1, bs2, biggrl, what="Cov", parallel=parallel)
     
     # sort is required due to the trick in unionizeBSseq
