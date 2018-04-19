@@ -44,7 +44,7 @@ unionize <- function(bs1, ..., parallel=FALSE) {
     unionize(sub1, sub2, parallel=FALSE)
   }
 
-  chroms <- unique(length(unique(seqnames(bs1))), length(unique(seqnames(bs2))))
+  chroms <- unique(unique(seqnames(bs1)), unique(seqnames(bs2)))
   if (length(chroms) > 1) {
     if (parallel) {
       sort(do.call(rbind, 
