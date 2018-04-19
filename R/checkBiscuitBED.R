@@ -7,6 +7,7 @@
 #' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
 #' @param yieldSize   for files > `yieldSize` lines long, chunk the file (5e7)
 #' @param merged      boolean; is this merged CpG data? (NULL; guess if merged)
+#' @param hdf5        boolean; use HDF5 arrays for backing of the data? (FALSE)
 #' 
 #' @return            parameters for makeBSseq or makeBSseq_hdf5
 #'
@@ -19,7 +20,8 @@
 checkBiscuitBED <- function(filename, 
                             sampleNames=NULL, 
                             yieldSize=5e7, 
-                            merged=NULL){
+                            merged=NULL,
+                            hdf5=FALSE){
 
   if (!base::grepl(".gz$", filename)) stop("Only tabix'ed files are supported.")
   message("Checking ", filename, " for import...")
@@ -119,7 +121,8 @@ checkBiscuitBED <- function(filename,
                  nlines=nlines,
                  pData=pData,
                  passes=passes,
-                 yieldSize=yieldSize)
+                 yieldSize=yieldSize,
+                 hdf5=hdf5)
   return(params) 
 
 }

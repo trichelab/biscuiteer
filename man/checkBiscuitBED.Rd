@@ -8,7 +8,7 @@ since data.table tends to run into problems with .gzipped joint CpH files.
 This function absolutely assumes that BED files are tabixed. No exceptions!}
 \usage{
 checkBiscuitBED(filename, sampleNames = NULL, yieldSize = 50000000,
-  merged = NULL)
+  merged = NULL, hdf5 = FALSE)
 }
 \arguments{
 \item{filename}{the file (compressed and tabixed, with header) to load}
@@ -18,6 +18,8 @@ checkBiscuitBED(filename, sampleNames = NULL, yieldSize = 50000000,
 \item{yieldSize}{for files > \code{yieldSize} lines long, chunk the file (5e7)}
 
 \item{merged}{boolean; is this merged CpG data? (NULL; guess if merged)}
+
+\item{hdf5}{boolean; use HDF5 arrays for backing of the data? (FALSE)}
 }
 \value{
 \preformatted{       parameters for makeBSseq or makeBSseq_hdf5
