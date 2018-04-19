@@ -54,4 +54,5 @@ load.biscuit <- function(filename,
 
 }
 
+#' @export
 read.biscuit <- load.biscuit
