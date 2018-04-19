@@ -56,38 +56,31 @@ checkBiscuitBED <- function(filename,
     cols <- c("chr","start","end")
     colsPerSample <- ifelse(merged, 3, 2)
     nSamples <- (ncol(preamble) - 3) / colsPerSample
-    sampleses <- paste0("sample", seq_len(nSamples))
+    if (is.null(sampleNames)) {
+      sampleNames <- paste0("sample", seq_len(nSamples))
+    }
     colSuffixes <- c(".beta",".covg")
     if (merged) colSuffixes <- c(".beta",".covg",".context")
-    sampcols <- paste0(rep(sampleses, each=colsPerSample), 
+    sampcols <- paste0(rep(sampleNames, each=colsPerSample), 
                        rep(colSuffixes, nSamples))
     colNames <- base::gsub(" ", "", c(cols, sampcols)) # quirk
     # }}}
   }
 
-  if (!is.null(sampleNames)) { 
-    # {{{ if sampleNames is provided OR deduced
-    if (is(sampleNames, "DataFrame") | is(sampleNames, "data.frame")) {
-      stopifnot(ncol(sampleNames) == nSamples)
-      pData <- DataFrame(sampleNames)
-    } else {
-      stopifnot(length(sampleNames) == nSamples)
-      pData <- DataFrame(sampleName=sampleNames)
-    } 
-
-    if ("sampleNames" %in% names(pData)) {
-      rownames(pData) <- pData$sampleNames  
-    } else { 
-      rownames(pData) <- pData[,1]
-    }
-    # }}}
+  # by now, we know what our sampleNames are, one way or another...
+  if (is(sampleNames, "DataFrame") | is(sampleNames, "data.frame")) {
+    stopifnot(ncol(sampleNames) == nSamples)
+    pData <- DataFrame(sampleNames)
   } else {
-    # {{{ assign sampleNames  
-    sampleNames <- paste0("sample", seq_len(nSamples))
+    stopifnot(length(sampleNames) == nSamples)
     pData <- DataFrame(sampleName=sampleNames)
-    rownames(pData) <- sampleNames
-    colnames(preamble) <- colNames
-    # }}} 
+  } 
+
+  # and if they're a data.frame, use them
+  if ("sampleNames" %in% names(pData)) {
+    rownames(pData) <- pData$sampleNames  
+  } else { 
+    rownames(pData) <- pData[,1]
   }
   
   nlines <- countTabix(tbx)[[1]]
@@ -95,9 +88,9 @@ checkBiscuitBED <- function(filename,
   passes <- ceiling(nlines / chunkSize)
   if (passes > 1) message(filename," takes ",passes," passes of ",chunkSize,".")
   message(filename, " looks valid for import.")
-  betacols <- paste0(sampleNames, ".beta")
+  betacols <- grep(".beta", colNames, value=TRUE) 
   names(betacols) <- rownames(pData)
-  covgcols <- paste0(sampleNames, ".covg")
+  covgcols <- grep(".covg", colNames, value=TRUE) 
   names(covgcols) <- rownames(pData)
 
   # for readr
