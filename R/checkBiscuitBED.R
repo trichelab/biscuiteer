@@ -57,9 +57,9 @@ checkBiscuitBED <- function(filename,
     colsPerSample <- ifelse(merged, 3, 2)
     nSamples <- (ncol(preamble) - 3) / colsPerSample
     sampleses <- paste0("sample", seq_len(nSamples))
+    colSuffixes <- c(".beta",".covg")
     if (merged) colSuffixes <- c(".beta",".covg",".context")
-    else colSuffixes <- c(".beta",".covg")
-    sampcols <- paste0(rep(sampleses, each=ifelse(merged, 2, 3)), 
+    sampcols <- paste0(rep(sampleses, each=colsPerSample), 
                        rep(colSuffixes, nSamples))
     colNames <- base::gsub(" ", "", c(cols, sampcols)) # quirk
     # }}}
