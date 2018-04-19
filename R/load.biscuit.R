@@ -16,6 +16,7 @@
 #'
 #' @seealso BSseq
 #' @seealso checkBiscuitBED
+#' @aliases read.biscuit
 #'
 #' @export
 load.biscuit <- function(filename, 
@@ -52,3 +53,5 @@ load.biscuit <- function(filename,
   } 
 
 }
+
+read.biscuit <- load.biscuit

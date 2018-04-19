@@ -22,16 +22,19 @@ unionizeBSseq <- function(bs1, bs2, biggrl, what=c("M","Cov")) {
   if (!identical(seqlevels(bs1), seqlevels(bs2))) stop("Unmatched seqlevels!") 
   if (!all(c("bs1", "both", "bs2") %in% names(biggrl))) stop("Bogus biggrl!")
   overall <- sum(sapply(biggrl, length))
+  message("Creating new ", what, " matrix from first BSseq object...")
   rawdata1 <- Matrix(getCoverage(bs1, regions=c(biggrl$bs1, biggrl$both),
                                  what="perRegionTotal",
                                  type=what), ncol=ncol(bs1))
   padding1 <- Matrix(0, nrow=length(biggrl$bs2), ncol=ncol(bs1))
   dat1 <- rbind(rawdata1, padding1)
+  message("Creating new ", what, " matrix from second BSseq object...")
   padding2 <- Matrix(0, nrow=length(biggrl$bs1), ncol=ncol(bs2))
   rawdata2 <- Matrix(getCoverage(bs2, regions=c(biggrl$both, biggrl$bs2),
                                 type=what, what="perRegionTotal"), 
                     ncol=ncol(bs2))
   dat2 <- rbind(padding2, rawdata2)  
+  message("Merging ", what, " matrices...")
   unionized <- cbind(dat1, dat2)
   return(unionized)
 

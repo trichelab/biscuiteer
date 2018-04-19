@@ -2,6 +2,7 @@
 % Please edit documentation in R/load.biscuit.R
 \name{load.biscuit}
 \alias{load.biscuit}
+\alias{read.biscuit}
 \title{a bsseq loader for Biscuit output (BED-like format, 2 or 3 cols/sample)
 e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and 9 columns total,
 while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns}
