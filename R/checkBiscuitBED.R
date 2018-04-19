@@ -97,6 +97,7 @@ checkBiscuitBED <- function(filename,
   message(filename, " looks valid for import.")
 
   params <- list(tbx=tbx,
+                 merged=merged,
                  preamble=preamble,
                  nSamples=nSamples,
                  sampleNames=sampleNames,
