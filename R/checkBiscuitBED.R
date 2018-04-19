@@ -84,8 +84,6 @@ checkBiscuitBED <- function(filename,
   } else {
     # {{{ assign sampleNames  
     sampleNames <- paste0("sample", seq_len(nSamples))
-    betacols <- paste0(sampleNames, ".beta")
-    covgcols <- paste0(sampleNames, ".covg")
     pData <- DataFrame(sampleName=sampleNames)
     rownames(pData) <- sampleNames
     colnames(preamble) <- colNames
@@ -97,7 +95,9 @@ checkBiscuitBED <- function(filename,
   passes <- ceiling(nlines / chunkSize)
   if (passes > 1) message(filename," takes ",passes," passes of ",chunkSize,".")
   message(filename, " looks valid for import.")
+  betacols <- paste0(sampleNames, ".beta")
   names(betacols) <- rownames(pData)
+  covgcols <- paste0(sampleNames, ".covg")
   names(covgcols) <- rownames(pData)
 
   # for readr
