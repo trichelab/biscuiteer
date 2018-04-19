@@ -7,14 +7,16 @@ pad out un-covered sites with 0M/0Cov (i.e., ./. in a sparse Matrix),
 and return the now-even-sparser bsseq holding all of them. All
 conditions governing cbind(bsseq1, bsseq2) also apply to unionize().}
 \usage{
-unionize(bs1, ..., parallel = TRUE)
+unionize(bs1, ..., parallel = FALSE, onlyChrs = NULL)
 }
 \arguments{
 \item{bs1}{a bsseq object (return unaltered if length(list(...)) == 0)}
 
 \item{...}{one or more bsseq objects to combine with the first one}
 
-\item{parallel}{split the bsseq objects by chrom and parallelize? (TRUE)}
+\item{parallel}{split the bsseq objects by chrom and parallelize? (FALSE)}
+
+\item{onlyChrs}{retain a specific subset of chromosomes? (NULL; keep all)}
 }
 \value{
 \preformatted{   a larger and more sparse bsseq object

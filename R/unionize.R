@@ -6,6 +6,7 @@
 #' @param bs1       a bsseq object (return unaltered if length(list(...)) == 0)
 #' @param ...       one or more bsseq objects to combine with the first one 
 #' @param parallel  split the bsseq objects by chrom and parallelize? (FALSE) 
+#' @param onlyChrs  retain a specific subset of chromosomes? (NULL; keep all)
 #' 
 #' @return        a larger and more sparse bsseq object
 #'
@@ -17,7 +18,7 @@
 #' @import bsseq
 #' 
 #' @export
-unionize <- function(bs1, ..., parallel=FALSE) { 
+unionize <- function(bs1, ..., parallel=FALSE, onlyChrs=NULL) { 
 
   stopifnot(is(bs1, "BSseq"))
   if (length(list(...)) == 0) {
@@ -31,8 +32,9 @@ unionize <- function(bs1, ..., parallel=FALSE) {
     bs2 <- Reduce(unionize, list(...))
   }
 
-  # keep only shared
+  # keep only shared and/or requested chromosomes 
   keptSeqlevels <- intersect(seqlevels(bs1), seqlevels(bs2))
+  if (!is.null(onlyChrs)) keptSeqlevels <- intersect(keptSeqlevels, onlyChrs)
   bs1 <- keepSeqlevels(bs1, keptSeqlevels, pruning.mode="coarse")
   bs2 <- keepSeqlevels(bs2, keptSeqlevels, pruning.mode="coarse")
 
