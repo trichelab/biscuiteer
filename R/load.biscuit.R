@@ -29,12 +29,12 @@ load.biscuit <- function(filename,
 
   if (params$passes > 1) { 
     tbl <- with(params,
-                read_tsv_chunked(tbx$path, DataFrameCallback$new(f), na=".", 
-                                 comment="#", col_names=colNames, delim="\t", 
+                read_tsv_chunked(tbx$path, DataFrameCallback$new(f), 
+                                 na=".", comment="#", col_names=colNames, 
                                  col_types=colSpec, chunkSize=chunkSize))
   } else { 
     tbl <- with(params,
-                read_tsv(tbx$path, na=".", comment="#", delim="\t", 
+                read_tsv(tbx$path, na=".", comment="#",
                          col_names=colNames, col_types=colSpec))
   }
  
