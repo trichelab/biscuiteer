@@ -5,7 +5,7 @@
 #'
 #' @param bs1       a bsseq object (return unaltered if length(list(...)) == 0)
 #' @param ...       one or more bsseq objects to combine with the first one 
-#' @param parallel  split the bsseq objects by chrom and parallelize? (TRUE) 
+#' @param parallel  split the bsseq objects by chrom and parallelize? (FALSE) 
 #' 
 #' @return        a larger and more sparse bsseq object
 #'
@@ -17,7 +17,7 @@
 #' @import bsseq
 #' 
 #' @export
-unionize <- function(bs1, ..., parallel=TRUE) { 
+unionize <- function(bs1, ..., parallel=FALSE) { 
 
   stopifnot(is(bs1, "BSseq"))
   if (length(list(...)) == 0) {
