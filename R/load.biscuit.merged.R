@@ -16,28 +16,19 @@ load.biscuit.merged <- function(params) {
   ncolumns <- 3 + (3 * params$nSamples)
   dropcols <- seq(6, ncolumns, 3)
   filename <- params$tbx$path
+  dtCols <- params$colNames[setdiff(seq_along(params$colNames), dropcols)]
   message("Reading merged CpG input from ", filename, "...")
 
   # fixme: merge in Lyong's code to autodetect how to read in a compressed BED
   merged.dt <- fread(paste("zcat", filename), sep="\t", sep2=",", na.string=".",
                      drop=dropcols, skip=ifelse(params$hasHeader, 1, 0))
-  colnames(merged.dt) <- params$colNames
+  colnames(merged.dt) <- dtCols
   merged.dt[, "start"] <- merged.dt[, "start"] + 1 # quirk
   message("Loaded data from ", filename, ". Creating bsseq object...")
 
   if (hdf5) { 
-    with(params, 
-         makeBSseq_hdf5(merged.dt, 
-                        betacols, 
-                        covgcols, 
-                        pData, 
-                        sparse))
+    with(params, makeBSseq_hdf5(merged.dt, betacols, covgcols, pData, sparse))
   } else { 
-    with(params, 
-         makeBSseq(merged.dt, 
-                   betacols, 
-                   covgcols, 
-                   pData,
-                   sparse))
+    with(params, makeBSseq(merged.dt, betacols, covgcols, pData, sparse))
   } 
 }
