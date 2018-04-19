@@ -5,7 +5,6 @@
 #' @param filename    the file (compressed or not, doesn't matter) to load
 #' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
 #' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
-#' @param merged      is the file a merged CpG file? (if NULL, will guess) 
 #' @param sparse      are there a lot of zero-coverage sites? (FALSE)
 #' 
 #' @return            a bsseq::BSseq object, possibly Matrix- or HDF5-backed
@@ -21,11 +20,10 @@
 load.biscuit <- function(filename, 
                          sampleNames=NULL, 
                          hdf5=FALSE, 
-                         merged=NULL, 
                          sparse=FALSE) {
 
   params <- checkBiscuitBED(filename, sampleNames)
-  if (merged | params$merged) { 
+  if (params$merged) { 
     load.biscuit.merged(filename=filename,
                         sampleNames=sampleNames, 
                         hdf5=hdf5, 
