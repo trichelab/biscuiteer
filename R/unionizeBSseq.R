@@ -11,6 +11,8 @@
 #' 
 #' @import DelayedArray
 #' @importFrom Matrix Matrix
+#' @importClassesFrom Matrix Matrix 
+#' @importMethodsFrom Matrix cbind2 rbind2
 #' @import bsseq
 #' 
 #' @export

@@ -7,8 +7,11 @@
 #' @param ...     one or more bsseq objects to combine with the first one 
 #' 
 #' @return        a larger and more sparse bsseq object
-#' 
+#'
 #' @importFrom Matrix Matrix
+#' @importClassesFrom Matrix Matrix 
+#' @importMethodsFrom Matrix cbind2 rbind2
+#' @import methods 
 #' @import bsseq
 #' 
 #' @export
