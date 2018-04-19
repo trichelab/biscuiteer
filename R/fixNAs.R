@@ -10,8 +10,11 @@
 #' 
 #' @export
 fixNAs <- function(x, y=0, sparse=TRUE) { 
-  x <- as.matrix(x)
-  x[is.na(x)] <- y
-  if (sparse) x <- Matrix(x)
+  if (sparse) {
+    x <- Matrix(x)
+  } else {
+    x <- as.matrix(x)
+    x[is.na(x)] <- y
+  }
   return(x)
 }

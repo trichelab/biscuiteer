@@ -41,10 +41,12 @@ unionize <- function(bs1, ...) {
     both=suppressWarnings(GenomicRanges::intersect(granges(bs1), granges(bs2))),
     bs2=suppressWarnings(GenomicRanges::setdiff(granges(bs2), granges(bs1)))
   )
-  message("Merging data matrices...") 
-  sort(BSseq(M=unionizeBSseq(bs1, bs2, biggrl, what="M"),
-             Cov=unionizeBSseq(bs1, bs2, biggrl, what="Cov"),
-             pData=bigpd,
-             gr=unlist(biggrl)))
+  message("Merging methylated read matrices...") 
+  M <- unionizeBSseq(bs1, bs2, biggrl, what="M")
+  message("Merging read coverage matrices...") 
+  Cov <- unionizeBSseq(bs1, bs2, biggrl, what="Cov")
+
+  # sort is required due to the trick in unionizeBSseq
+  sort(BSseq(M, Cov, pData=bigpd, gr=unlist(biggrl)))
 
 }
