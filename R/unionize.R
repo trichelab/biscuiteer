@@ -40,7 +40,7 @@ unionize <- function(bs1, ..., parallel=FALSE) {
   unionizeChrom <- function(sub1, sub2) {
     chrom <- unique(unique(seqnames(sub1)), unique(seqnames(sub2)))
     if (length(chrom) > 1) stop("unionizeChrom should never see 2+ chroms")
-    message("Merging ", chrom, "...")
+    message("Unionizing ", chrom, "...")
     unionize(sub1, sub2, parallel=FALSE)
   }
 
