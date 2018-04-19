@@ -35,9 +35,17 @@ unionize <- function(bs1, ..., parallel=FALSE) {
   keptSeqlevels <- intersect(seqlevels(bs1), seqlevels(bs2))
   bs1 <- keepSeqlevels(bs1, keptSeqlevels, pruning.mode="coarse")
   bs2 <- keepSeqlevels(bs2, keptSeqlevels, pruning.mode="coarse")
-  unionizeChrom <- function(sub1, sub2) unionize(sub1, sub2, parallel=FALSE)
 
-  if (length(keptSeqlevels) > 1) {
+  # worker function 
+  unionizeChrom <- function(sub1, sub2) {
+    chrom <- unique(unique(seqnames(sub1)), unique(seqnames(sub2)))
+    if (length(chrom) > 1) stop("unionizeChrom should never see 2+ chroms")
+    message("Merging ", chrom, "...")
+    unionize(sub1, sub2, parallel=FALSE)
+  }
+
+  chroms <- unique(length(unique(seqnames(bs1))), length(unique(seqnames(bs2))))
+  if (length(chroms) > 1) {
     if (parallel) {
       sort(do.call(rbind, 
                    mcmapply(unionizeChrom, 
