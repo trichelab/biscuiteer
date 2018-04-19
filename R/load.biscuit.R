@@ -10,6 +10,7 @@
 #' 
 #' @return            a bsseq::BSseq object, possibly Matrix- or HDF5-backed
 #'
+#' @import tibble
 #' @import readr
 #' @import bsseq
 #'
@@ -30,11 +31,13 @@ load.biscuit <- function(filename,
   if (params$passes > 1) { 
     tbl <- with(params,
                 read_tsv_chunked(tbx$path, DataFrameCallback$new(f), na=".",
-                                 quote=FALSE, comment="#", col_names=colNames, 
-                                 col_types=colSpec, chunkSize=chunkSize))
+                                 skip=as.numeric(params$hasHeader), 
+                                 col_names=colNames, col_types=colSpec, 
+                                 chunkSize=chunkSize))
   } else { 
     tbl <- with(params,
-                read_tsv(tbx$path, na=".", comment="#", quote=FALSE, 
+                read_tsv(tbx$path, na=".", comment="#",
+                         skip=as.numeric(params$hasHeader), 
                          col_names=colNames, col_types=colSpec))
   }
  
