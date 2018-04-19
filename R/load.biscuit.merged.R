@@ -19,8 +19,8 @@ load.biscuit.merged <- function(params) {
   message("Reading merged CpG input from ", filename, "...")
 
   # fixme: merge in Lyong's code to autodetect how to read in a compressed BED
-  merged.dt <- fread(paste("zcat", filename), sep="\t", sep2=",", 
-                     na.string=".", drop=dropcols, skip=ifelse(hasHeader, 1, 0))
+  merged.dt <- fread(paste("zcat", filename), sep="\t", sep2=",", na.string=".",
+                     drop=dropcols, skip=ifelse(params$hasHeader, 1, 0))
   colnames(merged.dt) <- params$colNames
   merged.dt[, "start"] <- merged.dt[, "start"] + 1 # quirk
   message("Loaded data from ", filename, ". Creating bsseq object...")
