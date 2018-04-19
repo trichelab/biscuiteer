@@ -40,7 +40,8 @@ load.biscuit.unmerged <- function(filename,
       message(loci, " ", chh, " loci processed")
     }
   } else { 
-    unmerged.dt <- fread(params$input, sep="\t", sep2=",", na.string=".") 
+    unmerged.dt <- fread(paste0("zcat", params$tbx$path), sep="\t", sep2=",", 
+                         na.string=".", skip=ifelse(hasHeader, 1, 0))
   }
   colnames(unmerged.dt) <- params$colNames
   unmerged.dt[, "start"] <- unmerged.dt[, "start"] + 1 # quirk

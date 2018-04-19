@@ -5,17 +5,10 @@
 \title{a bsseq loader for Biscuit mergecg output (BED-like format, 3 cols/sample)
 e.g. P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples, and thus 12 cols}
 \usage{
-load.biscuit.merged(filename, sampleNames = NULL, hdf5 = FALSE,
-  sparse = TRUE)
+load.biscuit.merged(params)
 }
 \arguments{
-\item{filename}{the file (compressed or not, doesn't matter) to load}
-
-\item{sampleNames}{sample names (if NULL, create; if data.frame, make pData)}
-
-\item{hdf5}{make the object HDF5-backed? (FALSE; use in-core storage)}
-
-\item{sparse}{make the object Matrix-backed? (TRUE; do so if beneficial)}
+\item{params}{parameters from having run checkBiscuitBED}
 }
 \value{
 \preformatted{       a BSseq object from the bsseq package

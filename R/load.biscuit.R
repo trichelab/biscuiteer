@@ -27,12 +27,14 @@ load.biscuit <- function(filename,
     load.biscuit.merged(filename=filename,
                         sampleNames=sampleNames, 
                         hdf5=hdf5, 
-                        sparse=sparse)
+                        sparse=sparse, 
+                        params=params)
   } else {
     load.biscuit.unmerged(filename=filename,
                           sampleNames=sampleNames,
                           hdf5=hdf5, 
-                          sparse=sparse)
+                          sparse=sparse,
+                          params=params)
   } 
 
 }
