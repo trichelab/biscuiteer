@@ -6,7 +6,7 @@
 e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and 9 columns total,
 while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns}
 \usage{
-load.biscuit(filename, sampleNames = NULL, hdf5 = FALSE, sparse = FALSE)
+load.biscuit(filename, sampleNames = NULL, hdf5 = FALSE, sparse = TRUE)
 }
 \arguments{
 \item{filename}{the file (compressed or not, doesn't matter) to load}
@@ -15,7 +15,7 @@ load.biscuit(filename, sampleNames = NULL, hdf5 = FALSE, sparse = FALSE)
 
 \item{hdf5}{make the object HDF5-backed? (FALSE; use in-core storage)}
 
-\item{sparse}{are there a lot of zero-coverage sites? (FALSE)}
+\item{sparse}{are there a lot of zero-coverage sites? (TRUE, usually)}
 }
 \value{
 \preformatted{       a bsseq::BSseq object, possibly Matrix- or HDF5-backed
@@ -30,8 +30,4 @@ while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns
 BSseq
 
 checkBiscuitBED
-
-load.biscuit.merged
-
-load.biscuit.unmerged
 }

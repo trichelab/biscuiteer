@@ -6,6 +6,8 @@
 #'
 #' @return x, but with holes filled, and as a (possibly sparse) matrix
 #'
+#' @import Matrix 
+#' 
 #' @export
 fixNAs <- function(x, y=0, sparse=TRUE) { 
   x <- as.matrix(x)

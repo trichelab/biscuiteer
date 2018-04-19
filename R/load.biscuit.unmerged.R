@@ -24,7 +24,8 @@ load.biscuit.unmerged <- function(params) {
   message("Reading unmerged ", chh, " input from ", filename, "...")
 
   if (params$passes > 1) {
-    # for files that tend to fill up /tmp or /shm, scan as tabix, yielding
+    # for files that tend to fill up /tmp or /shm, scan as tabix, yielding...
+    message("Attempting to read large files as tabix chunks (experimental)...")
     to.dt <- function(elt) data.table(read.table(textConnection(elt), sep="\t"))
     unmerged.dt <- data.table(params$preamble)[0,]
     loci <- 0
@@ -41,20 +42,10 @@ load.biscuit.unmerged <- function(params) {
   unmerged.dt[, "start"] <- unmerged.dt[, "start"] + 1 # quirk
   message("Loaded data from ", filename, ". Creating bsseq object...")
 
-  if (hdf5) { 
-    with(params, 
-         makeBSseq_hdf5(unmerged.dt, 
-                        betacols, 
-                        covgcols, 
-                        pData=pData, 
-                        sparse=sparse))
+  if (params$hdf5) { 
+    with(params, makeBSseq_hdf5(unmerged.dt, betacols, covgcols, pData, sparse))
   } else { 
-    with(params, 
-         makeBSseq(unmerged.dt, 
-                   betacols, 
-                   covgcols, 
-                   pData=pData,
-                   sparse=sparse))
+    with(params, makeBSseq(unmerged.dt, betacols, covgcols, pData, sparse))
   } 
 
 }

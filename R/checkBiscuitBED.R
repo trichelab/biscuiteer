@@ -11,6 +11,7 @@
 #' @return            parameters for makeBSseq or makeBSseq_hdf5
 #'
 #' @import            Rsamtools 
+#' @import            readr
 #'
 #' @seealso           load.biscuit
 #'
@@ -27,12 +28,12 @@ checkBiscuitBED <- function(filename,
   # look for Tabix header, then look for problems
   hasHeader <- (length(headerTabix(tbx)$header) > 0)
   if (hasHeader) { 
-
     # {{{ has a header; easy and verifiable for ASM
     message(filename," has a header line and is ", appendLF=FALSE)
+    colNames <- strsplit(sub("^#", "", headerTabix(tbx)$header), "\t")[[1]]
     preamble <- read.table(tbx$path, header=TRUE, sep="\t", na.strings=".", 
-                           comment.char="`", nrows=3)
-    colNames <- base::sub("#", "", colnames(preamble))
+                           comment.char="#", nrows=3)
+    colnames(preamble) <- colNames 
     if (is.null(merged)) merged <- any(grepl("context", colnames(preamble)))
     message(ifelse(merged, "merged", "unmerged"), " data.") 
 
@@ -42,9 +43,7 @@ checkBiscuitBED <- function(filename,
     if (is.null(sampleNames)) sampleNames <- sNames 
     nSamples <- length(sNames)
     # }}}
-
   } else {
-
     # {{{ no header; guesswork
     message(paste0(filename," has no header (!!!) and is "), appendLF=FALSE)
     preamble <- read.table(tbx$path, sep="\t", na.strings=".", nrows=3)
@@ -60,11 +59,9 @@ checkBiscuitBED <- function(filename,
                        rep(colSuffixes, nSamples))
     colNames <- base::gsub(" ", "", c(cols, sampcols)) # quirk
     # }}}
-
   }
 
   if (!is.null(sampleNames)) { 
-    
     # {{{ if sampleNames is provided OR deduced
     if (is(sampleNames, "DataFrame") | is(sampleNames, "data.frame")) {
       stopifnot(ncol(sampleNames) == nSamples)
@@ -73,35 +70,49 @@ checkBiscuitBED <- function(filename,
       stopifnot(length(sampleNames) == nSamples)
       pData <- DataFrame(sampleName=sampleNames)
     } 
+
+    if ("sampleNames" %in% names(pData)) {
+      rownames(pData) <- pData$sampleNames  
+    } else { 
+      rownames(pData) <- pData[,1]
+    }
     # }}}
-
   } else {
-
     # {{{ assign sampleNames  
     sampleNames <- paste0("sample", seq_len(nSamples))
     betacols <- paste0(sampleNames, ".beta")
     covgcols <- paste0(sampleNames, ".covg")
     pData <- DataFrame(sampleName=sampleNames)
+    rownames(pData) <- sampleNames
     colnames(preamble) <- colNames
     # }}} 
-
   }
-  rownames(pData) <- sampleNames
   
   nlines <- countTabix(tbx)[[1]]
   message(filename," has ",nlines," indexed loci.")
   passes <- ceiling(nlines / yieldSize)
-  if (passes > 1) {
-    message(filename," will require ",passes," passes of ",yieldSize," loci.")
-  }
+  if (passes > 1) message(filename," takes ",passes," passes of ",yieldSize,".")
   message(filename, " looks valid for import.")
+  names(betacols) <- rownames(pData)
+  names(covgcols) <- rownames(pData)
+
+  # for readr
+  colSpec <- cols_only()
+  colSpec[["cols"]][[colNames[1]]] <- col_character()
+  colSpec[["cols"]][[colNames[2]]] <- col_integer()
+  colSpec[["cols"]][[colNames[3]]] <- col_integer()
+  for ( i in rownames(pData) ) { 
+    colSpec[["cols"]][[betacols[i]]] <- col_double()
+    colSpec[["cols"]][[covgcols[i]]] <- col_integer()
+  }
 
   params <- list(tbx=tbx,
                  merged=merged,
                  preamble=preamble,
                  nSamples=nSamples,
-                 sampleNames=sampleNames,
+                 sampleNames=rownames(pData),
                  colNames=colNames,
+                 colSpec=colSpec,
                  betacols=betacols,
                  covgcols=covgcols,
                  hasHeader=hasHeader,

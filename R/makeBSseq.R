@@ -1,6 +1,6 @@
 #' make an in-core BSseq object from the results of reading a Biscuit BED file
 #'
-#' @param dt            a data.table (from the BED file)
+#' @param tbl           a tibble (from read_tsv)
 #' @param betacols      the beta column names (from checkBiscuitBED) 
 #' @param covgcols      the coverage column names (from checkBiscuitBED) 
 #' @param pData         a DataFrame (usually from checkBiscuitBED)
@@ -9,19 +9,14 @@
 #' @return an in-core BSseq object
 #' 
 #' @import GenomicRanges
-#' @import data.table
-#' @import S4Vectors
 #' @import bsseq 
 #'
 #' @seealso makeBSseq_HDF5
 #'
 #' @export 
-makeBSseq <- function(dt, betacols, covgcols, pData, sparse=TRUE) { 
-  BSseq(gr=makeGRangesFromDataFrame(dt[, c("chr","start","end")]),
-        M=fixNAs(round(dt[, betacols, with=FALSE]*dt[, covgcols, with=FALSE]), 
-                 sparse=sparse),
-        Cov=fixNAs(dt[, covgcols, with=FALSE], 
-                   sparse=sparse), 
-        pData=pData, 
-        rmZeroCov=TRUE)
+makeBSseq <- function(tbl, betacols, covgcols, pData, sparse=TRUE) { 
+  BSseq(gr=makeGRangesFromDataFrame(tbl[, 1:3]),
+        M=fixNAs(round(tbl[, betacols] * tbl[, covgcols]), y=0, sparse=sparse),
+        Cov=fixNAs(tbl[, covgcols], y=0, sparse=sparse), 
+        pData=pData, rmZeroCov=TRUE)
 }

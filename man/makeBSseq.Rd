@@ -4,10 +4,10 @@
 \alias{makeBSseq}
 \title{make an in-core BSseq object from the results of reading a Biscuit BED file}
 \usage{
-makeBSseq(dt, betacols, covgcols, pData, sparse = TRUE)
+makeBSseq(tbl, betacols, covgcols, pData, sparse = TRUE)
 }
 \arguments{
-\item{dt}{a data.table (from the BED file)}
+\item{tbl}{a tibble (from read_tsv)}
 
 \item{betacols}{the beta column names (from checkBiscuitBED)}
 
