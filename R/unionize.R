@@ -5,7 +5,6 @@
 #'
 #' @param bs1     a bsseq object (return unaltered if length(list(...)) == 0)
 #' @param ...     one or more bsseq objects to combine with the first one 
-#' @param hdf5    use HDF5 arrays to return an out-of-core object? (FALSE)
 #' 
 #' @return        a larger and more sparse bsseq object
 #' 
@@ -13,7 +12,7 @@
 #' @import bsseq
 #' 
 #' @export
-unionize <- function(bs1, ..., hdf5=FALSE) { 
+unionize <- function(bs1, ...) { 
 
   stopifnot(is(bs1, "BSseq"))
   if (length(list(...)) == 0) {

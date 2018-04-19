@@ -6,6 +6,7 @@
 #' @param filename    the file (compressed and tabixed, with header) to load
 #' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
 #' @param yieldSize   for files > `yieldSize` lines long, chunk the file (5e7)
+#' @param merged      boolean; is this merged CpG data? (NULL; guess if merged)
 #' 
 #' @return            parameters for makeBSseq or makeBSseq_hdf5
 #'
@@ -105,6 +106,7 @@ checkBiscuitBED <- function(filename,
                  hasHeader=hasHeader,
                  nlines=nlines,
                  pData=pData,
+                 passes=passes,
                  yieldSize=yieldSize)
   return(params) 
 

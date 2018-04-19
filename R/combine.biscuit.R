@@ -2,22 +2,23 @@
 #'
 #' @param  x          a BSseq object
 #' @param  y          another BSseq object
-#' @param  sparse     should the combined object be sparse? (FALSE) 
+#' @param  sparse     should the combined object be sparse? (TRUE) 
 #' 
 #' @return            a combined bsseq::BSseq object
 #'
 #' @import bsseq
 #'
 #' @seealso BSseq
+#' @seealso unionize
 #' @seealso load.biscuit.merged
 #' @seealso load.biscuit.unmerged
 #'
 #' @export
-combine.biscuit <- function(x, y, sparse=FALSE) {
+combine.biscuit <- function(x, y, sparse=TRUE) {
 
   message("Preparing to combine biscuit output...")
   if (sparse) {
-    stop("Sparse combining is not yet supported")
+    unionize(x, y)
   } else {
     newgr <- union(granges(x), granges(y))
     newgr <- keepSeqlevels(newgr, 

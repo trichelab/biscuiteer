@@ -4,7 +4,7 @@
 #' @param betacols      the beta column names
 #' @param covgcols      the coverage column names
 #' @param pData         a DataFrame (usually from checkBiscuitBED)
-#' @param sparse        make the object Matrix-backed? (FALSE)
+#' @param sparse        make the object Matrix-backed? (TRUE)
 #'
 #' @return an HDF5-backed BSseq object
 #' 
@@ -16,10 +16,12 @@
 #' @seealso makeBSseq
 #'
 #' @export 
-makeBSseq_hdf5 <- function(dt, betacols, covgcols, pData, sparse=FALSE) {
+makeBSseq_hdf5 <- function(dt, betacols, covgcols, pData, sparse=TRUE) {
   hdf5_M <- writeHDF5Array(fixNAs(round(dt[, betacols, with=FALSE]* 
-                                        dt[, covgcols, with=FALSE])))
-  hdf5_Cov <- writeHDF5Array(fixNAs(dt[, covgcols, with=FALSE]))
+                                        dt[, covgcols, with=FALSE]),
+                                  sparse=sparse))
+  hdf5_Cov <- writeHDF5Array(fixNAs(dt[, covgcols, with=FALSE]),
+                             sparse=sparse)
   BSseq(gr=makeGRangesFromDataFrame(dt[, c("chr","start","end")]),
         M=hdf5_M, Cov=hdf5_Cov, pData=pData, rmZeroCov=TRUE)
 }

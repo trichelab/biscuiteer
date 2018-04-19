@@ -7,14 +7,12 @@ pad out un-covered sites with 0M/0Cov (i.e., ./. in a sparse Matrix),
 and return the now-even-sparser bsseq holding all of them. All
 conditions governing cbind(bsseq1, bsseq2) also apply to unionize().}
 \usage{
-unionize(bs1, ..., hdf5 = FALSE)
+unionize(bs1, ...)
 }
 \arguments{
 \item{bs1}{a bsseq object (return unaltered if length(list(...)) == 0)}
 
 \item{...}{one or more bsseq objects to combine with the first one}
-
-\item{hdf5}{use HDF5 arrays to return an out-of-core object? (FALSE)}
 }
 \value{
 \preformatted{   a larger and more sparse bsseq object

@@ -4,14 +4,11 @@
 #' @param filename    the file (compressed or not, doesn't matter) to load
 #' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
 #' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
-#' @param sparse      make the object Matrix-backed? (FALSE)
+#' @param sparse      make the object Matrix-backed? (TRUE)
 #' 
 #' @return            a BSseq object from the bsseq package
 #'
 #' @import bsseq
-#' @import Matrix
-#' @import Rsamtools
-#' @import HDF5Array
 #' @import data.table
 #' @import GenomicRanges
 #'
@@ -31,7 +28,7 @@ load.biscuit.unmerged <- function(filename,
   chh <- ifelse(base::grepl("c(p?)g", filename, ignore=TRUE), "CpG", "CpH")
   message("Reading unmerged ", chh, " input from ", filename, "...")
 
-  if (params$use_tabix) { 
+  if (params$passes > 1) {
     # for files that tend to fill up /tmp or /shm, scan as tabix, yielding
     tabixed <- open(TabixFile(filename, yieldSize=params$yield))
     to.dt <- function(elt) data.table(read.table(textConnection(elt), sep="\t"))
@@ -54,15 +51,15 @@ load.biscuit.unmerged <- function(filename,
          makeBSseq_hdf5(unmerged.dt, 
                         betacols, 
                         covgcols, 
-                        pData, 
-                        sparse))
+                        pData=pData, 
+                        sparse=sparse))
   } else { 
     with(params, 
          makeBSseq(unmerged.dt, 
                    betacols, 
                    covgcols, 
-                   pData,
-                   sparse))
+                   pData=pData,
+                   sparse=sparse))
   } 
 
 }

@@ -16,6 +16,8 @@ checkBiscuitBED(filename, sampleNames = NULL, yieldSize = 50000000,
 \item{sampleNames}{sample names (if NULL, create; if data.frame, make pData)}
 
 \item{yieldSize}{for files > \code{yieldSize} lines long, chunk the file (5e7)}
+
+\item{merged}{boolean; is this merged CpG data? (NULL; guess if merged)}
 }
 \value{
 \preformatted{       parameters for makeBSseq or makeBSseq_hdf5

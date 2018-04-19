@@ -4,14 +4,14 @@
 \alias{fixNAs}
 \title{helper function to play nice with BSseq's expectations about the M matrix}
 \usage{
-fixNAs(x, y = 0, sparse = FALSE)
+fixNAs(x, y = 0, sparse = TRUE)
 }
 \arguments{
 \item{x}{the matrix-like object containing NAs (holes) to fix}
 
 \item{y}{the value with which to fill the holes (default is 0)}
 
-\item{sparse}{make the result Matrix-backed? (FALSE)}
+\item{sparse}{make the result Matrix-backed? (TRUE)}
 }
 \value{
 x, but with holes filled, and as a (possibly sparse) matrix

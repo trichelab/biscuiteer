@@ -4,7 +4,7 @@
 \alias{makeBSseq_hdf5}
 \title{make an HDF5-backed BSseq object from an (imported) Biscuit BED file}
 \usage{
-makeBSseq_hdf5(dt, betacols, covgcols, pData, sparse = FALSE)
+makeBSseq_hdf5(dt, betacols, covgcols, pData, sparse = TRUE)
 }
 \arguments{
 \item{dt}{a data.table (from the BED file)}
@@ -15,7 +15,7 @@ makeBSseq_hdf5(dt, betacols, covgcols, pData, sparse = FALSE)
 
 \item{pData}{a DataFrame (usually from checkBiscuitBED)}
 
-\item{sparse}{make the object Matrix-backed? (FALSE)}
+\item{sparse}{make the object Matrix-backed? (TRUE)}
 }
 \value{
 an HDF5-backed BSseq object

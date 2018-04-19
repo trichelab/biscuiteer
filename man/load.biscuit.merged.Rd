@@ -6,7 +6,7 @@
 e.g. P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples, and thus 12 cols}
 \usage{
 load.biscuit.merged(filename, sampleNames = NULL, hdf5 = FALSE,
-  sparse = FALSE)
+  sparse = TRUE)
 }
 \arguments{
 \item{filename}{the file (compressed or not, doesn't matter) to load}
@@ -15,7 +15,7 @@ load.biscuit.merged(filename, sampleNames = NULL, hdf5 = FALSE,
 
 \item{hdf5}{make the object HDF5-backed? (FALSE; use in-core storage)}
 
-\item{sparse}{make the object Matrix-backed? (FALSE; do so if beneficial)}
+\item{sparse}{make the object Matrix-backed? (TRUE; do so if beneficial)}
 }
 \value{
 \preformatted{       a BSseq object from the bsseq package

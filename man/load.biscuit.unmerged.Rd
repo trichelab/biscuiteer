@@ -15,7 +15,7 @@ load.biscuit.unmerged(filename, sampleNames = NULL, hdf5 = FALSE,
 
 \item{hdf5}{make the object HDF5-backed? (FALSE; use in-core storage)}
 
-\item{sparse}{make the object Matrix-backed? (FALSE)}
+\item{sparse}{make the object Matrix-backed? (TRUE)}
 }
 \value{
 \preformatted{       a BSseq object from the bsseq package

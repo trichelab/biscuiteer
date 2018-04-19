@@ -4,14 +4,14 @@
 \alias{combine.biscuit}
 \title{a bsseq combiner for Biscuit output (quite possibly sparse-matrix-backed)}
 \usage{
-combine.biscuit(x, y, sparse = FALSE)
+combine.biscuit(x, y, sparse = TRUE)
 }
 \arguments{
 \item{x}{a BSseq object}
 
 \item{y}{another BSseq object}
 
-\item{sparse}{should the combined object be sparse? (FALSE)}
+\item{sparse}{should the combined object be sparse? (TRUE)}
 }
 \value{
 \preformatted{       a combined bsseq::BSseq object
@@ -22,6 +22,8 @@ a bsseq combiner for Biscuit output (quite possibly sparse-matrix-backed)
 }
 \seealso{
 BSseq
+
+unionize
 
 load.biscuit.merged
 

@@ -24,9 +24,8 @@ load.biscuit <- function(filename,
                          merged=NULL, 
                          sparse=FALSE) {
 
-  message("Preparing to load biscuit output from ", filename, "...")
-  if (is.null(merged)) merged <- base::grepl("merged", ignore=TRUE, filename)
-  if (merged) { 
+  params <- checkBiscuitBED(filename, sampleNames)
+  if (merged | params$merged) { 
     load.biscuit.merged(filename=filename,
                         sampleNames=sampleNames, 
                         hdf5=hdf5, 
