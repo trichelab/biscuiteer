@@ -5,7 +5,7 @@
 #' 
 #' @param filename    the file (compressed and tabixed, with header) to load
 #' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
-#' @param yieldSize   for files > `yieldSize` lines long, chunk the file (5e7)
+#' @param chunkSize   for files > `yieldSize` lines long, chunk the file (5e7)
 #' @param merged      boolean; is this merged CpG data? (NULL; guess if merged)
 #' @param hdf5        boolean; use HDF5 arrays for backing of the data? (FALSE)
 #' 
@@ -19,13 +19,13 @@
 #' @export
 checkBiscuitBED <- function(filename, 
                             sampleNames=NULL, 
-                            yieldSize=5e7, 
+                            chunkSize=5e7, 
                             merged=NULL,
                             hdf5=FALSE){
 
   if (!base::grepl(".gz$", filename)) stop("Only tabix'ed files are supported.")
   message("Checking ", filename, " for import...")
-  tbx <- TabixFile(filename, yieldSize=yieldSize)
+  tbx <- TabixFile(filename, yieldSize=chunkSize)
 
   # look for Tabix header, then look for problems
   hasHeader <- (length(headerTabix(tbx)$header) > 0)
@@ -92,8 +92,8 @@ checkBiscuitBED <- function(filename,
   
   nlines <- countTabix(tbx)[[1]]
   message(filename," has ",nlines," indexed loci.")
-  passes <- ceiling(nlines / yieldSize)
-  if (passes > 1) message(filename," takes ",passes," passes of ",yieldSize,".")
+  passes <- ceiling(nlines / chunkSize)
+  if (passes > 1) message(filename," takes ",passes," passes of ",chunkSize,".")
   message(filename, " looks valid for import.")
   names(betacols) <- rownames(pData)
   names(covgcols) <- rownames(pData)
@@ -121,7 +121,7 @@ checkBiscuitBED <- function(filename,
                  nlines=nlines,
                  pData=pData,
                  passes=passes,
-                 yieldSize=yieldSize,
+                 chunkSize=chunkSize,
                  hdf5=hdf5)
   return(params) 
 

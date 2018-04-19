@@ -6,6 +6,7 @@
 #' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
 #' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
 #' @param sparse      are there a lot of zero-coverage sites? (TRUE, usually)
+#' @param chunkSize   number of rows before reading becomes chunked (5e7)
 #' 
 #' @return            a bsseq::BSseq object, possibly Matrix- or HDF5-backed
 #'
@@ -19,18 +20,27 @@
 load.biscuit <- function(filename, 
                          sampleNames=NULL, 
                          hdf5=FALSE, 
-                         sparse=TRUE) {
+                         sparse=TRUE,
+                         chunkSize=5e7) {
 
-  params <- checkBiscuitBED(filename, sampleNames, hdf5=hdf5)
+  params <- checkBiscuitBED(filename, sampleNames, hdf5=hdf5, chunk=chunkSize)
+  message("Reading ", ifelse(params$merged, "merged", "unmerged"), 
+          " input from ", params$tbx$path, "...")
+
   if (params$passes > 1) { 
-    stop("read_tsv_chunked support (for CpH BEDs) is not yet implemented...")
+    tbl <- with(params,
+                read_tsv_chunked(tbx$path, DataFrameCallback$new(f), na=".", 
+                                 comment="#", col_names=colNames, delim="\t", 
+                                 col_types=colSpec, chunkSize=chunkSize))
   } else { 
-    message("Reading merged CpG input from ", params$tbx$path, "...")
-    tbl <- read_tsv(params$tbx$path, na.string=".", comment="#", 
-                    col_names=params$colNames, col_types=params$colSpec)
-    tbl[, params$colNames[2]] <- tbl[, params$colNames[2]] + 1 # quirk
-    message("Loaded ", params$tbx$path, ". Creating bsseq object...")
+    tbl <- with(params,
+                read_tsv(tbx$path, na=".", comment="#", delim="\t", 
+                         col_names=colNames, col_types=colSpec))
   }
+ 
+  # shift from 0-based to 1-based coordinates  
+  tbl[, params$colNames[2]] <- tbl[, params$colNames[2]] + 1 
+  message("Loaded ", params$tbx$path, ". Creating bsseq object...")
 
   if (params$hdf5) { 
     with(params, makeBSseq_hdf5(tbl, betacols, covgcols, pData, sparse))
