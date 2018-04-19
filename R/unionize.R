@@ -28,7 +28,7 @@ unionize <- function(bs1, ...) {
 
   # keep only shared
   message("Pruning...") 
-  keptSeqLevels <- intersect(seqlevels(bs1), seqlevels(bs2))
+  keptSeqlevels <- intersect(seqlevels(bs1), seqlevels(bs2))
   bs1 <- keepSeqlevels(bs1, keptSeqlevels, pruning.mode="coarse")
   bs2 <- keepSeqlevels(bs2, keptSeqlevels, pruning.mode="coarse")
 
