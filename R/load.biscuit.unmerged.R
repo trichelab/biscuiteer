@@ -1,10 +1,7 @@
 #' a bsseq loader for Biscuit cg/ch output (BED-like format, 2 cols/sample)
 #' e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and thus 9 columns
 #'
-#' @param filename    the file (compressed or not, doesn't matter) to load
-#' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
-#' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
-#' @param sparse      make the object Matrix-backed? (TRUE)
+#' @param params      parameters from having run checkBiscuitBED 
 #' 
 #' @return            a BSseq object from the bsseq package
 #'
@@ -19,10 +16,7 @@
 #' @seealso checkBiscuitBED
 #'
 #' @export
-load.biscuit.unmerged <- function(filename,
-                                  sampleNames=NULL,
-                                  hdf5=FALSE,
-                                  sparse=FALSE) {
+load.biscuit.unmerged <- function(params) { 
 
   params <- checkBiscuitBED(filename, sampleNames, merged=FALSE)
   chh <- ifelse(base::grepl("c(p?)g", filename, ignore=TRUE), "CpG", "CpH")
@@ -41,7 +35,7 @@ load.biscuit.unmerged <- function(filename,
     }
   } else { 
     unmerged.dt <- fread(paste("zcat", filename), sep="\t", sep2=",", 
-                         na.string=".", skip=ifelse(hasHeader, 1, 0))
+                         na.string=".", skip=ifelse(params$hasHeader, 1, 0))
   }
   colnames(unmerged.dt) <- params$colNames
   unmerged.dt[, "start"] <- unmerged.dt[, "start"] + 1 # quirk
