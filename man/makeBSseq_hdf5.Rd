@@ -4,18 +4,12 @@
 \alias{makeBSseq_hdf5}
 \title{make an HDF5-backed BSseq object from an (imported) Biscuit BED file}
 \usage{
-makeBSseq_hdf5(tbl, betacols, covgcols, pData, sparse = TRUE)
+makeBSseq_hdf5(tbl, params)
 }
 \arguments{
 \item{tbl}{a tibble}
 
-\item{betacols}{the beta column names}
-
-\item{covgcols}{the coverage column names}
-
-\item{pData}{a DataFrame (usually from checkBiscuitBED)}
-
-\item{sparse}{make the object Matrix-backed? (TRUE)}
+\item{params}{parameters (from checkBiscuitBED)}
 }
 \value{
 an HDF5-backed BSseq object

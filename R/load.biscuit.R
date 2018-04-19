@@ -46,9 +46,9 @@ load.biscuit <- function(filename,
   message("Loaded ", params$tbx$path, ". Creating bsseq object...")
 
   if (params$hdf5) { 
-    with(params, makeBSseq_hdf5(tbl, betacols, covgcols, pData, sparse))
+    makeBSseq_hdf5(tbl, params)
   } else { 
-    with(params, makeBSseq(tbl, betacols, covgcols, pData, sparse))
+    makeBSseq(tbl, params)
   } 
 
 }
