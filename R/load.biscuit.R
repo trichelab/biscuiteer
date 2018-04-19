@@ -23,18 +23,7 @@ load.biscuit <- function(filename,
                          sparse=FALSE) {
 
   params <- checkBiscuitBED(filename, sampleNames)
-  if (params$merged) { 
-    load.biscuit.merged(filename=filename,
-                        sampleNames=sampleNames, 
-                        hdf5=hdf5, 
-                        sparse=sparse, 
-                        params=params)
-  } else {
-    load.biscuit.unmerged(filename=filename,
-                          sampleNames=sampleNames,
-                          hdf5=hdf5, 
-                          sparse=sparse,
-                          params=params)
-  } 
+  if (params$merged) load.biscuit.merged(params) 
+  else load.biscuit.unmerged(params)
 
 }

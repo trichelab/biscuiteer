@@ -15,10 +15,11 @@ load.biscuit.merged <- function(params) {
 
   ncolumns <- 3 + (3 * params$nSamples)
   dropcols <- seq(6, ncolumns, 3)
+  filename <- params$tbx$path
   message("Reading merged CpG input from ", filename, "...")
 
   # fixme: merge in Lyong's code to autodetect how to read in a compressed BED
-  merged.dt <- fread(paste0("zcat", params$tbx$path), sep="\t", sep2=",", 
+  merged.dt <- fread(paste0("zcat", filename), sep="\t", sep2=",", 
                      na.string=".", drop=dropcols, skip=ifelse(hasHeader, 1, 0))
   colnames(merged.dt) <- params$colNames
   merged.dt[, "start"] <- merged.dt[, "start"] + 1 # quirk

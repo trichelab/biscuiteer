@@ -26,15 +26,15 @@ load.biscuit.unmerged <- function(filename,
 
   params <- checkBiscuitBED(filename, sampleNames, merged=FALSE)
   chh <- ifelse(base::grepl("c(p?)g", filename, ignore=TRUE), "CpG", "CpH")
+  filename <- params$tbx$path
   message("Reading unmerged ", chh, " input from ", filename, "...")
 
   if (params$passes > 1) {
     # for files that tend to fill up /tmp or /shm, scan as tabix, yielding
-    tabixed <- open(TabixFile(filename, yieldSize=params$yield))
     to.dt <- function(elt) data.table(read.table(textConnection(elt), sep="\t"))
     unmerged.dt <- data.table(params$preamble)[0,]
     loci <- 0
-    while(length(res <- scanTabix(tbx)[[1]])) {
+    while(length(res <- scanTabix(params$tbx)[[1]])) {
       loci <- loci + length(res)
       unmerged.dt <- rbind(unmerged.dt, Map(to.dt, res))
       message(loci, " ", chh, " loci processed")
