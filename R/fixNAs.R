@@ -10,12 +10,8 @@
 #' 
 #' @export
 fixNAs <- function(x, y=0, sparse=TRUE) { 
-  if (sparse) {
-    x <- Matrix(x)
-    for (i in seq_len(ncol(x))) x[which(is.na(x[,i])), i] <- y
-  } else {
-    x <- as.matrix(x)
-    x[is.na(x)] <- y
-  }
+  for (i in seq_len(ncol(x))) x[which(is.na(x[,i])), i] <- y
+  if (sparse) x <- Matrix(x)
+  else x <- as.matrix(x)
   return(x)
 }
