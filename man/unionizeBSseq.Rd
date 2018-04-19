@@ -6,7 +6,7 @@
 pad out un-covered sites with 0M/0Cov (i.e., ./. in a sparse Matrix),
 and return a Matrix containing the joint information from both.}
 \usage{
-unionizeBSseq(bs1, bs2, biggrl, what = c("M", "Cov"))
+unionizeBSseq(bs1, bs2, biggrl, what = c("M", "Cov"), parallel = TRUE)
 }
 \arguments{
 \item{bs1}{a BSseq object}
