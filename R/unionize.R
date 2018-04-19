@@ -8,7 +8,7 @@
 #' 
 #' @return        a larger and more sparse bsseq object
 #' 
-#' @import Matrix
+#' @importFrom Matrix Matrix
 #' @import bsseq
 #' 
 #' @export

@@ -10,7 +10,7 @@
 #' @return a DelayedMatrix
 #' 
 #' @import DelayedArray
-#' @import Matrix
+#' @importFrom Matrix Matrix
 #' @import bsseq
 #' 
 #' @export
