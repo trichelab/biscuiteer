@@ -4,7 +4,7 @@
 #' it is a colossal drag to set up a dmrseq run only to discover that it fails
 #' for seemingly mysterious reasons owing to lack of coverage. 
 #'
-#' The code is adapted directly from the precheck loop of dmrseq::dmrseq().
+#' The code is adapted from the precheck loop of dmrseq::dmrseq().
 #'
 #' @param bs              a bsseq object for filtration
 #' @param testCovariate   the name of the pData column dmrseq will test on 
@@ -17,22 +17,21 @@
 #' @seealso RRBSeq
 #'
 #' @import bsseq
-#' @importFrom DelayedMatrixStats rowSums2
+#' @importFrom DelayedMatrixStats rowCounts
 #'
 #' @export
 filterLoci <- function(bs, testCovariate, ...) { 
 
-  filter <- NULL
+  filt <- NULL
   lev <- unique(pData(bs)[[testCovariate]])
   for (l in seq_along(lev)) {
-    inLev <- pData(bs)[[testCovariate]] == lev[l]
-    toDrop <- 1 * DelayedMatrixStats::rowSums2(getCoverage(bs[,inLev]) == 0)
-    filter <- rbind(filter, toDrop)
+    inLev <- which(pData(bs)[[testCovariate]] == lev[l])
+    toDrop <- which(rowCounts(getCoverage(bs[,inLev]),value=0) == length(inLev))
+    filt <- c(filt, toDrop)
   }
-  filter <- which(apply(filter, 2, max) > 0)
-  if (length(filter) > 0) {
-    message(length(filter), " loci with 0 coverage in at least 1 condition.")
-    retain <- setdiff(seq_len(nrow(bs)), filter)
+  if (length(filt) > 0) {
+    message(length(filt), " loci with 0 coverage in at least 1 condition.")
+    retain <- setdiff(seq_len(nrow(bs)), filt)
     message("Retaining ", length(retain), " loci.")
     return(bs[retain,])
   } else {
