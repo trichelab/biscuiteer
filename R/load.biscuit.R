@@ -30,12 +30,15 @@ load.biscuit <- function(filename,
           " input from ", params$tbx$path, "...")
 
   if (params$passes > 1) { 
+    message("Making ", params$passes, " passes of ", chunkSize, " loci each...")
     tbl <- with(params,
                 read_tsv_chunked(tbx$path, DataFrameCallback$new(f), na=".",
                                  skip=as.numeric(params$hasHeader), 
                                  col_names=colNames, col_types=colSpec, 
                                  chunkSize=chunkSize))
   } else { 
+    message("If the following step is slow, you may need to decrease chunkSize")
+    message("from ", chunkSize, " to something smaller and do multiple passes.")
     tbl <- with(params,
                 read_tsv(tbx$path, na=".", comment="#",
                          skip=as.numeric(params$hasHeader), 
