@@ -30,6 +30,10 @@ load.biscuit <- function(filename,
           " input from ", params$tbx$path, "...")
 
   if (params$passes > 1) { 
+    f <- function(x, pos) {
+      message("Reading line ", pos, "...")
+      return(x)
+    }
     message("Making ", params$passes, " passes of ", chunkSize, " loci each...")
     tbl <- with(params,
                 read_tsv_chunked(tbx$path, DataFrameCallback$new(f), na=".",
