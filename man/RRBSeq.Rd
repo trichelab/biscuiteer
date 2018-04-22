@@ -4,14 +4,16 @@
 \alias{RRBSeq}
 \title{wrapper for \link{e}RRBS settings appropriate to dmrseq}
 \usage{
-RRBSeq(bs, testCovariate, bpSpan = 500, ...)
+RRBSeq(bs, testCovariate, cutoff = 0.2, bpSpan = 750, ...)
 }
 \arguments{
 \item{bs}{a bsseq object}
 
 \item{testCovariate}{the pData column to test on}
 
-\item{bpSpan}{span of smoother AND max gap in DMR CpGs (500)}
+\item{cutoff}{the minimum CpG-wise difference to use (0.2)}
+
+\item{bpSpan}{span of smoother AND max gap in DMR CpGs (750)}
 
 \item{...}{other arguments to pass along to dmrseq}
 }
