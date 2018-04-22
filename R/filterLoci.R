@@ -22,12 +22,13 @@
 #' @export
 filterLoci <- function(bs, testCovariate, ...) { 
 
-  filt <- NULL
+  filt <- c()
   lev <- unique(pData(bs)[[testCovariate]])
   for (l in seq_along(lev)) {
     inLev <- which(pData(bs)[[testCovariate]] == lev[l])
-    toDrop <- which(rowCounts(getCoverage(bs[,inLev]),value=0) == length(inLev))
-    filt <- c(filt, toDrop)
+    filt <- c(filt, 
+              which(DelayedMatrixStats::rowCounts(getCoverage(bs[,inLev]),
+                                                  value=0) == length(inLev)))
   }
   if (length(filt) > 0) {
     message(length(filt), " loci with 0 coverage in at least 1 condition.")

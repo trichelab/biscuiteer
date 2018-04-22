@@ -23,7 +23,7 @@ it is a colossal drag to set up a dmrseq run only to discover that it fails
 for seemingly mysterious reasons owing to lack of coverage.
 }
 \details{
-The code is adapted directly from the precheck loop of dmrseq::dmrseq().
+The code is adapted from the precheck loop of dmrseq::dmrseq().
 }
 \seealso{
 dmrseq
