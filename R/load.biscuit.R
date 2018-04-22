@@ -35,7 +35,7 @@ load.biscuit <- function(filename,
                 read_tsv_chunked(tbx$path, DataFrameCallback$new(f), na=".",
                                  skip=as.numeric(params$hasHeader), 
                                  col_names=colNames, col_types=colSpec, 
-                                 chunkSize=chunkSize))
+                                 chunk_size=chunkSize))
   } else { 
     message("If the following step is slow, you may need to decrease chunkSize")
     message("from ", chunkSize, " to something smaller and do multiple passes.")
