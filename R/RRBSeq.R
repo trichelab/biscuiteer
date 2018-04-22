@@ -12,7 +12,7 @@
 #' @export
 RRBSeq <- function(bs, testCovariate, bpSpan=500, ...) { 
 
-  dmrseq(filterLoci(bs, testCovariate), 
+  dmrseq(filterLoci(bs, testCovariate), testCovariate=testCovariate,
          bpSpan=bpSpan, maxGap=bpSpan, maxGapSmooth=bpSpan*2, ...)
 
 }

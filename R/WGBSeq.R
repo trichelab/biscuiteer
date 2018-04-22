@@ -12,7 +12,8 @@
 #' @export
 WGBSeq <- function(bs, testCovariate, bpSpan=1000, ...) { 
 
-  dmrseq(filterLoci(bs, testCovariate), bpSpan=bpSpan, maxGap=bpSpan, ...)
+  dmrseq(filterLoci(bs, testCovariate), testCovariate=testCovariate, 
+         bpSpan=bpSpan, maxGap=bpSpan, maxGapSmooth=bpSpan*2, ...)
 
 }
 

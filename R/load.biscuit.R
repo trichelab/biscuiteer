@@ -6,7 +6,7 @@
 #' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
 #' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
 #' @param sparse      are there a lot of zero-coverage sites? (TRUE, usually)
-#' @param chunkSize   number of rows before reading becomes chunked (5e7)
+#' @param chunkSize   number of rows before reading becomes chunked (5e6)
 #' 
 #' @return            a bsseq::BSseq object, possibly Matrix- or HDF5-backed
 #'
@@ -23,7 +23,7 @@ load.biscuit <- function(filename,
                          sampleNames=NULL, 
                          hdf5=FALSE, 
                          sparse=TRUE,
-                         chunkSize=5e7) {
+                         chunkSize=5e6) {
 
   params <- checkBiscuitBED(filename, sampleNames, hdf5=hdf5, chunk=chunkSize)
   message("Reading ", ifelse(params$merged, "merged", "unmerged"), 
