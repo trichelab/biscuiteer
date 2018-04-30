@@ -11,7 +11,7 @@ WGBSeq(bs, testCovariate, bpSpan = 1000, ...)
 
 \item{testCovariate}{the pData column to test on}
 
-\item{bpSpan}{span of smoother AND max gap in DMR CpGs (1000)}
+\item{bpSpan}{span of smoother AND 2x max gap in DMR CpGs (1000)}
 
 \item{...}{other arguments to pass along to dmrseq}
 }
