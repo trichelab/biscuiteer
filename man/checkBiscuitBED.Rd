@@ -8,8 +8,8 @@ since data.table tends to run into problems with .gzipped joint CpH files.
 This function absolutely assumes that BED files are tabixed. No exceptions!}
 \usage{
 checkBiscuitBED(filename, sampleNames = NULL, chunkSize = 50000000,
-  merged = NULL, hdf5 = FALSE, sparse = TRUE, how = c("readr",
-  "data.table"))
+  merged = NULL, hdf5 = FALSE, sparse = TRUE, how = c("data.table",
+  "readr"))
 }
 \arguments{
 \item{filename}{the file (compressed and tabixed, with header) to load}

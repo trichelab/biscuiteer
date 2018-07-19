@@ -25,7 +25,7 @@ checkBiscuitBED <- function(filename,
                             merged=NULL,
                             hdf5=FALSE,
                             sparse=TRUE,
-                            how=c("readr","data.table")){
+                            how=c("data.table","readr")){
 
   how <- match.arg(how)
   if (!base::grepl(".gz$", filename)) stop("Only tabix'ed files are supported.")
