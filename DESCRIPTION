@@ -25,6 +25,7 @@ Imports: readr,
          Homo.sapiens,
          fastseg,
          HMMcopy,
+         dmrseq,
          gtools
 Suggests: covr, testthat
 RoxygenNote: 6.0.1
