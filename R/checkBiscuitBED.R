@@ -119,6 +119,7 @@ checkBiscuitBED <- function(filename,
     colClasses[contextcols[i]]  <- "NULL"
   }
   colClasses <- colClasses[colNames] 
+  if (hasHeader) names(colClasses)[1] <- paste0("#", names(colClasses)[1])
 
   params <- list(tbx=tbx,
                  merged=merged,
