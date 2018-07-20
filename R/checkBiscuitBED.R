@@ -43,9 +43,9 @@ checkBiscuitBED <- function(filename,
     colnames(preamble) <- colNames 
     if (is.null(merged)) merged <- any(grepl("context", colnames(preamble)))
     message(ifelse(merged, "merged", "unmerged"), " data.") 
-
     betacols <- grep("beta", colnames(preamble), value=TRUE) 
     covgcols <- grep("covg", colnames(preamble), value=TRUE) 
+    contextcols <- grep("context", colnames(preamble), value=TRUE) 
     sNames <- condenseSampleNames(tbx, stride=ifelse(merged, 3, 2))
     if (is.null(sampleNames)) sampleNames <- sNames 
     nSamples <- length(sNames)
@@ -95,8 +95,10 @@ checkBiscuitBED <- function(filename,
   names(betacols) <- rownames(pData)
   covgcols <- grep(".covg", colNames, value=TRUE) 
   names(covgcols) <- rownames(pData)
+  contextcols <- grep(".context", colNames, value=TRUE) 
+  names(contextcols) <- rownames(pData)
 
-  # for readr (or data.table dropcols)
+  # for readr 
   colSpec <- cols_only()
   colSpec[["cols"]][[colNames[1]]] <- col_character()
   colSpec[["cols"]][[colNames[2]]] <- col_integer()
@@ -104,6 +106,17 @@ checkBiscuitBED <- function(filename,
   for ( i in rownames(pData) ) { 
     colSpec[["cols"]][[betacols[i]]] <- col_double()
     colSpec[["cols"]][[covgcols[i]]] <- col_integer()
+  }
+  
+  # for data.table
+  colClasses <- c() 
+  colClasses[colNames[1]] <- "character"
+  colClasses[colNames[2]] <- "integer"
+  colClasses[colNames[3]] <- "integer"
+  for ( i in rownames(pData) ) { 
+    colClasses[betacols[i]] <- "double"
+    colClasses[covgcols[i]] <- "integer"
+    colClasses[contextcols[i]]  <- "NULL"
   }
 
   params <- list(tbx=tbx,
@@ -113,8 +126,10 @@ checkBiscuitBED <- function(filename,
                  sampleNames=rownames(pData),
                  colNames=colNames,
                  colSpec=colSpec,
+                 colClasses=colClasses,
                  betacols=betacols,
                  covgcols=covgcols,
+                 contextcols=contextcols,
                  hasHeader=hasHeader,
                  nlines=nlines,
                  pData=pData,

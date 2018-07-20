@@ -58,9 +58,8 @@ read.biscuit <- function(filename,
                            col_names=colNames, col_types=colSpec))
     }
   } else if (params$how == "data.table") {
-
-    stop("Tim has not added data.table support back in. Yell at him!")
-
+    tbl <- fread(.fixInput(params$tbx$path), sep="\t", sep2=",",  
+                 na.string=".", colClasses=params$colClasses)
   }
 
   # shift from 0-based to 1-based coordinates  
@@ -78,3 +77,11 @@ read.biscuit <- function(filename,
 
 #' @export
 load.biscuit <- read.biscuit
+
+
+# helper fn
+.fixInput <- function(x) { 
+  if (grepl("gz$", x)) return(paste("gzcat", x))
+  if (grepl("bz2$", x)) return(paste("bzcat", x))
+  return(x)
+} 
