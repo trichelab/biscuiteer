@@ -60,10 +60,11 @@ read.biscuit <- function(filename,
   } else if (params$how == "data.table") {
     tbl <- fread(.fixInput(params$tbx$path), sep="\t", sep2=",", fill=TRUE,
                  na.string=".", colClasses=params$colClasses)
+    names(tbl) <- sub("^#", "", names(tbl))
   }
 
   # shift from 0-based to 1-based coordinates  
-  tbl[, params$colNames[2]] <- tbl[, params$colNames[2]] + 1 
+  tbl[, 2] <- tbl[, 2] + 1 
   message("Loaded ", params$tbx$path, ". Creating bsseq object...")
 
   if (params$hdf5) { 

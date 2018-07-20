@@ -14,9 +14,16 @@
 #' @export 
 makeBSseq_hdf5 <- function(tbl, params) { 
 
-  gr <- resize(makeGRangesFromDataFrame(tbl[, 1:3]))
-  M <- with(params, fixNAs(round(tbl[,betacols]*tbl[,covgcols]), y=0, sparse))
-  Cov <- with(params, fixNAs(tbl[, covgcols], y=0, sparse)) 
+  gr <- resize(makeGRangesFromDataFrame(tbl[, 1:3]), 1)
+  if (params$how == "data.table") { 
+    M <- with(params, 
+              fixNAs(round(tbl[, ..betacols] * tbl[, ..covgcols]), y=0, sparse))
+    Cov <- with(params,
+                fixNAs(tbl[, ..covgcols], y=0, sparse)) 
+  } else { 
+    M <- with(params, fixNAs(round(tbl[,betacols]*tbl[,covgcols]), y=0, sparse))
+    Cov <- with(params, fixNAs(tbl[, covgcols], y=0, sparse)) 
+  } 
   hdf5M <- writeHDF5Array(M)
   hdf5Cov <- writeHDF5Array(Cov)
   BSseq(gr=gr, M=hdf5M, Cov=hdf5Cob, pData=params$pData, rmZeroCov=TRUE)
