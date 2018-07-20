@@ -58,7 +58,7 @@ read.biscuit <- function(filename,
                            col_names=colNames, col_types=colSpec))
     }
   } else if (params$how == "data.table") {
-    tbl <- fread(.fixInput(params$tbx$path), sep="\t", sep2=",",  
+    tbl <- fread(.fixInput(params$tbx$path), sep="\t", sep2=",", fill=TRUE,
                  na.string=".", colClasses=params$colClasses)
   }
 
