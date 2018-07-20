@@ -118,6 +118,7 @@ checkBiscuitBED <- function(filename,
     colClasses[covgcols[i]] <- "integer"
     colClasses[contextcols[i]]  <- "NULL"
   }
+  colClasses <- colClasses[colNames] 
 
   params <- list(tbx=tbx,
                  merged=merged,
