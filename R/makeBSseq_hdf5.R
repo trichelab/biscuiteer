@@ -13,13 +13,12 @@
 #'
 #' @export 
 makeBSseq_hdf5 <- function(tbl, params) { 
-  hdf5M <- 
-    writeHDF5Array(fixNAs(round(tbl[,params$betacols]*tbl[,params$covgcols]),
-                          y=0, sparse=params$sparse))
-  hdf5Cov <- 
-    writeHDF5Array(fixNAs(tbl[, params$covgcols], y=0, sparse=params$sparse))
-  BSseq(gr=makeGRangesFromDataFrame(tbl[, 1:3]), 
-        M=hdf5M, Cov=hdf5Cov, 
-        pData=params$pData,
-        rmZeroCov=TRUE)
+
+  gr <- makeGRangesFromDataFrame(tbl[, 1:3])
+  M <- with(params, fixNAs(round(tbl[,betacols]*tbl[,covgcols]), y=0, sparse))
+  Cov <- with(params, fixNAs(tbl[, covgcols], y=0, sparse)) 
+  hdf5M <- writeHDF5Array(M)
+  hdf5Cov <- writeHDF5Array(Cov)
+  BSseq(gr=gr, M=hdf5M, Cov=hdf5Cob, pData=params$pData, rmZeroCov=TRUE)
+
 }

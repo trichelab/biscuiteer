@@ -12,10 +12,10 @@
 #'
 #' @export 
 makeBSseq <- function(tbl, params) {
-  BSseq(gr=makeGRangesFromDataFrame(tbl[, 1:3]),
-        M=fixNAs(round(tbl[,params$betacols]*tbl[,params$covgcols]), 
-                 y=0, params$sparse),
-        Cov=fixNAs(tbl[, params$covgcols], y=0, params$sparse), 
-        pData=params$pData, 
-        rmZeroCov=TRUE)
+
+  gr <- makeGRangesFromDataFrame(tbl[, 1:3])
+  M <- with(params, fixNAs(round(tbl[,betacols]*tbl[,covgcols]), y=0, sparse))
+  Cov <- with(params, fixNAs(tbl[, covgcols], y=0, sparse)) 
+  BSseq(gr=gr, M=M, Cov=Cov, pData=params$pData, rmZeroCov=TRUE) 
+
 }
