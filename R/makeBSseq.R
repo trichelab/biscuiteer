@@ -13,7 +13,7 @@
 #' @export 
 makeBSseq <- function(tbl, params) {
 
-  gr <- makeGRangesFromDataFrame(tbl[, 1:3])
+  gr <- resize(makeGRangesFromDataFrame(tbl[, 1:3]), 1) 
   M <- with(params, fixNAs(round(tbl[,betacols]*tbl[,covgcols]), y=0, sparse))
   Cov <- with(params, fixNAs(tbl[, covgcols], y=0, sparse)) 
   BSseq(gr=gr, M=M, Cov=Cov, pData=params$pData, rmZeroCov=TRUE) 

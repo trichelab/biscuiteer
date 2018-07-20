@@ -14,7 +14,7 @@
 #' @export 
 makeBSseq_hdf5 <- function(tbl, params) { 
 
-  gr <- makeGRangesFromDataFrame(tbl[, 1:3])
+  gr <- resize(makeGRangesFromDataFrame(tbl[, 1:3]))
   M <- with(params, fixNAs(round(tbl[,betacols]*tbl[,covgcols]), y=0, sparse))
   Cov <- with(params, fixNAs(tbl[, covgcols], y=0, sparse)) 
   hdf5M <- writeHDF5Array(M)
