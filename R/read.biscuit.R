@@ -80,8 +80,8 @@ load.biscuit <- read.biscuit
 
 
 # helper fn
-.fixInput <- function(x) { 
-  if (grepl("gz$", x)) return(paste("gzcat", x))
+.fixInput <- function(x, mac=FALSE) { 
+  if (grepl("gz$", x)) return(paste(ifelse(mac, "gzcat", "zcat"), x))
   if (grepl("bz2$", x)) return(paste("bzcat", x))
   return(x)
 } 
