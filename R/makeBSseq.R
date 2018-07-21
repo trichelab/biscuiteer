@@ -16,7 +16,7 @@ makeBSseq <- function(tbl, params) {
   gr <- resize(makeGRangesFromDataFrame(tbl[, 1:3]), 1) 
   if (params$how == "data.table") { 
     betas <- match(params$betacols, names(tbl))
-    covgs <- match(params$betacols, names(tbl))
+    covgs <- match(params$covgcols, names(tbl))
     M <- fixNAs(round(tbl[, ..betas] * tbl[, ..covgs]), y=0, params$sparse)
     Cov <- fixNAs(tbl[, ..covgs], y=0, params$sparse)
   } else { 
