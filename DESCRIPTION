@@ -26,6 +26,8 @@ Imports: readr,
          HMMcopy,
          dmrseq,
          gtools
-Suggests: covr, testthat
+Suggests: DSS, 
+          covr,
+          testthat
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
