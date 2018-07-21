@@ -7,7 +7,8 @@
 #' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
 #' @param sparse      are there a lot of zero-coverage sites? (TRUE, usually)
 #' @param chunkSize   number of rows before reading becomes chunked (1e6)
-#' @param how         how to load the data? "readr" (default) or "data.table"
+#' @param how         how to load the data? "data.table" (default) or "readr"
+#' @param chr         load a specific chromosome (to rbind() later)? (NULL)
 #' 
 #' @return            a bsseq::BSseq object, possibly Matrix- or HDF5-backed
 #'
@@ -17,8 +18,8 @@
 #' @import bsseq
 #'
 #' @seealso BSseq
-#' @seealso checkBiscuitBED
 #' @aliases load.biscuit
+#' @seealso checkBiscuitBED
 #'
 #' @export
 read.biscuit <- function(filename, 
@@ -26,14 +27,16 @@ read.biscuit <- function(filename,
                          hdf5=FALSE, 
                          sparse=TRUE,
                          chunkSize=1e6, 
-                         how=c("readr","data.table")) {
+                         how=c("data.table","readr"),
+                         chr=NULL) {
 
   how <- match.arg(how)
   params <- checkBiscuitBED(filename,
                             sampleNames,
                             hdf5=hdf5, 
                             chunk=chunkSize, 
-                            how=how)
+                            how=how,
+                            chr=chr)
   message("Reading ", ifelse(params$merged, "merged", "unmerged"), 
           " input from ", params$tbx$path, "...")
 

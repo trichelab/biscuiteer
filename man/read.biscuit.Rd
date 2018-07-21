@@ -8,7 +8,7 @@ e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and 9 columns total,
 while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns}
 \usage{
 read.biscuit(filename, sampleNames = NULL, hdf5 = FALSE, sparse = TRUE,
-  chunkSize = 1000000, how = c("readr", "data.table"))
+  chunkSize = 1000000, how = c("data.table", "readr"), chr = NULL)
 }
 \arguments{
 \item{filename}{the file (compressed or not, doesn't matter) to load}
@@ -21,7 +21,9 @@ read.biscuit(filename, sampleNames = NULL, hdf5 = FALSE, sparse = TRUE,
 
 \item{chunkSize}{number of rows before reading becomes chunked (1e6)}
 
-\item{how}{how to load the data? "readr" (default) or "data.table"}
+\item{how}{how to load the data? "data.table" (default) or "readr"}
+
+\item{chr}{load a specific chromosome (to rbind() later)? (NULL)}
 }
 \value{
 \preformatted{       a bsseq::BSseq object, possibly Matrix- or HDF5-backed
