@@ -2,11 +2,13 @@
 
 export(RRBSeq)
 export(TN_WGBS_CNA)
+export(WGBSage)
 export(WGBSeq)
 export(WGBSseg)
 export(atRegions)
 export(bigWigsToSegs)
 export(binCoverage)
+export(byChromArm)
 export(checkBiscuitBED)
 export(condenseSampleNames)
 export(correctBsSeqCoverage)
