@@ -16,19 +16,8 @@ byChromArm(x, arms = NULL)
 }
 }
 \description{
-Since this is an idiotically simple function, it uses the idiot's favorite
-genome assembly, which is hg19*. If you're going to be a smart person, you
-will need to either supply another argument \code{arms} with those ranges, or
-send in a patch so we can properly support arbitrary genomes (or maybe push
-it up the line to GenomeInfoDb for this super generic feature, hint hint).
-}
-\details{
 This function just splits an object by chromosome arm, which tends to make
 parallelization MUCH easier, as cross-arm dependencies are unusual, and the
 larger chromosomes can thus be split across processes or machines without
 worrying much about data starvation for processes on smaller chromosomes.
-\itemize{
-\item Note that it's OK to be smart and use hg19_rCRSchrm,
-because mitochondrial chromosomes don't have arms.
-}
 }
