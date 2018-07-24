@@ -7,7 +7,7 @@
 #'
 #' @return  matrix    a matrix of regional methylation fractions
 #'
-#' @import  DelayedMatrixStats
+#' @importFrom  DelayedMatrixStats rowSums2
 #' @import  impute
 #' @import  bsseq 
 #' 

@@ -1,69 +1,155 @@
 #' A BED checker for Biscuit cg/ch output (BED-like format, 2 or 3 cols/sample).
 #' By default, files with over 50 million loci will be processed iteratively,
 #' since data.table tends to run into problems with .gzipped joint CpH files. 
-#'
-#' @param filename    the file (compressed or not, doesn't matter) to load
+#' This function absolutely assumes that BED files are tabixed. No exceptions!
+#' 
+#' @param filename    the file (compressed and tabixed, with header) to load
 #' @param sampleNames sample names (if NULL, create; if data.frame, make pData)
-#' @param merged      is the file a merged CpG file? (if NULL, will guess) 
-#' @param sparse      make the object Matrix-backed? (FALSE)
-#' @param tabix       for files > `tabix` lines long, use TabixFile (5e7)
+#' @param chunkSize   for files > `yieldSize` lines long, chunk the file (5e7)
+#' @param merged      boolean; is this merged CpG data? (NULL; guess if merged)
+#' @param hdf5        boolean; use HDF5 arrays for backing of the data? (FALSE)
+#' @param sparse      boolean; use sparse Matrix objects for the data? (TRUE)
+#' @param how         how to load the data? "readr" (default) or "data.table"
+#' @param chr         load a specific chromosome (to rbind() later)? (NULL)
 #' 
 #' @return            parameters for makeBSseq or makeBSseq_hdf5
 #'
-#' @import LaF
+#' @import            Rsamtools 
+#' @import            readr
 #'
-#' @seealso load.biscuit
+#' @seealso           load.biscuit
 #'
 #' @export
-checkBiscuitBED <- function(filename,
-                            sampleNames=NULL,
-                            merged=NULL, 
-                            sparse=FALSE,
-                            tabix=5e7){
+checkBiscuitBED <- function(filename, 
+                            sampleNames=NULL, 
+                            chunkSize=5e7, 
+                            merged=NULL,
+                            hdf5=FALSE,
+                            sparse=TRUE,
+                            how=c("data.table","readr"),
+                            chr=NULL) {
 
-  input <- filename
-  if (base::grepl(".gz$", filename)) input <- paste("zcat", input)
-  if (base::grepl(".bz2$", filename)) input <- paste("bzcat", input)
-  nlines <- determine_nlines(filename)
-  use_tabix <- (nlines > tabix)
-
-  # read the first few samples and see if we have any major problems
-  preamble <- read.table(filename, sep="\t", na.strings=".", nrows=10)
-  if (is.null(merged)) merged <- base::grepl("merged", ignore=TRUE, filename)
-  colsPerSample <- ifelse(merged, 3, 2)
-  nSamples <- (ncol(preamble) - 3) / colsPerSample
-  if (!is.null(sampleNames)) {
-    if (is(sampleNames, "DataFrame") | is(sampleNames, "data.frame")) {
-      stopifnot(ncol(sampleNames) == nSamples)
-      pData <- DataFrame(sampleNames)
-    } else {
-      stopifnot(length(sampleNames) == nSamples)
-      pData <- DataFrame(sampleName=sampleNames)
+  how <- match.arg(how)
+  if (!base::grepl(".gz$", filename)) stop("Only tabix'ed files are supported.")
+  message("Checking ", filename, " for import...")
+  tbx <- TabixFile(filename, yieldSize=chunkSize)
+  
+  if (!is.null(chr)) {
+    if (! chr %in% seqnamesTabix(tbx)) {
+      stop("The requested chromosome, ",chr,", is not found in ",filename,".")
+    } else { 
+      message("Single-chromosome support is not stable yet. Beware.")
     }
-  } else {
-    sampleNames <- paste0("sample", seq_len(nSamples))
-    pData <- DataFrame(sampleName=sampleNames)
   }
 
-  cols <- c("chr","start","end")
-  sampcols <- apply(expand.grid(c("beta","covg"), seq_len(nSamples)), 
-                    1, paste, collapse="")
-  colNames <- base::gsub(" ", "", c(cols, sampcols)) # quirk
-  betacols <- paste0("beta", seq_len(nSamples))
-  covgcols <- paste0("covg", seq_len(nSamples))
-  message(filename, " looks valid for import.")
-  colnames(preamble) <- colNames
+  # look for Tabix header, then look for problems
+  hasHeader <- (length(headerTabix(tbx)$header) > 0)
+  if (hasHeader) { 
+    # {{{ has a header; easy and verifiable for ASM
+    message(filename," has a header line and is ", appendLF=FALSE)
+    colNames <- strsplit(sub("^#", "", headerTabix(tbx)$header), "\t")[[1]]
+    preamble <- read.table(tbx$path, header=TRUE, sep="\t", na.strings=".", 
+                           comment.char="#", nrows=3)
+    colnames(preamble) <- colNames 
+    if (is.null(merged)) merged <- any(grepl("context", colnames(preamble)))
+    message(ifelse(merged, "merged", "unmerged"), " data.") 
+    betacols <- grep("beta", colnames(preamble), value=TRUE) 
+    covgcols <- grep("covg", colnames(preamble), value=TRUE) 
+    contextcols <- grep("context", colnames(preamble), value=TRUE) 
+    sNames <- condenseSampleNames(tbx, stride=ifelse(merged, 3, 2))
+    if (is.null(sampleNames)) sampleNames <- sNames 
+    nSamples <- length(sNames)
+    # }}}
+  } else {
+    # {{{ no header; guesswork
+    message(paste0(filename," has no header (!!!) and is "), appendLF=FALSE)
+    preamble <- read.table(tbx$path, sep="\t", na.strings=".", nrows=3)
+    if (is.null(merged)) merged <- grepl("merged", filename, ignore=TRUE)
+    message(ifelse(merged, "merged", "unmerged"), " data.") 
+    cols <- c("chr","start","end")
+    colsPerSample <- ifelse(merged, 3, 2)
+    nSamples <- (ncol(preamble) - 3) / colsPerSample
+    if (is.null(sampleNames)) {
+      sampleNames <- paste0("sample", seq_len(nSamples))
+    }
+    colSuffixes <- c(".beta",".covg")
+    if (merged) colSuffixes <- c(".beta",".covg",".context")
+    sampcols <- paste0(rep(sampleNames, each=colsPerSample), 
+                       rep(colSuffixes, nSamples))
+    colNames <- base::gsub(" ", "", c(cols, sampcols)) # quirk
+    # }}}
+  }
 
-  params <- list(input=input,
+  # by now, we know what our sampleNames are, one way or another...
+  if (is(sampleNames, "DataFrame") | is(sampleNames, "data.frame")) {
+    stopifnot(ncol(sampleNames) == nSamples)
+    pData <- DataFrame(sampleNames)
+  } else {
+    stopifnot(length(sampleNames) == nSamples)
+    pData <- DataFrame(sampleName=sampleNames)
+  } 
+
+  # and if they're a data.frame, use them
+  if ("sampleNames" %in% names(pData)) {
+    rownames(pData) <- pData$sampleNames  
+  } else { 
+    rownames(pData) <- pData[,1]
+  }
+  
+  nlines <- countTabix(tbx)[[1]]
+  message(filename," has ",nlines," indexed loci.")
+  passes <- ceiling(nlines / chunkSize)
+  if (passes > 1) message(filename," takes ",passes," passes of ",chunkSize,".")
+  message(filename, " looks valid for import.")
+  betacols <- grep(".beta", colNames, value=TRUE) 
+  names(betacols) <- rownames(pData)
+  covgcols <- grep(".covg", colNames, value=TRUE) 
+  names(covgcols) <- rownames(pData)
+  contextcols <- grep(".context", colNames, value=TRUE) 
+  names(contextcols) <- rownames(pData)
+
+  # for readr 
+  colSpec <- cols_only()
+  colSpec[["cols"]][[colNames[1]]] <- col_character()
+  colSpec[["cols"]][[colNames[2]]] <- col_integer()
+  colSpec[["cols"]][[colNames[3]]] <- col_integer()
+  for ( i in rownames(pData) ) { 
+    colSpec[["cols"]][[betacols[i]]] <- col_double()
+    colSpec[["cols"]][[covgcols[i]]] <- col_integer()
+  }
+  
+  # for data.table
+  colClasses <- c() 
+  colClasses[colNames[1]] <- "character"
+  colClasses[colNames[2]] <- "integer"
+  colClasses[colNames[3]] <- "integer"
+  for ( i in rownames(pData) ) { 
+    colClasses[betacols[i]] <- "double"
+    colClasses[covgcols[i]] <- "integer"
+    colClasses[contextcols[i]]  <- "NULL"
+  }
+  colClasses <- colClasses[colNames] 
+  if (hasHeader) names(colClasses)[1] <- paste0("#", names(colClasses)[1])
+
+  params <- list(tbx=tbx,
+                 merged=merged,
                  preamble=preamble,
                  nSamples=nSamples,
+                 sampleNames=rownames(pData),
                  colNames=colNames,
+                 colSpec=colSpec,
+                 colClasses=colClasses,
                  betacols=betacols,
                  covgcols=covgcols,
-                 use_tabix=use_tabix,
+                 contextcols=contextcols,
+                 hasHeader=hasHeader,
                  nlines=nlines,
                  pData=pData,
-                 yield=1e5)
+                 passes=passes,
+                 chunkSize=chunkSize,
+                 sparse=sparse,
+                 hdf5=hdf5,
+                 how=how)
   return(params) 
 
 }

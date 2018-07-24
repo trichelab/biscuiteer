@@ -1,20 +1,20 @@
 Package: biscuitEater
 Type: Package
-Title: a bunch of convenience functions for Biscuit, POETIC, and whatnot
+Title: a bunch of convenience functions for Biscuit
 Description: A test harness for bsseq loading of Biscuit output, summarization
              of WGBS data over defined regions and in mappable samples, with or
-             without imputation and dropping of mostly-NA rows, etc. 
-Version: 0.7.3
-Date: 2018-04-09
-Authors@R: person("Tim", "Triche, Jr.", role=c("aut", "cre"), email="tim.triche@gmail.com")
-Author: Tim Triche, Jr. [aut, cre]
-Maintainer: Tim Triche, Jr. <tim.triche@gmail.com>
+             without imputation and dropping of mostly-NA rows, WGBS "age", etc.
+Version: 0.9.23
+Date: 2018-07-22
+Author: Tim Triche, Jr. [aut, cre], Wanding Zhou [aut], Lyong Heo [ctb]
+Maintainer: Tim Triche, Jr. <tim.triche@vai.org>
 URL: https://github.com/ttriche/biscuitEater
 BugReports: https://github.com/ttriche/biscuitEater/issues
 License: Gnu GPL
 Depends: R (>= 3.0.0), bsseq
-Imports: data.table, 
-         LaF, 
+Imports: readr,
+         qualV,
+         Matrix, 
          impute, 
          HDF5Array,
          S4Vectors, 
@@ -24,7 +24,11 @@ Imports: data.table,
          Homo.sapiens,
          fastseg,
          HMMcopy,
+         dmrseq,
          gtools
-Suggests: covr, testthat
+Suggests: DSS, 
+          covr,
+          methylCC,
+          testthat
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)

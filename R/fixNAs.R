@@ -6,13 +6,11 @@
 #'
 #' @return x, but with holes filled, and as a (possibly sparse) matrix
 #'
+#' @importFrom Matrix Matrix
+#' 
 #' @export
 fixNAs <- function(x, y=0, sparse=FALSE) { 
-  if (sparse == TRUE) {
-    x <- sparseMatrix(x)
-  } else {
-    x <- as.matrix(x)
-    x[is.na(x)] <- y
-  }
+  x <- as(x, ifelse(sparse, "Matrix", "matrix"))
+  x[is.na(x)] <- y
   return(x)
 }
