@@ -5,23 +5,27 @@
 \alias{load.biscuit}
 \title{a bsseq loader for Biscuit output (BED-like format, 2 or 3 cols/sample)
 e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and 9 columns total,
-while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns}
+while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns.
+Note: the defaults assume alignment against hg19 (use genome=xyz to override)}
 \usage{
-read.biscuit(filename, sampleNames = NULL, hdf5 = FALSE, sparse = TRUE,
-  chunkSize = 1000000, how = c("data.table", "readr"), chr = NULL)
+read.biscuit(filename, sampleNames = NULL, genome = "hg19",
+  how = c("data.table", "readr"), hdf5 = FALSE, sparse = TRUE,
+  chunkSize = 1000000, chr = NULL)
 }
 \arguments{
 \item{filename}{the file (compressed or not, doesn't matter) to load}
 
 \item{sampleNames}{sample names (if NULL, create; if data.frame, make pData)}
 
+\item{genome}{what genome assembly were the runs aligned against? (hg19)}
+
+\item{how}{how to load the data? "data.table" (default) or "readr"}
+
 \item{hdf5}{make the object HDF5-backed? (FALSE; use in-core storage)}
 
 \item{sparse}{are there a lot of zero-coverage sites? (TRUE, usually)}
 
-\item{chunkSize}{number of rows before reading becomes chunked (1e6)}
-
-\item{how}{how to load the data? "data.table" (default) or "readr"}
+\item{chunkSize}{number of rows before readr reading becomes chunked (1e6)}
 
 \item{chr}{load a specific chromosome (to rbind() later)? (NULL)}
 }
@@ -32,7 +36,8 @@ read.biscuit(filename, sampleNames = NULL, hdf5 = FALSE, sparse = TRUE,
 \description{
 a bsseq loader for Biscuit output (BED-like format, 2 or 3 cols/sample)
 e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and 9 columns total,
-while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns
+while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns.
+Note: the defaults assume alignment against hg19 (use genome=xyz to override)
 }
 \seealso{
 BSseq

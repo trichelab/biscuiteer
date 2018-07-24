@@ -6,6 +6,12 @@
 \usage{
 WGBSage(x)
 }
+\arguments{
+\item{x}{a BSseq object}
+}
+\value{
+age   age estimate for each column of x
+}
 \description{
 guess a specimen's age from a modified Horvath algorithm
 }
