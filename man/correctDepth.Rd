@@ -4,7 +4,8 @@
 \alias{correctDepth}
 \title{tweaked version of HMMcopy's GC bias and mappability function}
 \usage{
-correctDepth(x, mappability = 0.9, samplesize = 50000, verbose = TRUE)
+correctDepth(x, mappability = 0.9, samplesize = 50000,
+  verbose = TRUE)
 }
 \arguments{
 \item{x}{binned hg19 coverage with GC content and mappability cols}

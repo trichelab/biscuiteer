@@ -26,6 +26,6 @@ makeBSseq_hdf5 <- function(tbl, params) {
   } 
   hdf5M <- writeHDF5Array(M)
   hdf5Cov <- writeHDF5Array(Cov)
-  BSseq(gr=gr, M=hdf5M, Cov=hdf5Cob, pData=params$pData, rmZeroCov=TRUE)
+  BSseq(gr=gr, M=hdf5M, Cov=hdf5Cov, pData=params$pData, rmZeroCov=TRUE)
 
 }
