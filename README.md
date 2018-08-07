@@ -1,6 +1,6 @@
 # biscuiteer
 
-[![Build Status](https://travis-ci.org/ttriche/biscuitEater.png?branch=master)](https://travis-ci.org/ttriche/biscuitEater)  [![codecov](https://codecov.io/gh/ttriche/biscuitEater/branch/master/graph/badge.svg)](https://codecov.io/gh/ttriche/biscuitEater)
+[![Build Status](https://travis-ci.org/ttriche/biscuiteer.png?branch=master)](https://travis-ci.org/ttriche/biscuiteer)  [![codecov](https://codecov.io/gh/ttriche/biscuiteer/branch/master/graph/badge.svg)](https://codecov.io/gh/ttriche/biscuiteer)
 
 ## The original luxury biscuit boutique
 

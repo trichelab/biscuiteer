@@ -1,5 +1,5 @@
 #
-# add to biscuitEater
+# add to biscuiteer
 #
 # data(bsgc.hg19)
 # data(maps.hg19)

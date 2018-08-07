@@ -1,4 +1,4 @@
-Package: biscuitEater
+Package: biscuiteer
 Type: Package
 Title: a bunch of convenience functions for Biscuit
 Description: A test harness for bsseq loading of Biscuit output, summarization
@@ -8,8 +8,8 @@ Version: 0.9.31
 Date: 2018-07-31
 Author: Tim Triche, Jr. [aut, cre], Wanding Zhou [aut], Lyong Heo [ctb]
 Maintainer: Tim Triche, Jr. <tim.triche@vai.org>
-URL: https://github.com/ttriche/biscuitEater
-BugReports: https://github.com/ttriche/biscuitEater/issues
+URL: https://github.com/trichelab/biscuiteer
+BugReports: https://github.com/trichelab/biscuiteer/issues
 License: Gnu GPL
 Depends: R (>= 3.0.0), bsseq
 Imports: readr,

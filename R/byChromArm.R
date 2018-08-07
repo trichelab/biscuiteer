@@ -21,7 +21,7 @@ byChromArm <- function(x, arms=NULL) {
   if (is.null(arms)) {
     gome <- unique(genome(x))[1]
     arms <- paste0(gome, ".chromArm")
-    data(list=arms, package="biscuitEater")
+    data(list=arms, package="biscuiteer")
     arms <- get(arms)
   }
 
