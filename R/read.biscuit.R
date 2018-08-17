@@ -44,7 +44,7 @@ read.biscuit <- function(filename,
           " input from ", params$tbx$path, "...")
 
   if (params$how == "data.table") {
-    if (params$hasHeader == FALSE) names(colClasses) <- NULL
+    if (params$hasHeader == FALSE) names(params$colClasses) <- NULL
     tbl <- fread(.fixInput(params$tbx$path), sep="\t", sep2=",", fill=TRUE,
                  na.string=".", colClasses=params$colClasses) # yucky but fast
     if (params$hasHeader == FALSE) {
