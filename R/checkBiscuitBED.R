@@ -62,7 +62,7 @@ checkBiscuitBED <- function(filename,
     # }}}
   } else {
     # {{{ no header; guesswork
-    message(paste0(filename," has no header (!!!) and is "), appendLF=FALSE)
+    message(paste0(filename," has no header (!) and is "), appendLF=FALSE)
     preamble <- read.table(tbx$path, sep="\t", na.strings=".", nrows=3)
     if (is.null(merged)) merged <- grepl("merged", filename, ignore=TRUE)
     message(ifelse(merged, "merged", "unmerged"), " data.") 

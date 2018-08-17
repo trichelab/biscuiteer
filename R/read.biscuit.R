@@ -44,9 +44,16 @@ read.biscuit <- function(filename,
           " input from ", params$tbx$path, "...")
 
   if (params$how == "data.table") {
+    if (params$hasHeader == FALSE) names(colClasses) <- NULL
     tbl <- fread(.fixInput(params$tbx$path), sep="\t", sep2=",", fill=TRUE,
                  na.string=".", colClasses=params$colClasses) # yucky but fast
-    names(tbl) <- sub("^#", "", names(tbl))
+    if (params$hasHeader == FALSE) {
+      names(tbl) <- params$colNames
+      keep <- grep("context", names(tbl), invert=T)
+      tbl <- tbl[, ..keep]
+    } else { 
+      names(tbl) <- sub("^#", "", names(tbl))
+    }
   } else if (params$how == "readr") {
     if (params$passes > 1) { 
       f <- function(x, pos) {
