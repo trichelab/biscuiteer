@@ -1,4 +1,4 @@
-#' try and simplify bsseq sample names (usually derived from VCF columns) 
+#' Attempt to simplify bsseq sample names (usually derived from VCF columns) 
 #' 
 #' Tries using the longest common subsequence to figure out what can be dropped.
 #' 
@@ -11,7 +11,6 @@ simplifySampleNames <- function(x) {
   lcs <- function(a, b) {
     paste(qualV::LCS(strsplit(a,"")[[1]], strsplit(b,"")[[1]])$LCS, collapse="")
   }
-  subst <- Reduce(lcs, sampleNames(x))
-  sampleNames(x) <- sub(subst, "", sampleNames(x)) 
+  sampleNames(x) <- sub(Reduce(lcs, sampleNames(x)), "", sampleNames(x))
   return(x) 
 }

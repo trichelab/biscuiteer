@@ -2,7 +2,7 @@
 % Please edit documentation in R/simplifySampleNames.R
 \name{simplifySampleNames}
 \alias{simplifySampleNames}
-\title{try and simplify bsseq sample names (usually derived from VCF columns)}
+\title{Attempt to simplify bsseq sample names (usually derived from VCF columns)}
 \usage{
 simplifySampleNames(x)
 }
