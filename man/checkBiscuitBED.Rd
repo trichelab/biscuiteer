@@ -7,14 +7,16 @@ By default, files with over 50 million loci will be processed iteratively,
 since data.table tends to run into problems with .gzipped joint CpH files.
 This function absolutely assumes that BED files are tabixed. No exceptions!}
 \usage{
-checkBiscuitBED(filename, sampleNames = NULL, chunkSize = 50000000,
-  merged = NULL, hdf5 = FALSE, sparse = TRUE, how = c("data.table",
-  "readr"), chr = NULL)
+checkBiscuitBED(BEDfile, VCFfile = NULL, sampleNames = NULL,
+  chunkSize = 50000000, merged = NULL, hdf5 = FALSE, sparse = TRUE,
+  how = c("data.table", "readr"), chr = NULL)
 }
 \arguments{
-\item{filename}{the file (compressed and tabixed, with header) to load}
+\item{BEDfile}{a BED-like file (compressed and tabixed, maybe w/header)}
 
-\item{sampleNames}{sample names (if NULL, create; if data.frame, make pData)}
+\item{VCFfile}{a VCF file (compressed and tabixed; only needs the header)}
+
+\item{sampleNames}{if NULL create; if vector assign; if data.frame make pData}
 
 \item{chunkSize}{for files > \code{yieldSize} lines long, chunk the file (5e7)}
 
@@ -24,7 +26,7 @@ checkBiscuitBED(filename, sampleNames = NULL, chunkSize = 50000000,
 
 \item{sparse}{boolean; use sparse Matrix objects for the data? (TRUE)}
 
-\item{how}{how to load the data? "readr" (default) or "data.table"}
+\item{how}{how to load the data? "data.table" (default) or "readr"}
 
 \item{chr}{load a specific chromosome (to rbind() later)? (NULL)}
 }

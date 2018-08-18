@@ -4,14 +4,15 @@ Title: a bunch of convenience functions for Biscuit
 Description: A test harness for bsseq loading of Biscuit output, summarization
              of WGBS data over defined regions and in mappable samples, with or
              without imputation and dropping of mostly-NA rows, WGBS "age", etc.
-Version: 0.9.32
-Date: 2018-08-17
+Version: 0.9.35
+Date: 2018-08-18
 Author: Tim Triche, Jr. [aut, cre], Wanding Zhou [aut], Lyong Heo [ctb]
 Maintainer: Tim Triche, Jr. <tim.triche@vai.org>
 URL: https://github.com/trichelab/biscuiteer
 BugReports: https://github.com/trichelab/biscuiteer/issues
 License: Gnu GPL
 Depends: R (>= 3.0.0), bsseq
+Encoding: UTF-8
 Imports: readr,
          qualV,
          Matrix, 
@@ -20,6 +21,7 @@ Imports: readr,
          S4Vectors, 
          Rsamtools,
          GenomicRanges,
+         VariantAnnotation,
          DelayedMatrixStats,
          Homo.sapiens,
          fastseg,

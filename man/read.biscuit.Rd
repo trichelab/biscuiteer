@@ -3,19 +3,20 @@
 \name{read.biscuit}
 \alias{read.biscuit}
 \alias{load.biscuit}
-\title{a bsseq loader for Biscuit output (BED-like format, 2 or 3 cols/sample)
-e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and 9 columns total,
-while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns.
-Note: the defaults assume alignment against hg19 (use genome=xyz to override)}
+\title{a bsseq loader for Biscuit output (BED-like format, 2 or 3 cols/sample)}
 \usage{
-read.biscuit(filename, sampleNames = NULL, genome = "hg19",
-  how = c("data.table", "readr"), hdf5 = FALSE, sparse = TRUE,
-  chunkSize = 1000000, chr = NULL)
+read.biscuit(BEDfile, VCFfile = NULL, sampleNames = NULL,
+  simplify = FALSE, genome = "hg19", how = c("data.table", "readr"),
+  hdf5 = FALSE, sparse = TRUE, chunkSize = 1000000, chr = NULL)
 }
 \arguments{
-\item{filename}{the file (compressed or not, doesn't matter) to load}
+\item{BEDfile}{the file (compressed or not, doesn't matter) to load}
 
-\item{sampleNames}{sample names (if NULL, create; if data.frame, make pData)}
+\item{VCFfile}{the file (compressed and tabixed, with header) to load}
+
+\item{sampleNames}{if NULL, create; if VCF, read; if data.frame, make pData}
+
+\item{simplify}{simplify sample names by dropping .foo.bar.hg19 or similar}
 
 \item{genome}{what genome assembly were the runs aligned against? (hg19)}
 
@@ -34,10 +35,10 @@ read.biscuit(filename, sampleNames = NULL, genome = "hg19",
 }
 }
 \description{
-a bsseq loader for Biscuit output (BED-like format, 2 or 3 cols/sample)
 e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and 9 columns total,
 while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns.
 Note: the defaults assume alignment against hg19 (use genome=xyz to override)
+Note 2: if a BED has no header, a VCF header can be used to autodetect names.
 }
 \seealso{
 BSseq
