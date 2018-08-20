@@ -4,7 +4,7 @@
 \alias{biscuitMetadata}
 \title{metadata about a Biscuit run using its vcfHeader metadata element}
 \usage{
-biscuitMetadata(bsseq)
+biscuitMetadata(x)
 }
 \arguments{
 \item{x}{a bsseq object with a $vcfHeader element}
