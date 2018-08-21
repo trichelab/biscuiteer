@@ -1,31 +1,46 @@
 #' helper function for compartment inference (shrink-by-smoothing)
 #' 
 #' since we want something resembling M-values for compartment inference,
-#' this function grabs suitably deep (>= 3 reads in >=1 sample) measurements
+#' this function grabs suitably deep (>= 3 reads in >=2 sample) measurements
 #' and turns them into lightly moderated M-values for compartment calling
 #' by Dirichlet smoothing (adding addReads reads to each of M and Covg)
 #' 
-#' @param bsseq       a BSseq object with methylated and total reads 
-#' @param chrom       what chromosome to grab ("chr22")
-#' @param minCov      minimum read coverage to use 
-#' @param resolution  resolution for binning (1e5)
-#' @param k           pseudoreads for smoothing
+#' @param x           a BSseq object with methylated and total reads 
+#' @param minCov      minimum read coverage for landmarking samples (3)
+#' @param minSamp     minimum landmark samples with >= minCov (2)
+#' @param k           pseudoreads for smoothing (1)
 #' 
-#' @return          a matrix of Mvalues
+#' @return            a matrix of Mvalues, with genomic coordinates as row names
 #'
-#' @import bsseq
+#' @import            bsseq
 #'
 #' @export
-getMvals <- function(bsseq, chrom="chr22", minCov=3, resolution=1e5, k=1) { 
+getMvals <- function(x, minCov=3, minSamp=2, k=1) {
 
-  usable <- seqnames(bsseq) == chrom 
-  usable[which(usable)] <- rowSums(getCoverage(bsseq[usable,]) >= minCov) > 0
-  SummarizedExperiment(
-    assays=list(Mval=flogit(fixNAs(getSmoothedBeta(bsseq[usable,], k=k)))), 
-    rowRanges=granges(bsseq)[usable]
-  )
+  # do any loci in the object have enough read coverage in enough samples? 
+  usable <- (rowSums(getCoverage(x) >= minCov) >= minSamp)
+  if (!any(usable)) stop("No usable CpG loci ( >= minCov in >= minSamp )!")
+    
+  # construct a subset of the overall BSseq object with smoothed mvalues 
+  getSmoothedMvals(subset(x, usable), k=k, minCov=minCov)
 
 }
 
 # helper fn
-getSmoothedBeta <- function(x, k=1) (assays(x)$M + k)/(assays(x)$Cov + (k * 2))
+getSmoothedMvals <- function(x, k=1, minCov=3, maxFrac=0.5) {
+
+  res <- log2it((getCoverage(x, type="M") + k) / (getCoverage(x) + k + k))
+  rownames(res) <- as.character(granges(x))
+  makeNA <- getCoverage(x) < minCov 
+  maxPct <- paste0(100 * maxFrac, "%")
+  tooManyNAs <- (colSums(makeNA)/nrow(x)) > maxFrac
+  if (any(tooManyNAs)) {
+    message(paste(colnames(x)[tooManyNAs],collapse=", ")," are >",maxPct," NA!")
+  }
+  res[ makeNA ] <- NA
+  return(res)
+
+}
+
+# helper fn
+log2it <- function(p) log2(p / (1 - p))

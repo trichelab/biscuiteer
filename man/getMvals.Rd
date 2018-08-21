@@ -4,27 +4,24 @@
 \alias{getMvals}
 \title{helper function for compartment inference (shrink-by-smoothing)}
 \usage{
-getMvals(bsseq, chrom = "chr22", minCov = 3, resolution = 100000,
-  k = 1)
+getMvals(x, minCov = 3, minSamp = 2, k = 1)
 }
 \arguments{
-\item{bsseq}{a BSseq object with methylated and total reads}
+\item{x}{a BSseq object with methylated and total reads}
 
-\item{chrom}{what chromosome to grab ("chr22")}
+\item{minCov}{minimum read coverage for landmarking samples (3)}
 
-\item{minCov}{minimum read coverage to use}
+\item{minSamp}{minimum landmark samples with >= minCov (2)}
 
-\item{resolution}{resolution for binning (1e5)}
-
-\item{k}{pseudoreads for smoothing}
+\item{k}{pseudoreads for smoothing (1)}
 }
 \value{
-\preformatted{     a matrix of Mvalues
+\preformatted{       a matrix of Mvalues, with genomic coordinates as row names
 }
 }
 \description{
 since we want something resembling M-values for compartment inference,
-this function grabs suitably deep (>= 3 reads in >=1 sample) measurements
+this function grabs suitably deep (>= 3 reads in >=2 sample) measurements
 and turns them into lightly moderated M-values for compartment calling
 by Dirichlet smoothing (adding addReads reads to each of M and Covg)
 }
