@@ -4,8 +4,8 @@ Title: a bunch of convenience functions for Biscuit
 Description: A test harness for bsseq loading of Biscuit output, summarization
              of WGBS data over defined regions and in mappable samples, with or
              without imputation and dropping of mostly-NA rows, WGBS "age", etc.
-Version: 0.9.41
-Date: 2018-08-21
+Version: 0.9.42
+Date: 2018-08-23
 Author: Tim Triche, Jr. [aut, cre], Wanding Zhou [aut], Lyong Heo [ctb]
 Maintainer: Tim Triche, Jr. <tim.triche@vai.org>
 URL: https://github.com/trichelab/biscuiteer
