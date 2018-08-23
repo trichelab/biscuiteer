@@ -32,14 +32,12 @@ FIXME: use findOverlaps(resize(segs, width(segs) + minWidth, fix="center"))
   files <- list.files(patt="P01-022-.*covg.hg19.bw") 
   names(files) <- sapply(strsplit(files, "(\\\\.|\\\\-)"), `[`, 3)
   covgs <- sapply(files, import)
-  bsgc <- import("c2t.gc.binned.hg19.bw")
-  maps <- import("c2t.maps.100x2.binned.hg19.bw")
 
-  RMS1 <- correctBsSeqCoverage(covgs$tumor1, covgs$normal, bsgc, maps)
+  RMS1 <- correctBsSeqCoverage(covgs$tumor1, covgs$normal)
   RMS1seg <- WGBSseg(RMS1)
   plotSegs(RMS1, RMS1seg, "chr10")
 
-  RMS2 <- correctBsSeqCoverage(covgs$tumor2, covgs$normal, bsgc, maps)
+  RMS2 <- correctBsSeqCoverage(covgs$tumor2, covgs$normal)
   RMS2seg <- WGBSseg(RMS2) 
   plotSegs(RMS2, RMS2seg, "chr10")
 

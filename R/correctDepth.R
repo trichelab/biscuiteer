@@ -5,7 +5,7 @@
 #' @param samplesize  lowess sample size (points to sample; default 50000)
 #' @param verbose     be chatty? (TRUE)
 #'
-#' @return          corrected tumor and normal read counts
+#' @return            corrected tumor and normal read counts
 #'
 #' @import GenomicRanges
 #' @import HMMcopy

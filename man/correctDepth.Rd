@@ -17,7 +17,7 @@ correctDepth(x, mappability = 0.9, samplesize = 50000,
 \item{verbose}{be chatty? (TRUE)}
 }
 \value{
-\preformatted{     corrected tumor and normal read counts
+\preformatted{       corrected tumor and normal read counts
 }
 }
 \description{
