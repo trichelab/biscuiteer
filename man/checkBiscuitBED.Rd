@@ -8,7 +8,7 @@ since data.table tends to run into problems with .gzipped joint CpH files.
 This function absolutely assumes that BED files are tabixed. No exceptions!}
 \usage{
 checkBiscuitBED(BEDfile, VCFfile = NULL, sampleNames = NULL,
-  chunkSize = 50000000, merged = NULL, hdf5 = FALSE, sparse = TRUE,
+  chunkSize = 5e+07, merged = NULL, hdf5 = FALSE, sparse = TRUE,
   how = c("data.table", "readr"), chr = NULL)
 }
 \arguments{

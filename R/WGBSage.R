@@ -15,9 +15,9 @@
 #' @param   shrink  use shrunken version of Horvath's coefs & intercept (FALSE)
 #' @param   useENSR use ENSEMBL regulatory region bounds instead of CpGs (FALSE)
 #' @param   genome  genome to use as reference, if no genome(x) is set (NULL) 
-#' @param   ...     arguments passed to impute.knn, such as rng.seed
+#' @param   ...     arguments to be passed to impute.knn, such as rng.seed
 #'  
-#' @return          a list: age estimates, meth estimates, and parameters
+#' @return          a list: call, methylation estimates, coefs, age estimates 
 #'
 #' @import  impute
 #' 
@@ -96,21 +96,24 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
   # impute, if requested, any sites with insufficient coverage
   if (impute) methWGBSage <- impute.knn(methWGBSage, k=minSamp, ...)$data
 
-  keep <- rowSums2(is.na(methWGBSage)) < 1
-  tst <- fisher.test(table(horvath$sign, keep))
-  message("Fisher's exact test (assessing sign bias due to dropped regions):")
-  message("Odds ratio: ", round(tst$estimate,3), 
-          " (p-value: ", round(tst$p.value,3), ") -- ",
-          ifelse(tst$p.value < 0.1, "likely", "unlikely"), 
-          " to significantly bias estimates.")
-  methWGBSage <- methWGBSage[which(keep), ] 
+  keep <- (rowSums2(is.na(methWGBSage)) < 1)
+  if (!all(keep)) {
+    tst <- fisher.test(table(horvath$sign, ifelse(keep, "+", "-")))
+    message("Fisher's exact test (assessing sign bias due to dropped regions):")
+    message("Odds ratio: ", round(tst$estimate,3), 
+            " (p-value: ", round(tst$p.value,3), ") -- ",
+            ifelse(tst$p.value < 0.1, "likely", "unlikely"), 
+            " to significantly bias estimates.")
+    methWGBSage <- methWGBSage[which(keep), ] 
+  }
 
   design <- rbind(Intercept=rep(1, ncol(x)), methWGBSage)
-  coefs <- c(intercept, horvath[rownames(WGBSage)]$score)
-  res <- list(age=(t(design) %*% coefs)[,1],
+  coefs <- c(intercept, horvath[rownames(methWGBSage)]$score)
+  names(coefs) <- c("Intercept", rownames(methWGBSage))
+  res <- list(call=sys.call(), 
+              meth=methWGBSage, 
               coefs=coefs,
-              meth=methWGBSage,
-              call=sys.call())
+              age=(t(design) %*% coefs)[,1])
   return(res)
     
 }

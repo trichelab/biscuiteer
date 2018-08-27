@@ -24,10 +24,10 @@ WGBSage(x, pad = 15, minCovg = 5, impute = TRUE, minSamp = 5,
 
 \item{genome}{genome to use as reference, if no genome(x) is set (NULL)}
 
-\item{...}{arguments passed to impute.knn, such as rng.seed}
+\item{...}{arguments to be passed to impute.knn, such as rng.seed}
 }
 \value{
-\preformatted{     a list: age estimates, meth estimates, and parameters
+\preformatted{     a list: call, methylation estimates, coefs, age estimates 
 }
 }
 \description{
