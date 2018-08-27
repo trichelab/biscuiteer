@@ -1,51 +1,60 @@
-# biscuitEater
+# biscuiteer
 
-[![Build Status](https://travis-ci.org/ttriche/biscuitEater.png?branch=master)](https://travis-ci.org/ttriche/biscuitEater)  [![codecov](https://codecov.io/gh/ttriche/biscuitEater/branch/master/graph/badge.svg)](https://codecov.io/gh/ttriche/biscuitEater)
+[![Build Status](https://travis-ci.org/ttriche/biscuiteer.png?branch=master)](https://travis-ci.org/ttriche/biscuiteer)  [![codecov](https://codecov.io/gh/ttriche/biscuiteer/branch/master/graph/badge.svg)](https://codecov.io/gh/ttriche/biscuiteer)
 
-## How to finish setting up your new package
+## The original luxury biscuit boutique
 
-Now that you've got a working package skeleton, there are a few steps to finish setting up all the integrations:
-
-### 1. Git(Hub)
-
-Go to https://github.com/ttriche and create a new repository. Then, in the directory where this package is, create your git repository from the command line, add the files, and push it to GitHub:
-
-    git init
-    git add --all
-    git commit -m "Initial commit of package skeleton"
-    git remote add origin git@github.com:ttriche/biscuitEater.git
-    git push -u origin master
-
-### 2. Travis
-
-Now you can go to [Travis](https://travis-ci.org/profile/ttriche) and turn on continuous integration for your new package. You may need to click the "Sync account" button to get your new package to show up in the list.
-
-If you have a codecov.io account, running your tests on Travis will trigger the code coverage job. No additional configuration is necessary
-
-### 3. Appveyor
-
-Go to [Appveyor's new project page](https://ci.appveyor.com/projects/new) and select your new repository from the list. Then you can go to the [badges](https://ci.appveyor.com/project/ttriche/biscuitEater/settings/badges) page, copy the markdown code it provides, and paste it up with the other badges above. (Their badge API has a random token in it, so `skeletor` can't include it in the template for you.)
-
-### 4. Delete this "How to finish setting up your new package" section from your README.md
+Wait, no, that's [these guys](https://www.biscuiteers.com/). ```biscuiteer```, on the other hand, is a package to process [biscuit](https://github.com/zwdzwd/biscuit) output quickly into [bsseq](https://bioconductor.org/packages/bsseq) objects. A number of features such as VCF header parsing, shrunken M-value calculations (for compartment inference), and tumor/normal copy number segmentation are also included, but the task of locus- and region-level differential methylation inference is delegated to other packages (such as ```dmrseq```).
 
 ## Installing
 
-<!-- If you're putting `biscuitEater` on CRAN, it can be installed with
+```R
+    install.packages("BiocManager")
+    library(BiocManager)
+    install("trichelab/biscuiteer")
+```
 
-    install.packages("biscuitEater") -->
+## Usage
 
-The pre-release version of the package can be pulled from GitHub using the [devtools](https://github.com/hadley/devtools) package:
+### Loading data 
 
-    # install.packages("devtools")
-    devtools::install_github("ttriche/biscuitEater", build_vignettes=TRUE)
+```biscuiteer``` can load headered or header-free BED-like files as produced from ```biscuit vcf2bed``` or ```biscuit mergecg```, but we encourage users to keep their VCF headers (or just the entire VCF, which you will want to do anyways, as biscuit calls SNVs and allows for structural variant detection in a manner similar to typical whole-genome sequencing tools).  Since ```biscuit``` records the version of the software and the calling arguments used to process a set of files in the output VCF, this allows for much better reproducibility:
 
-## For developers
+```R
+# from SRP080893
+# To load some runs:
+#
+library(biscuiteer)
 
-The repository includes a Makefile to facilitate some common tasks.
+# We just need the BED output and the VCF header to proceed... 
+# It is possible to get away without the VCF header, but better to use it. 
+#
+SvNS <- read.biscuit(BEDfile="SvNS_HSPC_WGBS.merged.hg19.bed.gz",
+                     VCFfile="SvNS_HSPC_WGBS.hg19.vcf.gz",
+                     simplify=TRUE)
 
-### Running tests
+# for reproducibility:
+#
+biscuitMetadata(SvNS)
+#
+# CharacterList of length 3
+# [["Reference genome"]] hg19.fa
+# [["Biscuit version"]] 0.3.8.20180515
+# [["Invocation"]] biscuit pileup -o SvNS_HSPC_WGBS.hg19.vcf /home/tim.triche...
 
-`$ make test`. Requires the [testthat](https://github.com/hadley/testthat) package. You can also specify a specific test file or files to run by adding a "file=" argument, like `$ make test file=logging`. `test_package` will do a regular-expression pattern match within the file names. See its documentation in the `testthat` package.
+# this is all drawn from the VCF header:
+#
+metadata(SvNS)$vcfHeader
+# 
+# class: VCFHeader 
+# samples(6): 052314-2-N.hg19.sorted.markDups.hg19
+#   052314-2-S.hg19.sorted.markDups.hg19 ...
+```
+
+### Downstream bits 
+
+Examples of A/B compartment inference, age estimation from WGBS, copy number segmentation, and so forth will appear here presently.
+
 
 ### Updating documentation
 

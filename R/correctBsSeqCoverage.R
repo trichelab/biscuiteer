@@ -13,8 +13,14 @@
 #' @export
 correctBsSeqCoverage <- function(tumor, normal, bsgc=NULL, maps=NULL) {
 
-  if (is.null(bsgc)) bsgc <- bsgc.hg19
-  if (is.null(maps)) maps <- maps.hg19
+  if (is.null(bsgc)) { # FIXME: support hg38
+    data(bsgc.hg19) 
+    bsgc <- bsgc.hg19
+  }
+  if (is.null(maps)) { # FIXME: support hg38
+    data(maps.hg19) 
+    maps <- maps.hg19
+  }
   if (is.null(attr(tumor, "binned"))) tumor <- binCoverage(tumor, bsgc)
   if (is.null(attr(normal, "binned"))) normal <- binCoverage(normal, bsgc)
 

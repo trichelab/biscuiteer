@@ -4,12 +4,14 @@
 \alias{makeBSseq_hdf5}
 \title{make an HDF5-backed BSseq object from an (imported) Biscuit BED file}
 \usage{
-makeBSseq_hdf5(tbl, params)
+makeBSseq_hdf5(tbl, params, simplify = FALSE)
 }
 \arguments{
-\item{tbl}{a tibble}
+\item{tbl}{a tibble (from read_tsv) or a data.table (from fread())}
 
 \item{params}{parameters (from checkBiscuitBED)}
+
+\item{simplify}{simplify sample names by dropping .foo.bar.hg19 & similar}
 }
 \value{
 an HDF5-backed BSseq object

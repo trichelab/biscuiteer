@@ -4,12 +4,14 @@
 \alias{makeBSseq}
 \title{make an in-core BSseq object from the results of reading a Biscuit BED file}
 \usage{
-makeBSseq(tbl, params)
+makeBSseq(tbl, params, simplify = FALSE)
 }
 \arguments{
-\item{tbl}{a tibble (from read_tsv)}
+\item{tbl}{a tibble (from read_tsv) or a data.table (from fread())}
 
 \item{params}{parameters (from checkBiscuitBED)}
+
+\item{simplify}{simplify sample names by dropping .foo.bar.hg19 & similar}
 }
 \value{
 an in-core BSseq object
