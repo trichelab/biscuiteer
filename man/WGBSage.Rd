@@ -12,7 +12,7 @@ WGBSage(x, pad = 15, minCovg = 5, impute = TRUE, minSamp = 5,
 
 \item{pad}{how many bases to pad the target CpG by (default is 15)}
 
-\item{minCovg}{minimum regional read coverage desired to estimate 5mC% (5)}
+\item{minCovg}{minimum regional read coverage desired to estimate 5mC (5)}
 
 \item{impute}{use k-NN imputation to fill in low-coverage regions? (TRUE)}
 

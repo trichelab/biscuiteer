@@ -9,7 +9,7 @@
 #' 
 #' @param   x       a BSseq object (must have assays named `M` and `Cov`)
 #' @param   pad     how many bases to pad the target CpG by (default is 15)
-#' @param   minCovg minimum regional read coverage desired to estimate 5mC% (5)
+#' @param   minCovg minimum regional read coverage desired to estimate 5mC (5)
 #' @param   impute  use k-NN imputation to fill in low-coverage regions? (TRUE) 
 #' @param   minSamp minimum number of non-NA samples to perform imputation (5)
 #' @param   shrink  use shrunken version of Horvath's coefs & intercept (FALSE)
