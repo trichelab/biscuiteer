@@ -2,16 +2,39 @@
 % Please edit documentation in R/WGBSage.R
 \name{WGBSage}
 \alias{WGBSage}
-\title{guess a specimen's age from a modified Horvath algorithm}
+\title{Guess specimens' ages by a modified Horvath (Genome Biology, 2013) algorithm}
 \usage{
-WGBSage(x)
+WGBSage(x, pad = 15, minCovg = 5, impute = TRUE, minSamp = 5,
+  shrink = FALSE, useENSR = FALSE, genome = NULL, ...)
 }
 \arguments{
-\item{x}{a BSseq object}
+\item{x}{a BSseq object (must have assays named \code{M} and \code{Cov})}
+
+\item{pad}{how many bases to pad the target CpG by (default is 15)}
+
+\item{minCovg}{minimum regional read coverage desired to estimate 5mC% (5)}
+
+\item{impute}{use k-NN imputation to fill in low-coverage regions? (TRUE)}
+
+\item{minSamp}{minimum number of non-NA samples to perform imputation (5)}
+
+\item{shrink}{use shrunken version of Horvath's coefs & intercept (FALSE)}
+
+\item{useENSR}{use ENSEMBL regulatory region bounds instead of CpGs (FALSE)}
+
+\item{genome}{genome to use as reference, if no genome(x) is set (NULL)}
+
+\item{...}{arguments passed to impute.knn, such as rng.seed}
 }
 \value{
-age   age estimate for each column of x
+\preformatted{     a list: age estimates, meth estimates, and parameters
+}
 }
 \description{
-guess a specimen's age from a modified Horvath algorithm
+Note: the accuracy of the prediction will increase or decrease depending on
+how the various parameters are set by the user. This is NOT a hands-off
+procedure, and the defaults are only a starting point for exploration. It
+will not be uncommon to tune \code{pad}, \code{minCovg}, and \code{minSamp} for each WGBS
+or \link{e}RRBS experiment (and the latter may be impacted by whether dupes are
+removed prior to importing data). Please consider yourself forewarned!
 }
