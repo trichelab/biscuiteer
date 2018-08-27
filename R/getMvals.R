@@ -18,7 +18,7 @@
 getMvals <- function(x, minCov=3, minSamp=2, k=1) {
 
   # do any loci in the object have enough read coverage in enough samples? 
-  usable <- (rowSums(getCoverage(x) >= minCov) >= minSamp)
+  usable <- (DelayedMatrixStats::rowSums2(getCoverage(x) >= minCov) >= minSamp)
   if (!any(usable)) stop("No usable CpG loci ( >= minCov in >= minSamp )!")
     
   # construct a subset of the overall BSseq object with smoothed mvalues 
@@ -33,7 +33,7 @@ getSmoothedMvals <- function(x, k=1, minCov=3, maxFrac=0.5) {
   rownames(res) <- as.character(granges(x))
   makeNA <- getCoverage(x) < minCov 
   maxPct <- paste0(100 * maxFrac, "%")
-  tooManyNAs <- (colSums(makeNA)/nrow(x)) > maxFrac
+  tooManyNAs <- (DelayedMatrixStats::colSums2(makeNA)/nrow(x)) > maxFrac
   if (any(tooManyNAs)) {
     message(paste(colnames(x)[tooManyNAs],collapse=", ")," are >",maxPct," NA!")
   }
