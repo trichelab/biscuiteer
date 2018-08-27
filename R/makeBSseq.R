@@ -1,4 +1,4 @@
-#' make an in-core BSseq object from the results of reading a Biscuit BED file
+#' make an in-core BSseq object from a biscuit BED
 #'
 #' @param tbl         a tibble (from read_tsv) or a data.table (from fread())
 #' @param params      parameters (from checkBiscuitBED)

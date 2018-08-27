@@ -1,4 +1,4 @@
-#' Wrapper for matched tumor-normal bigWig coverage processing & segmentation
+#' Matched tumor-normal coverage processing & segmentation
 #'
 #' @param stub0     bigWig stub for normal: paste0(stub0, ".covg.hg19.bw")
 #' @param stub1     bigWig stub for tumor: paste0(stub1, ".covg.hg19.bw") [NULL]

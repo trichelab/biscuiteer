@@ -2,9 +2,7 @@
 % Please edit documentation in R/unionizeBSseq.R
 \name{unionizeBSseq}
 \alias{unionizeBSseq}
-\title{take two bsseq objects and the overlaps of the union of their rowRanges,
-pad out un-covered sites with 0M/0Cov (i.e., ./. in a sparse Matrix),
-and return a Matrix containing the joint information from both.}
+\title{Smoosh a couple of BSseq objects together, sensibly.}
 \usage{
 unionizeBSseq(bs1, bs2, biggrl, what = c("M", "Cov"), parallel = TRUE)
 }

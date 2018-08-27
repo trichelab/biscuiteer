@@ -2,7 +2,7 @@
 % Please edit documentation in R/byChromArm.R
 \name{byChromArm}
 \alias{byChromArm}
-\title{an idiotically simple parallelization step that I've been using for years}
+\title{an idiotically simple parallelization step}
 \usage{
 byChromArm(x, arms = NULL)
 }

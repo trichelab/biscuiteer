@@ -1,4 +1,4 @@
-#' Guess specimens' ages by a modified Horvath (Genome Biology, 2013) algorithm
+#' Guess ages with a modified Horvath (Genome Biology, 2013) algorithm
 #'
 #' Note: the accuracy of the prediction will increase or decrease depending on
 #' how the various parameters are set by the user. This is NOT a hands-off 
@@ -107,13 +107,13 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
     methWGBSage <- methWGBSage[which(keep), ] 
   }
 
-  design <- rbind(Intercept=rep(1, ncol(x)), methWGBSage)
-  coefs <- c(intercept, horvath[rownames(methWGBSage)]$score)
-  names(coefs) <- c("Intercept", rownames(methWGBSage))
+  coefs <- horvath[rownames(methWGBSage)]$score
+  names(coefs) <- rownames(methWGBSage)
   res <- list(call=sys.call(), 
+              intercept=intercept,
               meth=methWGBSage, 
               coefs=coefs,
-              age=(t(design) %*% coefs)[,1])
+              age=(intercept + (t(methWGBSage) %*% coefs)[,1]))
   return(res)
     
 }

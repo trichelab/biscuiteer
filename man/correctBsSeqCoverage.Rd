@@ -2,7 +2,7 @@
 % Please edit documentation in R/correctBsSeqCoverage.R
 \name{correctBsSeqCoverage}
 \alias{correctBsSeqCoverage}
-\title{tweaked version of TitanCNA's preprocessing function; limits to chr{1:22,X}}
+\title{tweaked version of TitanCNA's preprocessing}
 \usage{
 correctBsSeqCoverage(tumor, normal, bsgc = NULL, maps = NULL)
 }
@@ -20,5 +20,5 @@ correctBsSeqCoverage(tumor, normal, bsgc = NULL, maps = NULL)
 }
 }
 \description{
-tweaked version of TitanCNA's preprocessing function; limits to chr{1:22,X}
+limits coverage to chr{1:22,X}, for better or for worse
 }

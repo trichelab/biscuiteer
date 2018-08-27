@@ -2,7 +2,7 @@
 % Please edit documentation in R/TN_WGBS_CNA.R
 \name{TN_WGBS_CNA}
 \alias{TN_WGBS_CNA}
-\title{Wrapper for matched tumor-normal bigWig coverage processing & segmentation}
+\title{Matched tumor-normal coverage processing & segmentation}
 \usage{
 TN_WGBS_CNA(stub0, stub1 = NULL, bsgc = NULL, maps = NULL, ...)
 }
@@ -22,7 +22,7 @@ TN_WGBS_CNA(stub0, stub1 = NULL, bsgc = NULL, maps = NULL, ...)
 }
 }
 \description{
-Wrapper for matched tumor-normal bigWig coverage processing & segmentation
+Matched tumor-normal coverage processing & segmentation
 }
 \examples{
   stubs <- c("P01-010", "P01-012", "P01-015", "P01-016", "P01-017")

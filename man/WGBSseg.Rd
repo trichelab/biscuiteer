@@ -2,7 +2,7 @@
 % Please edit documentation in R/WGBSseg.R
 \name{WGBSseg}
 \alias{WGBSseg}
-\title{Circular binary segmentation for GC- and mappability-corrected WGBS data}
+\title{Copy number segmentation of GC- & mapping-corrected WGBS coverage}
 \usage{
 WGBSseg(cn, minAbs = 0.3, minWidth = 20000, ...)
 }

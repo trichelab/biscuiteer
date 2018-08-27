@@ -1,4 +1,4 @@
-#' make an HDF5-backed BSseq object from an (imported) Biscuit BED file
+#' make an HDF5-backed BSseq object from a Biscuit BED
 #'
 #' @param tbl         a tibble (from read_tsv) or a data.table (from fread())
 #' @param params      parameters (from checkBiscuitBED)

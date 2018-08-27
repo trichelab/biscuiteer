@@ -1,4 +1,4 @@
-#' helper fn to dump GRanges to .seg formatted output (and/or merge them) 
+#' dump GRanges to .seg files
 #' 
 #' @param gr        A GRanges or GRangesList to dump as .seg
 #' @param filename  Where to save the result (unsaved if NULL, the default)

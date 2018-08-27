@@ -2,7 +2,7 @@
 % Please edit documentation in R/WGBSage.R
 \name{WGBSage}
 \alias{WGBSage}
-\title{Guess specimens' ages by a modified Horvath (Genome Biology, 2013) algorithm}
+\title{Guess ages with a modified Horvath (Genome Biology, 2013) algorithm}
 \usage{
 WGBSage(x, pad = 15, minCovg = 5, impute = TRUE, minSamp = 5,
   shrink = FALSE, useENSR = FALSE, genome = NULL, ...)

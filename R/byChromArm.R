@@ -1,4 +1,4 @@
-#' an idiotically simple parallelization step that I've been using for years
+#' an idiotically simple parallelization step
 #'
 #' This function just splits an object by chromosome arm, which tends to make
 #' parallelization MUCH easier, as cross-arm dependencies are unusual, and the 

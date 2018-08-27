@@ -2,9 +2,7 @@
 % Please edit documentation in R/condenseSampleNames.R
 \name{condenseSampleNames}
 \alias{condenseSampleNames}
-\title{utility function for extracting samplenames from Tabix'ed sample columns
-assumes VCF-style naming, such as with Sample_1.foo, Sample_1.bar,
-or Sample1_foo,Sample1_bar, or really anything along these lines}
+\title{simplify sampleNames for a bsseq object}
 \usage{
 condenseSampleNames(tbx, stride, trailing = "\\\\.$")
 }

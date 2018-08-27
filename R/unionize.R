@@ -1,3 +1,5 @@
+#' Smoosh BSseq objects together without losing information.
+#' 
 #' take a bunch of bsseq objects, take the union of their granges(), 
 #' pad out un-covered sites with 0M/0Cov (i.e., ./. in a sparse Matrix),
 #' and return the now-even-sparser bsseq holding all of them. All 

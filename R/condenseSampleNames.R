@@ -1,3 +1,5 @@
+#' simplify sampleNames for a bsseq object
+#' 
 #' utility function for extracting samplenames from Tabix'ed sample columns
 #' assumes VCF-style naming, such as with Sample_1.foo, Sample_1.bar, 
 #' or Sample1_foo,Sample1_bar, or really anything along these lines

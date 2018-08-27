@@ -2,7 +2,7 @@
 % Please edit documentation in R/makeBSseq.R
 \name{makeBSseq}
 \alias{makeBSseq}
-\title{make an in-core BSseq object from the results of reading a Biscuit BED file}
+\title{make an in-core BSseq object from a biscuit BED}
 \usage{
 makeBSseq(tbl, params, simplify = FALSE)
 }
@@ -17,7 +17,7 @@ makeBSseq(tbl, params, simplify = FALSE)
 an in-core BSseq object
 }
 \description{
-make an in-core BSseq object from the results of reading a Biscuit BED file
+make an in-core BSseq object from a biscuit BED
 }
 \seealso{
 makeBSseq_HDF5

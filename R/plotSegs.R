@@ -1,4 +1,4 @@
-#' plotting WGBScopy results (heavily modified from HMMcopy)
+#' plotting WGBScopy results (modified from HMMcopy)
 #' 
 #' @param cn    	binned, corrected read depths from correctCoverage()
 #' @param segs		a segmentation result from WGBScopy()

@@ -2,7 +2,7 @@
 % Please edit documentation in R/filterLoci.R
 \name{filterLoci}
 \alias{filterLoci}
-\title{filter out loci that have zero coverage for one or more conditions}
+\title{filter loci with zero coverage in one or more conditions}
 \usage{
 filterLoci(bs, testCovariate, ...)
 }

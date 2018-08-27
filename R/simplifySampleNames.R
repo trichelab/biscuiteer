@@ -1,4 +1,4 @@
-#' Attempt to simplify bsseq sample names (usually derived from VCF columns) 
+#' Simplify bsseq sample names (usually VCF columns) 
 #' 
 #' Tries using the longest common subsequence to figure out what can be dropped.
 #' 
