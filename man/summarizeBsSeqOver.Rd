@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarizeBsSeqOver.R
 \name{summarizeBsSeqOver}
 \alias{summarizeBsSeqOver}
-\title{Pretty much what it says on the tin.  Summarize methylation over regions.}
+\title{Pretty much what it says on the tin.}
 \usage{
 summarizeBsSeqOver(bsseq, segs, dropNA = FALSE, impute = FALSE)
 }
@@ -19,5 +19,5 @@ summarizeBsSeqOver(bsseq, segs, dropNA = FALSE, impute = FALSE)
 matrix    a matrix of regional methylation fractions
 }
 \description{
-Pretty much what it says on the tin.  Summarize methylation over regions.
+Summarize methylation over regions. Mostly a wrapper for getMeth.
 }

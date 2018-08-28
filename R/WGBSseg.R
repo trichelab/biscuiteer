@@ -1,4 +1,4 @@
-#' Circular binary segmentation for GC- and mappability-corrected WGBS data
+#' Copy number segmentation of GC- & mapping-corrected WGBS coverage
 #'
 #' FIXME: use some form of smoothing to glob segments together and THEN filter 
 #'        on length (as opposed to right now where it is done rather roughly)

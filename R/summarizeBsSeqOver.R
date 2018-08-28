@@ -1,4 +1,6 @@
-#' Pretty much what it says on the tin.  Summarize methylation over regions.
+#' Pretty much what it says on the tin.
+#' 
+#' Summarize methylation over regions. Mostly a wrapper for getMeth. 
 #'
 #' @param   bsseq     the BSseq object to summarize 
 #' @param   segs      regions to summarize over (a GRanges; no GRangesLists yet)

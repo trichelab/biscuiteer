@@ -2,7 +2,7 @@
 % Please edit documentation in R/grToSeg.R
 \name{grToSeg}
 \alias{grToSeg}
-\title{helper fn to dump GRanges to .seg formatted output (and/or merge them)}
+\title{dump GRanges to .seg files}
 \usage{
 grToSeg(gr, filename = NULL, minAbs = NULL)
 }
@@ -18,5 +18,5 @@ grToSeg(gr, filename = NULL, minAbs = NULL)
 }
 }
 \description{
-helper fn to dump GRanges to .seg formatted output (and/or merge them)
+dump GRanges to .seg files
 }

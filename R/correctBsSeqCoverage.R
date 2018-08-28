@@ -1,4 +1,6 @@
-#' tweaked version of TitanCNA's preprocessing function; limits to chr{1:22,X}
+#' tweaked version of TitanCNA's preprocessing
+#' 
+#' limits coverage to chr{1:22,X}, for better or for worse
 #'
 #' @param tumor     binned tumor coverage (a GRanges from binCoverage)
 #' @param normal    binned normal coverage (a GRanges from binCoverage)

@@ -1,3 +1,5 @@
+#' Smoosh a couple of BSseq objects together, sensibly.
+#'
 #' take two bsseq objects and the overlaps of the union of their rowRanges,
 #' pad out un-covered sites with 0M/0Cov (i.e., ./. in a sparse Matrix),
 #' and return a Matrix containing the joint information from both. 

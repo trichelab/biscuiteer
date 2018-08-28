@@ -2,7 +2,7 @@
 % Please edit documentation in R/makeBSseq_hdf5.R
 \name{makeBSseq_hdf5}
 \alias{makeBSseq_hdf5}
-\title{make an HDF5-backed BSseq object from an (imported) Biscuit BED file}
+\title{make an HDF5-backed BSseq object from a Biscuit BED}
 \usage{
 makeBSseq_hdf5(tbl, params, simplify = FALSE)
 }
@@ -17,7 +17,7 @@ makeBSseq_hdf5(tbl, params, simplify = FALSE)
 an HDF5-backed BSseq object
 }
 \description{
-make an HDF5-backed BSseq object from an (imported) Biscuit BED file
+make an HDF5-backed BSseq object from a Biscuit BED
 }
 \seealso{
 makeBSseq

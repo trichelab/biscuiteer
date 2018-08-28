@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotSegs.R
 \name{plotSegs}
 \alias{plotSegs}
-\title{plotting WGBScopy results (heavily modified from HMMcopy)}
+\title{plotting WGBScopy results (modified from HMMcopy)}
 \usage{
 plotSegs(cn, segs = NULL, chr = "chr22", name = "Segmented", ...)
 }
@@ -18,5 +18,5 @@ plotSegs(cn, segs = NULL, chr = "chr22", name = "Segmented", ...)
 \item{...}{other arguments to pass on to plot}
 }
 \description{
-plotting WGBScopy results (heavily modified from HMMcopy)
+plotting WGBScopy results (modified from HMMcopy)
 }

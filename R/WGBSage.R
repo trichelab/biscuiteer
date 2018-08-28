@@ -1,4 +1,4 @@
-#' Guess specimens' ages by a modified Horvath (Genome Biology, 2013) algorithm
+#' Guess ages with a modified Horvath (Genome Biology, 2013) algorithm
 #'
 #' Note: the accuracy of the prediction will increase or decrease depending on
 #' how the various parameters are set by the user. This is NOT a hands-off 
@@ -9,21 +9,22 @@
 #' 
 #' @param   x       a BSseq object (must have assays named `M` and `Cov`)
 #' @param   pad     how many bases to pad the target CpG by (default is 15)
-#' @param   minCovg minimum regional read coverage desired to estimate 5mC% (5)
+#' @param   minCovg minimum regional read coverage desired to estimate 5mC (5)
 #' @param   impute  use k-NN imputation to fill in low-coverage regions? (TRUE) 
 #' @param   minSamp minimum number of non-NA samples to perform imputation (5)
 #' @param   shrink  use shrunken version of Horvath's coefs & intercept (FALSE)
 #' @param   useENSR use ENSEMBL regulatory region bounds instead of CpGs (FALSE)
 #' @param   genome  genome to use as reference, if no genome(x) is set (NULL) 
-#' @param   ...     arguments passed to impute.knn, such as rng.seed
+#' @param   dropBad drop rows/cols with > half missing pre-imputation? (FALSE) 
+#' @param   ...     arguments to be passed to impute.knn, such as rng.seed
 #'  
-#' @return          a list: age estimates, meth estimates, and parameters
+#' @return          a list: call, methylation estimates, coefs, age estimates 
 #'
 #' @import  impute
 #' 
 #' @export
 WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE, 
-                    useENSR=FALSE, genome=NULL, ...) { 
+                    useENSR=FALSE, genome=NULL, dropBad=FALSE, ...) { 
 
   # sort out assemblies
   g <- unique(genome(x))
@@ -59,6 +60,13 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
   rownames(covgWGBSage) <- horvath$name
   NAs <- which(covgWGBSage < minCovg, arr.ind=TRUE)
 
+  # for sample/region dropping
+  pctMissing <- rep(0, ncol(x))
+  names(pctMissing) <- colnames(x)
+  subM <- rep(FALSE, nrow(covgWGBSage))
+  names(subM) <- rownames(covgWGBSage)
+
+  # tabulate for above
   if (nrow(NAs) > 0) {
 
     # warn the user if insufficient coverage is detected across a region(s)
@@ -69,6 +77,7 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
 
     # warn the user if insufficient samples exist to impute across region(s) 
     subM <- DelayedMatrixStats::rowSums2(covgWGBSage>=minCovg,na.rm=T) < minSamp
+    names(subM) <- rownames(covgWGBSage)
     message(round(100*sum(subM)/length(subM)), "% of regions lack ",
             "sufficient coverage in enough samples to impute.")
 
@@ -93,24 +102,52 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
   methWGBSage[covgWGBSage < minCovg] <- NA
   methWGBSage <- as(methWGBSage, "matrix") # 353 x ncol(x) is not too huge
 
+  # drop samples if needed
+  droppedSamples <- c()
+  droppedRegions <- c()
+  if (dropBad) {
+    thresh <- ceiling(length(horvath) / 2)
+    droppedSamples <- names(which(colSums(is.na(methWGBSage)) >= thresh))
+    keptSamples <- setdiff(colnames(x), droppedSamples)
+    thresh2 <- ceiling(ncol(x) / 2)
+    droppedRegions <- names(which(rowSums(is.na(methWGBSage)) >= thresh2))
+    keptRegions <- setdiff(names(horvath), droppedRegions)
+    methWGBSage <- methWGBSage[keptRegions, keptSamples] 
+  }
+  
   # impute, if requested, any sites with insufficient coverage
   if (impute) methWGBSage <- impute.knn(methWGBSage, k=minSamp, ...)$data
 
-  keep <- rowSums2(is.na(methWGBSage)) < 1
-  tst <- fisher.test(table(horvath$sign, keep))
-  message("Fisher's exact test (assessing sign bias due to dropped regions):")
-  message("Odds ratio: ", round(tst$estimate,3), 
-          " (p-value: ", round(tst$p.value,3), ") -- ",
-          ifelse(tst$p.value < 0.1, "likely", "unlikely"), 
-          " to significantly bias estimates.")
-  methWGBSage <- methWGBSage[which(keep), ] 
+  keep <- (rowSums2(is.na(methWGBSage)) < 1)
+  if (!all(keep)) {
+    tst <- fisher.test(table(horvath$sign, ifelse(keep, "+", "-")))
+    message("Fisher's exact test (assessing sign bias due to dropped regions):")
+    message("Odds ratio: ", round(tst$estimate,3), 
+            " (p-value: ", round(tst$p.value,3), ") -- ",
+            ifelse(tst$p.value < 0.1, "likely", "unlikely"), 
+            " to significantly bias estimates.")
+    methWGBSage <- methWGBSage[which(keep), ] 
+  }
 
-  design <- rbind(Intercept=rep(1, ncol(x)), methWGBSage)
-  coefs <- c(intercept, horvath[rownames(WGBSage)]$score)
-  res <- list(age=(t(design) %*% coefs)[,1],
+  fixAge <- function(age, adult.age=20) { 
+    ifelse(age < 0, 
+           (1 + adult.age) * exp(age) - 1, 
+           (1 + adult.age) * age + adult.age)
+  } 
+
+  coefs <- horvath[rownames(methWGBSage)]$score
+  names(coefs) <- rownames(methWGBSage)
+  agePredRaw <- (intercept + (t(methWGBSage) %*% coefs)[,1])
+
+  res <- list(call=sys.call(), 
+              percentRegionsMissing=pctMissing,
+              droppedSamples=droppedSamples,
+              droppedRegions=droppedRegions,
+              unimputableRegion=subM, 
+              intercept=intercept,
+              meth=methWGBSage, 
               coefs=coefs,
-              meth=methWGBSage,
-              call=sys.call())
+              age=fixAge(agePredRaw))
   return(res)
     
 }

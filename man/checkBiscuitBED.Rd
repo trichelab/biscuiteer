@@ -2,13 +2,10 @@
 % Please edit documentation in R/checkBiscuitBED.R
 \name{checkBiscuitBED}
 \alias{checkBiscuitBED}
-\title{A BED checker for Biscuit cg/ch output (BED-like format, 2 or 3 cols/sample).
-By default, files with over 50 million loci will be processed iteratively,
-since data.table tends to run into problems with .gzipped joint CpH files.
-This function absolutely assumes that BED files are tabixed. No exceptions!}
+\title{inspect Biscuit BED and/or VCF output to make sure all is as it should be}
 \usage{
 checkBiscuitBED(BEDfile, VCFfile = NULL, sampleNames = NULL,
-  chunkSize = 50000000, merged = NULL, hdf5 = FALSE, sparse = TRUE,
+  chunkSize = 5e+07, merged = NULL, hdf5 = FALSE, sparse = TRUE,
   how = c("data.table", "readr"), chr = NULL)
 }
 \arguments{

@@ -1,4 +1,4 @@
-#' wrapper for [e]RRBS settings appropriate to dmrseq
+#' [e]RRBS settings appropriate to dmrseq
 #' 
 #' @param bs              a bsseq object
 #' @param testCovariate   the pData column to test on 

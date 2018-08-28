@@ -1,4 +1,4 @@
-#' filter out loci that have zero coverage for one or more conditions
+#' filter loci with zero coverage in one or more conditions
 #' 
 #' This function used to be part of dmrseq, or so we recall. In any event, 
 #' it is a colossal drag to set up a dmrseq run only to discover that it fails

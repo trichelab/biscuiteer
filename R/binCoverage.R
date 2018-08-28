@@ -1,3 +1,5 @@
+#' bin read coverage to simplify and improve CNA calling 
+#' 
 #' helper function for binning .covg.hg19.bw bigWigs (see below for note)
 #' nb. it is best to extract these from Biscuit BAMs via genomeCoverageBed
 #' FIXME: figure out how to estimate the most likely GCbias ~ DNAme linkage

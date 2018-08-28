@@ -2,7 +2,7 @@
 % Please edit documentation in R/fixNAs.R
 \name{fixNAs}
 \alias{fixNAs}
-\title{helper function to play nice with BSseq's expectations about the M matrix}
+\title{play nice with BSseq's expectations about the M matrix}
 \usage{
 fixNAs(x, y = 0, sparse = FALSE)
 }
@@ -17,5 +17,5 @@ fixNAs(x, y = 0, sparse = FALSE)
 x, but with holes filled, and as a (possibly sparse) matrix
 }
 \description{
-helper function to play nice with BSseq's expectations about the M matrix
+play nice with BSseq's expectations about the M matrix
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RRBSeq.R
 \name{RRBSeq}
 \alias{RRBSeq}
-\title{wrapper for \link{e}RRBS settings appropriate to dmrseq}
+\title{\link{e}RRBS settings appropriate to dmrseq}
 \usage{
 RRBSeq(bs, testCovariate, cutoff = 0.2, bpSpan = 750, ...)
 }
@@ -22,5 +22,5 @@ RRBSeq(bs, testCovariate, cutoff = 0.2, bpSpan = 750, ...)
 }
 }
 \description{
-wrapper for \link{e}RRBS settings appropriate to dmrseq
+\link{e}RRBS settings appropriate to dmrseq
 }

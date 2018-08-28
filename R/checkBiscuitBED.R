@@ -1,3 +1,5 @@
+#' inspect Biscuit BED and/or VCF output to make sure all is as it should be 
+#' 
 #' A BED checker for Biscuit cg/ch output (BED-like format, 2 or 3 cols/sample).
 #' By default, files with over 50 million loci will be processed iteratively,
 #' since data.table tends to run into problems with .gzipped joint CpH files. 

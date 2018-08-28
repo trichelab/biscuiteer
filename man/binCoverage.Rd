@@ -2,9 +2,7 @@
 % Please edit documentation in R/binCoverage.R
 \name{binCoverage}
 \alias{binCoverage}
-\title{helper function for binning .covg.hg19.bw bigWigs (see below for note)
-nb. it is best to extract these from Biscuit BAMs via genomeCoverageBed
-FIXME: figure out how to estimate the most likely GCbias ~ DNAme linkage}
+\title{bin read coverage to simplify and improve CNA calling}
 \usage{
 binCoverage(covg, bins = NULL, tilewidth = 1000, which = NULL)
 }

@@ -2,17 +2,18 @@
 % Please edit documentation in R/WGBSage.R
 \name{WGBSage}
 \alias{WGBSage}
-\title{Guess specimens' ages by a modified Horvath (Genome Biology, 2013) algorithm}
+\title{Guess ages with a modified Horvath (Genome Biology, 2013) algorithm}
 \usage{
 WGBSage(x, pad = 15, minCovg = 5, impute = TRUE, minSamp = 5,
-  shrink = FALSE, useENSR = FALSE, genome = NULL, ...)
+  shrink = FALSE, useENSR = FALSE, genome = NULL, dropBad = FALSE,
+  ...)
 }
 \arguments{
 \item{x}{a BSseq object (must have assays named \code{M} and \code{Cov})}
 
 \item{pad}{how many bases to pad the target CpG by (default is 15)}
 
-\item{minCovg}{minimum regional read coverage desired to estimate 5mC% (5)}
+\item{minCovg}{minimum regional read coverage desired to estimate 5mC (5)}
 
 \item{impute}{use k-NN imputation to fill in low-coverage regions? (TRUE)}
 
@@ -24,10 +25,12 @@ WGBSage(x, pad = 15, minCovg = 5, impute = TRUE, minSamp = 5,
 
 \item{genome}{genome to use as reference, if no genome(x) is set (NULL)}
 
-\item{...}{arguments passed to impute.knn, such as rng.seed}
+\item{dropBad}{drop rows/cols with > half missing pre-imputation? (FALSE)}
+
+\item{...}{arguments to be passed to impute.knn, such as rng.seed}
 }
 \value{
-\preformatted{     a list: age estimates, meth estimates, and parameters
+\preformatted{     a list: call, methylation estimates, coefs, age estimates 
 }
 }
 \description{
