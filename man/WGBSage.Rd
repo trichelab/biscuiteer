@@ -5,7 +5,8 @@
 \title{Guess ages with a modified Horvath (Genome Biology, 2013) algorithm}
 \usage{
 WGBSage(x, pad = 15, minCovg = 5, impute = TRUE, minSamp = 5,
-  shrink = FALSE, useENSR = FALSE, genome = NULL, ...)
+  shrink = FALSE, useENSR = FALSE, genome = NULL, dropBad = FALSE,
+  ...)
 }
 \arguments{
 \item{x}{a BSseq object (must have assays named \code{M} and \code{Cov})}
@@ -23,6 +24,8 @@ WGBSage(x, pad = 15, minCovg = 5, impute = TRUE, minSamp = 5,
 \item{useENSR}{use ENSEMBL regulatory region bounds instead of CpGs (FALSE)}
 
 \item{genome}{genome to use as reference, if no genome(x) is set (NULL)}
+
+\item{dropBad}{drop samples with > 50% missing before imputation? (FALSE)}
 
 \item{...}{arguments to be passed to impute.knn, such as rng.seed}
 }

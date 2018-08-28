@@ -15,6 +15,7 @@
 #' @param   shrink  use shrunken version of Horvath's coefs & intercept (FALSE)
 #' @param   useENSR use ENSEMBL regulatory region bounds instead of CpGs (FALSE)
 #' @param   genome  genome to use as reference, if no genome(x) is set (NULL) 
+#' @param   dropBad drop samples with > 50% missing before imputation? (FALSE) 
 #' @param   ...     arguments to be passed to impute.knn, such as rng.seed
 #'  
 #' @return          a list: call, methylation estimates, coefs, age estimates 
@@ -23,7 +24,7 @@
 #' 
 #' @export
 WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE, 
-                    useENSR=FALSE, genome=NULL, ...) { 
+                    useENSR=FALSE, genome=NULL, dropBad=FALSE, ...) { 
 
   # sort out assemblies
   g <- unique(genome(x))
@@ -59,6 +60,13 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
   rownames(covgWGBSage) <- horvath$name
   NAs <- which(covgWGBSage < minCovg, arr.ind=TRUE)
 
+  # for sample/region dropping
+  pctMissing <- rep(0, ncol(x))
+  names(pctMissing) <- colnames(x)
+  subM <- rep(FALSE, nrow(covgWGBSage))
+  names(subM) <- rownames(covgWGBSage)
+
+  # tabulate for above
   if (nrow(NAs) > 0) {
 
     # warn the user if insufficient coverage is detected across a region(s)
@@ -93,6 +101,13 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
   methWGBSage[covgWGBSage < minCovg] <- NA
   methWGBSage <- as(methWGBSage, "matrix") # 353 x ncol(x) is not too huge
 
+  # drop samples if needed
+  droppedSamples <- c()
+  if (dropBad) {
+    droppedSamples <- colnames(methWGBSage)[pctMissing >= 50] 
+    methWGBSage <- methWGBSage[, pctMissing < 50]
+  }
+  
   # impute, if requested, any sites with insufficient coverage
   if (impute) methWGBSage <- impute.knn(methWGBSage, k=minSamp, ...)$data
 
@@ -110,6 +125,9 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
   coefs <- horvath[rownames(methWGBSage)]$score
   names(coefs) <- rownames(methWGBSage)
   res <- list(call=sys.call(), 
+              percentRegionsMissing=pctMissing,
+              droppedSamples=droppedSamples,
+              unimputableRegion=subM, 
               intercept=intercept,
               meth=methWGBSage, 
               coefs=coefs,
