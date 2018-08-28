@@ -129,6 +129,13 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
     methWGBSage <- methWGBSage[which(keep), ] 
   }
 
+  agePredRaw <- (intercept + (t(methWGBSage) %*% coefs)[,1])
+  fixAge <- function(age, adult.age=20) { 
+    ifelse(age < 0, 
+           (1 + adult.age) * exp(age) - 1, 
+           (1 + adult.age) * age + adult.age)
+  } 
+
   coefs <- horvath[rownames(methWGBSage)]$score
   names(coefs) <- rownames(methWGBSage)
   res <- list(call=sys.call(), 
@@ -139,7 +146,7 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
               intercept=intercept,
               meth=methWGBSage, 
               coefs=coefs,
-              age=(intercept + (t(methWGBSage) %*% coefs)[,1]))
+              age=fixAge(agePredRaw))
   return(res)
     
 }
