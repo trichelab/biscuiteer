@@ -106,9 +106,11 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
   droppedSamples <- c()
   droppedRegions <- c()
   if (dropBad) {
-    droppedSamples <- names(which(pctMissing >= 50))
+    thresh <- ceiling(length(horvath) / 2)
+    droppedSamples <- names(which(colSums(is.na(methWGBSage)) >= thresh))
     keptSamples <- setdiff(colnames(x), droppedSamples)
-    droppedRegions <- names(which(subM)) 
+    thresh2 <- ceiling(ncol(x) / 2)
+    droppedRegions <- names(which(rowSums(is.na(methWGBSage)) >= thresh2))
     keptRegions <- setdiff(names(horvath), droppedRegions)
     methWGBSage <- methWGBSage[keptRegions, keptSamples] 
   }
