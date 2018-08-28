@@ -15,7 +15,7 @@
 #' @param   shrink  use shrunken version of Horvath's coefs & intercept (FALSE)
 #' @param   useENSR use ENSEMBL regulatory region bounds instead of CpGs (FALSE)
 #' @param   genome  genome to use as reference, if no genome(x) is set (NULL) 
-#' @param   dropBad drop samples with > 50% missing before imputation? (FALSE) 
+#' @param   dropBad drop rows/cols with > half missing pre-imputation? (FALSE) 
 #' @param   ...     arguments to be passed to impute.knn, such as rng.seed
 #'  
 #' @return          a list: call, methylation estimates, coefs, age estimates 
@@ -77,6 +77,7 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
 
     # warn the user if insufficient samples exist to impute across region(s) 
     subM <- DelayedMatrixStats::rowSums2(covgWGBSage>=minCovg,na.rm=T) < minSamp
+    names(subM) <- rownames(covgWGBSage)
     message(round(100*sum(subM)/length(subM)), "% of regions lack ",
             "sufficient coverage in enough samples to impute.")
 
@@ -103,9 +104,13 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
 
   # drop samples if needed
   droppedSamples <- c()
+  droppedRegions <- c()
   if (dropBad) {
-    droppedSamples <- colnames(methWGBSage)[pctMissing >= 50] 
-    methWGBSage <- methWGBSage[, pctMissing < 50]
+    droppedSamples <- names(which(pctMissing >= 50))
+    keptSamples <- setdiff(colnames(x), droppedSamples)
+    droppedRegions <- names(which(subM)) 
+    keptRegions <- setdiff(names(horvath), droppedRegions)
+    methWGBSage <- methWGBSage[keptRegions, keptSamples] 
   }
   
   # impute, if requested, any sites with insufficient coverage
@@ -127,6 +132,7 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
   res <- list(call=sys.call(), 
               percentRegionsMissing=pctMissing,
               droppedSamples=droppedSamples,
+              droppedRegions=droppedRegions,
               unimputableRegion=subM, 
               intercept=intercept,
               meth=methWGBSage, 

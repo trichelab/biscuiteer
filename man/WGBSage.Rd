@@ -25,7 +25,7 @@ WGBSage(x, pad = 15, minCovg = 5, impute = TRUE, minSamp = 5,
 
 \item{genome}{genome to use as reference, if no genome(x) is set (NULL)}
 
-\item{dropBad}{drop samples with > 50% missing before imputation? (FALSE)}
+\item{dropBad}{drop rows/cols with > half missing pre-imputation? (FALSE)}
 
 \item{...}{arguments to be passed to impute.knn, such as rng.seed}
 }
