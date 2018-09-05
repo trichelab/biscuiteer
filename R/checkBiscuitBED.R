@@ -94,7 +94,7 @@ checkBiscuitBED <- function(BEDfile,
     # {{{ no header; guesswork
     message(paste0(BEDfile," has no header (!) and is "), appendLF=FALSE)
     preamble <- read.table(tbx$path, sep="\t", na.strings=".", nrows=3)
-    if (is.null(merged)) merged <- grepl("merged", BEDfile, ignore=TRUE)
+    if (is.null(merged)) merged <- grepl("(MERGE|MCG)", BEDfile, ignore=TRUE)
     message(ifelse(merged, "merged", "unmerged"), " data.") 
     cols <- c("chr","start","end")
     colsPerSample <- ifelse(merged, 3, 2)
