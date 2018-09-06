@@ -2,16 +2,20 @@
 % Please edit documentation in R/biscuitMetadata.R
 \name{biscuitMetadata}
 \alias{biscuitMetadata}
-\title{metadata about a Biscuit run using its vcfHeader metadata element}
+\alias{getBiscuitMetadata}
+\title{metadata about a Biscuit run using its vcfHeader metadata element, or its VCF}
 \usage{
-biscuitMetadata(x)
+biscuitMetadata(x = NULL, VCF = NULL)
 }
 \arguments{
-\item{x}{a bsseq object with a $vcfHeader element}
+\item{x}{a bsseq object with a $vcfHeader element (or NULL)}
+
+\item{VCF}{a tabix'ed VCF file (can just be the header) whence x is derived}
 }
 \value{
-information about the run
+\preformatted{ information about the run
+}
 }
 \description{
-metadata about a Biscuit run using its vcfHeader metadata element
+metadata about a Biscuit run using its vcfHeader metadata element, or its VCF
 }

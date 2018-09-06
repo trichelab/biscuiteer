@@ -7,7 +7,7 @@
 simplifySampleNames(x)
 }
 \arguments{
-\item{x}{a BSseq (or any SummarizedExperiment-derived) object}
+\item{x}{a SummarizedExperiment-like object, or a character vector}
 }
 \value{
 \preformatted{   the same object but with simplified sample names
