@@ -13,6 +13,7 @@
 #' @param how         how to load the data? "data.table" (default) or "readr"
 #' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
 #' @param sparse      are there a lot of zero-coverage sites? (TRUE, usually)
+#' @param merged      are CpG sites merged? (default NULL; figure out from BED)
 #' @param chunkSize   number of rows before readr reading becomes chunked (1e6)
 #' @param chr         load a specific chromosome (to rbind() later)? (NULL)
 #' 
@@ -36,12 +37,14 @@ read.biscuit <- function(BEDfile,
                          how=c("data.table","readr"),
                          hdf5=FALSE, 
                          sparse=TRUE,
+                         merged=NULL, 
                          chunkSize=1e6, 
                          chr=NULL) { 
 
   how <- match.arg(how)
   params <- checkBiscuitBED(BEDfile=BEDfile, VCFfile=VCFfile, how=how, chr=chr,
-                            sampleNames=sampleNames, chunk=chunkSize, hdf5=hdf5)
+                            sampleNames=sampleNames, chunk=chunkSize, hdf5=hdf5,
+                            merged=merged)
   message("Reading ", ifelse(params$merged, "merged", "unmerged"), 
           " input from ", params$tbx$path, "...")
 

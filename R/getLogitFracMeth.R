@@ -10,6 +10,7 @@
 #' @param minCov      minimum read coverage for landmarking samples (3)
 #' @param minSamp     minimum landmark samples with >= minCov (2)
 #' @param k           pseudoreads for smoothing (0.1)
+#' @param r           regions to collapse over (default is NULL, do it by CpG)
 #' 
 #' @return            smoothed logit(M/Cov) matrix with coordinates as row names
 #'
@@ -19,23 +20,44 @@
 #' @import            bsseq
 #'
 #' @export
-getLogitFracMeth <- function(x, minCov=3, minSamp=2, k=0.1) {
+getLogitFracMeth <- function(x, minCov=3, minSamp=2, k=0.1, r=NULL) {
 
-  # do any loci in the object have enough read coverage in enough samples? 
-  usable <- (DelayedMatrixStats::rowSums2(getCoverage(x) >= minCov) >= minSamp)
-  if (!any(usable)) stop("No usable CpG loci ( >= minCov in >= minSamp )!")
+  # do any loci/regions have enough read coverage in enough samples? 
+  if (!is.null(r) && is(r, "GenomicRanges")) {
+    covgs <- getCoverage(x, sort(r), type="Cov", what="perRegionTotal")
+  } else { 
+    covgs <- getCoverage(x, type="Cov", what="perBase")
+  } 
+
+  usable <- DelayedMatrixStats::rowSums2(covgs >= minCov) >= minSamp
+  if (!any(usable)) stop("No usable loci/regions ( >= minCov in >= minSamp )!")
     
   # construct a subset of the overall BSseq object with smoothed mvalues 
-  getSmoothedLogitFrac(subset(x, usable), k=k, minCov=minCov)
+  if (!is.null(r) && is(r, "GenomicRanges")) {
+    getSmoothedLogitFrac(x, k=k, minCov=minCov, r=subset(sort(r), usable))
+  } else { 
+    getSmoothedLogitFrac(subset(x, usable), k=k, minCov=minCov)
+  } 
 
 }
 
 # helper fn
-getSmoothedLogitFrac <- function(x, k=0.1, minCov=3, maxFrac=0.5) {
+getSmoothedLogitFrac <- function(x, k=0.1, minCov=3, maxFrac=0.5, r=NULL) {
 
-  res <- logit((getCoverage(x, type="M") + k) / (getCoverage(x) + k + k))
-  rownames(res) <- as.character(granges(x))
-  makeNA <- getCoverage(x) < minCov 
+  if (!is.null(r) && is(r, "GenomicRanges")) {
+    M <- getCoverage(x, sort(r), type="M", what="perRegionTotal")
+    U <- getCoverage(x, sort(r), type="Cov", what="perRegionTotal") - M 
+    rnames <- as.character(sort(r))
+  } else { 
+    M <- getCoverage(x, type="M", what="perBase")
+    U <- getCoverage(x, type="Cov", what="perBase") - M 
+    rnames <- as.character(granges(x))
+  } 
+
+  res <- logit((M + k) / ((M + k) + (U + k))) 
+  rownames(res) <- rnames 
+
+  makeNA <- ((M + U) < minCov)
   maxPct <- paste0(100 * maxFrac, "%")
   tooManyNAs <- (DelayedMatrixStats::colSums2(makeNA)/nrow(x)) > maxFrac
   if (any(tooManyNAs)) {

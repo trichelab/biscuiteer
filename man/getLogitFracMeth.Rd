@@ -5,7 +5,7 @@
 \alias{getMvals}
 \title{helper function for compartment inference (shrink-by-smoothing logit frac5mC)}
 \usage{
-getLogitFracMeth(x, minCov = 3, minSamp = 2, k = 0.1)
+getLogitFracMeth(x, minCov = 3, minSamp = 2, k = 0.1, r = NULL)
 }
 \arguments{
 \item{x}{a BSseq object with methylated and total reads}
@@ -15,6 +15,8 @@ getLogitFracMeth(x, minCov = 3, minSamp = 2, k = 0.1)
 \item{minSamp}{minimum landmark samples with >= minCov (2)}
 
 \item{k}{pseudoreads for smoothing (0.1)}
+
+\item{r}{regions to collapse over (default is NULL, do it by CpG)}
 }
 \value{
 \preformatted{       smoothed logit(M/Cov) matrix with coordinates as row names
