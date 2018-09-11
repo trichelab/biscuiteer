@@ -49,8 +49,8 @@ WGBSage <- function(x, model=c("horvath","shrunk","hannum","skinandblood"),
   }
 
   # get the requested model (a List with regions, intercept, and a cleanup fn
-  clock <- getClockModel(model=model, padding=padding, genome=g,
-                         useENSR=useENSR, useHMMI=useHMMI)
+  clock <- getClock(model=model, padding=padding, genome=g,
+                    useENSR=useENSR, useHMMI=useHMMI)
  
   # assess coverage (since this affects the precision of estimates)
   message("Assessing coverage across age-associated regions...") 
