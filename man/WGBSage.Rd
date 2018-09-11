@@ -2,26 +2,28 @@
 % Please edit documentation in R/WGBSage.R
 \name{WGBSage}
 \alias{WGBSage}
-\title{Guess ages with a modified Horvath (Genome Biology, 2013) algorithm}
+\title{Guess ages using various Horvath-style (Genome Biology, 2012) 'clock' models}
 \usage{
-WGBSage(x, pad = 15, minCovg = 5, impute = TRUE, minSamp = 5,
-  shrink = FALSE, useENSR = FALSE, genome = NULL, dropBad = FALSE,
-  ...)
+WGBSage(x, model = c("horvath", "shrunk", "hannum", "skinandblood"),
+  padding = 15, useENSR = FALSE, useHMMI = FALSE, minCovg = 5,
+  impute = FALSE, minSamp = 5, genome = NULL, dropBad = FALSE, ...)
 }
 \arguments{
 \item{x}{a BSseq object (must have assays named \code{M} and \code{Cov})}
 
-\item{pad}{how many bases to pad the target CpG by (default is 15)}
+\item{model}{which model ("horvath","shrunk","hannum","skinandblood")}
+
+\item{padding}{how many bases +/- to pad the target CpG by (default is 15)}
+
+\item{useENSR}{use ENSEMBL regulatory region bounds instead of CpGs (FALSE)}
+
+\item{useHMMI}{use HMM CpG island boundaries instead of padded CpGs (FALSE)}
 
 \item{minCovg}{minimum regional read coverage desired to estimate 5mC (5)}
 
-\item{impute}{use k-NN imputation to fill in low-coverage regions? (TRUE)}
+\item{impute}{use k-NN imputation to fill in low-coverage regions? (FALSE)}
 
 \item{minSamp}{minimum number of non-NA samples to perform imputation (5)}
-
-\item{shrink}{use shrunken version of Horvath's coefs & intercept (FALSE)}
-
-\item{useENSR}{use ENSEMBL regulatory region bounds instead of CpGs (FALSE)}
 
 \item{genome}{genome to use as reference, if no genome(x) is set (NULL)}
 
@@ -35,9 +37,21 @@ WGBSage(x, pad = 15, minCovg = 5, impute = TRUE, minSamp = 5,
 }
 \description{
 Note: the accuracy of the prediction will increase or decrease depending on
-how the various parameters are set by the user. This is NOT a hands-off
+how various \link{hyper}parameters are set by the user. This is NOT a hands-off
 procedure, and the defaults are only a starting point for exploration. It
-will not be uncommon to tune \code{pad}, \code{minCovg}, and \code{minSamp} for each WGBS
-or \link{e}RRBS experiment (and the latter may be impacted by whether dupes are
-removed prior to importing data). Please consider yourself forewarned!
+will not be uncommon to tune \code{padding}, \code{minCovg}, and \code{minSamp} for each
+WGBS or RRBS experiment (and the latter may be impacted by whether dupes are
+removed prior to importing data). Consider yourself forewarned. In the near
+future we may add support for arbitrary region-coefficient inputs and result
+transformation functions, which of course will just make the problems worse.
+}
+\details{
+Also, please cite the appropriate papers for the Epigenetic Clock(s) you use:
+
+For the 'horvath' or 'shrunk' clocks, cite Horvath, Genome Biology 2012.
+For the 'hannum' clock, cite Hannum et al, Molecular Cell 2013.
+For the 'skinandblood' clock, cite Horvath et al, Aging 2018.
+
+Last but not least, keep track of the parameters YOU used for YOUR estimates.
+The \code{call} element in the returned list of results is for this exact purpose.
 }
