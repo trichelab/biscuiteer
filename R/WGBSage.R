@@ -100,9 +100,10 @@ WGBSage <- function(x, model=c("horvath","shrunk","hannum","skinandblood"),
   keep <- (rowSums2(is.na(methWGBSage)) < 1)
   if (!all(keep)) methWGBSage <- methWGBSage[which(keep), ] 
 
+  names(clock$gr) <- as.character(granges(clock$gr))
   coefs <- clock$gr[rownames(methWGBSage)]$score
   names(coefs) <- rownames(methWGBSage)
-  agePredRaw <- (clock$intercept + (t(methWGBSage) %*% coefs)[,1])
+  agePredRaw <- (clock$intercept + (t(methWGBSage) %*% coefs))
   res <- list(call=sys.call(), 
               droppedSamples=droppedSamples,
               droppedRegions=droppedRegions,
