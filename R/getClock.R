@@ -59,8 +59,9 @@ getClock <- function(model=c("horvath","horvathshrunk","hannum","skinandblood"),
   
   # use islands?
   if (useHMMI) {
-    data(list=paste0("HMM_CpG_islands.", g), character.only=TRUE) 
-    HMMIs <- get(paste0("HMM_CpG_islands.", g))
+    hmmdat <- paste0("HMM_CpG_islands.", g)
+    data(list=hmmdat)
+    HMMIs <- get(hmmdat)
     HMMIed <- names(subset(gr, !is.na(HMMI)))
     ranges(gr)[HMMIed] <- ranges(HMMIs[gr[HMMIed]$HMMI])
     gr$HMMI <- NULL # not really necessary post-expansion
@@ -68,8 +69,9 @@ getClock <- function(model=c("horvath","horvathshrunk","hannum","skinandblood"),
 
   # use ENSRs?
   if (useENSR) {
-    data(list=paste0("ENSR_subset.", g), character.only=TRUE) 
-    ENSRs <- get(paste0("ENSR_subset.", g))
+    ensrdat <- paste0("ENSR_subset.", g)
+    data(list=ensrdat)
+    ENSRs <- get(ensrdat)
     ENSRed <- names(subset(gr, !is.na(ENSR)))
     ranges(gr)[ENSRed] <- ranges(ENSRs[gr[ENSRed]$ENSR])
   }
@@ -77,7 +79,7 @@ getClock <- function(model=c("horvath","horvathshrunk","hannum","skinandblood"),
   # fix seqinfo
   genome(gr) <- g
   seqdat <- paste0("seqinfo.", g)
-  data(list=seqdat, character.only=TRUE) 
+  data(list=seqdat)
   seqinfo(gr) <- get(seqdat)[seqlevels(gr)] 
 
   # switch naming styles if GRCh37 or GRCh38
