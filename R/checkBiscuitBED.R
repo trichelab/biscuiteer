@@ -113,7 +113,7 @@ checkBiscuitBED <- function(BEDfile,
 
   # by now, we know what our sampleNames are, one way or another...
   if (is(sampleNames, "DataFrame") | is(sampleNames, "data.frame")) {
-    if (length(sampleNames) != nSamples) {
+    if (ncol(sampleNames) != nSamples) {
       message("The length of param$sampleNames differs from param$nSamples.")
       stop("Try setting the value of merged (TRUE or FALSE) and rerunning.")
     }

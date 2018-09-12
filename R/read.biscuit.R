@@ -51,8 +51,8 @@ read.biscuit <- function(BEDfile,
   if (params$how == "data.table") {
     # {{{
     select <- grep("\\.context", params$colNames, invert=TRUE)
-    tbl <- fread(paste("gunzip -c", params$tbx$path), # for mac compatibility
-                 sep="\t", sep2=",", fill=TRUE, na.string=".", select=select)
+    tbl <- fread(.fixInput(params$tbx$path), sep="\t", sep2=",", fill=TRUE,
+                 na.string=".", select=select)
     if (params$hasHeader == FALSE) names(tbl) <- params$colNames[select]
     names(tbl) <- sub("^#", "", names(tbl))
     # }}}
@@ -96,3 +96,17 @@ read.biscuit <- function(BEDfile,
 
 #' @export
 load.biscuit <- read.biscuit
+
+
+# helper fn
+.fixInput <- function(x, mac=FALSE) { 
+  if (grepl("gz$", x)) return(paste(ifelse(mac, "gzcat", "zcat"), x))
+  if (grepl("bz2$", x)) return(paste("bzcat", x))
+  return(x)
+} 
+
+# helper fn
+.addGenome <- function(x, genome) { 
+  genome(rowRanges(x)) <- genome
+  return(x) 
+}
