@@ -1,19 +1,31 @@
-#' Guess ages with a modified Horvath (Genome Biology, 2013) algorithm
+#' Guess ages using various Horvath-style (Genome Biology, 2012) 'clock' models
 #'
 #' Note: the accuracy of the prediction will increase or decrease depending on
-#' how the various parameters are set by the user. This is NOT a hands-off 
+#' how various [hyper]parameters are set by the user. This is NOT a hands-off 
 #' procedure, and the defaults are only a starting point for exploration. It
-#' will not be uncommon to tune `pad`, `minCovg`, and `minSamp` for each WGBS
-#' or [e]RRBS experiment (and the latter may be impacted by whether dupes are 
-#' removed prior to importing data). Please consider yourself forewarned!
+#' will not be uncommon to tune `padding`, `minCovg`, and `minSamp` for each
+#' WGBS or RRBS experiment (and the latter may be impacted by whether dupes are
+#' removed prior to importing data). Consider yourself forewarned. In the near
+#' future we may add support for arbitrary region-coefficient inputs and result
+#' transformation functions, which of course will just make the problems worse.
+#' 
+#' Also, please cite the appropriate papers for the Epigenetic Clock(s) you use:
+#'
+#' For the 'horvath' or 'shrunk' clocks, cite Horvath, Genome Biology 2012.
+#' For the 'hannum' clock, cite Hannum et al, Molecular Cell 2013. 
+#' For the 'skinandblood' clock, cite Horvath et al, Aging 2018. 
+#' 
+#' Last but not least, keep track of the parameters YOU used for YOUR estimates.
+#' The `call` element in the returned list of results is for this exact purpose.
 #' 
 #' @param   x       a BSseq object (must have assays named `M` and `Cov`)
-#' @param   pad     how many bases to pad the target CpG by (default is 15)
-#' @param   minCovg minimum regional read coverage desired to estimate 5mC (5)
-#' @param   impute  use k-NN imputation to fill in low-coverage regions? (TRUE) 
-#' @param   minSamp minimum number of non-NA samples to perform imputation (5)
-#' @param   shrink  use shrunken version of Horvath's coefs & intercept (FALSE)
+#' @param   model   which model ("horvath","shrunk","hannum","skinandblood")
+#' @param   padding how many bases +/- to pad the target CpG by (default is 15)
 #' @param   useENSR use ENSEMBL regulatory region bounds instead of CpGs (FALSE)
+#' @param   useHMMI use HMM CpG island boundaries instead of padded CpGs (FALSE)
+#' @param   minCovg minimum regional read coverage desired to estimate 5mC (5)
+#' @param   impute  use k-NN imputation to fill in low-coverage regions? (FALSE)
+#' @param   minSamp minimum number of non-NA samples to perform imputation (5)
 #' @param   genome  genome to use as reference, if no genome(x) is set (NULL) 
 #' @param   dropBad drop rows/cols with > half missing pre-imputation? (FALSE) 
 #' @param   ...     arguments to be passed to impute.knn, such as rng.seed
@@ -23,8 +35,10 @@
 #' @import  impute
 #' 
 #' @export
-WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE, 
-                    useENSR=FALSE, genome=NULL, dropBad=FALSE, ...) { 
+WGBSage <- function(x, model=c("horvath","shrunk","hannum","skinandblood"),
+                    padding=15, useENSR=FALSE, useHMMI=FALSE, 
+                    minCovg=5, impute=FALSE, minSamp=5, genome=NULL, 
+                    dropBad=FALSE, ...) { 
 
   # sort out assemblies
   g <- unique(genome(x))
@@ -33,65 +47,26 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
     message("genome(x) is set to ",unique(genome(x)),", which is unsupported.")
     stop("Provide a `genome` argument, or set genome(x) manually, to proceed.")
   }
-  if (!shrink) { 
-    data("horvathAge", package="biscuiteer") 
-    horvath <- horvathAge[[g]]
-    intercept <- horvathAge$intercept 
-  } else { 
-    data("horvathAgeShrunken", package="biscuiteer") 
-    horvath <- horvathAgeShrunken[[g]]
-    intercept <- horvathAgeShrunken$intercept 
-  } 
-  seqlevelsStyle(horvath) <- seqlevelsStyle(x)
 
-  # change padding if requested
-  stopifnot(pad > 0)
-  if (pad > 1) horvath <- trim(resize(horvath, pad*2, fix="center"))
-  if (useENSR) {
-    hasENSR <- which(!is.na(horvath$ENSR))
-    message("Using ENSEMBL boundaries for ", length(hasENSR), " regions...") 
-    start(horvath[hasENSR]) <- horvath[hasENSR]$ENSRstart
-    end(horvath[hasENSR]) <- horvath[hasENSR]$ENSRend
-  }
-
+  # get the requested model (a List with regions, intercept, and a cleanup fn
+  clock <- getClockModel(model=model, padding=padding, genome=g,
+                         useENSR=useENSR, useHMMI=useHMMI)
+ 
   # assess coverage (since this affects the precision of estimates)
   message("Assessing coverage across age-associated regions...") 
-  covgWGBSage <- getCoverage(x, regions=horvath, what="perRegionTotal")
-  rownames(covgWGBSage) <- horvath$name
+  covgWGBSage <- getCoverage(x, regions=clock$gr, what="perRegionTotal")
+  rownames(covgWGBSage) <- names(clock$gr)
   NAs <- which(covgWGBSage < minCovg, arr.ind=TRUE)
 
   # for sample/region dropping
-  pctMissing <- rep(0, ncol(x))
-  names(pctMissing) <- colnames(x)
   subM <- rep(FALSE, nrow(covgWGBSage))
   names(subM) <- rownames(covgWGBSage)
 
   # tabulate for above
   if (nrow(NAs) > 0) {
-
-    # warn the user if insufficient coverage is detected across a region(s)
-    bySample <- split(horvath$name[NAs[,1]], sampleNames(x)[NAs[, 2]])
-    message("Regions with coverage < ", minCovg, " in each sample:")
-    pctMissing <- round((sapply(bySample, length)/length(horvath))*100)
-    for (i in names(pctMissing)) message(i, ": ", pctMissing[i], "%")
-
-    # warn the user if insufficient samples exist to impute across region(s) 
-    subM <- DelayedMatrixStats::rowSums2(covgWGBSage>=minCovg,na.rm=T) < minSamp
-    names(subM) <- rownames(covgWGBSage)
-    message(round(100*sum(subM)/length(subM)), "% of regions lack ",
-            "sufficient coverage in enough samples to impute.")
-
-    # is there a significant imbalance in positive/negative signes?
-    tst <- fisher.test(table(horvath$sign, subM))
-    message("Fisher's exact test (assessing sign bias due to missingness):")
-    message("Odds ratio: ", round(tst$estimate,3), 
-            " (p-value: ", round(tst$p.value,3), ") -- ",
-            ifelse(tst$p.value < 0.1, "likely", "unlikely"), 
-            " to significantly bias estimates.")
-
     # either way, probably a good idea to fix stuff 
-    message("Raise `pad` (", pad, "), lower `minCovg` (", minCovg, "), ",
-            "set `impute` and/or `useENSR` to TRUE.")
+    message("You have NAs. Raise `padding` (",padding,"), lower `minCovg` (",
+            minCovg,"), set `useHMMI` and/or `useENSR`")
   } else { 
     message("All regions in all samples appear to be sufficiently covered.") 
   }
@@ -117,37 +92,19 @@ WGBSage <- function(x, pad=15, minCovg=5, impute=TRUE, minSamp=5, shrink=FALSE,
   
   # impute, if requested, any sites with insufficient coverage
   if (impute) methWGBSage <- impute.knn(methWGBSage, k=minSamp, ...)$data
-
   keep <- (rowSums2(is.na(methWGBSage)) < 1)
-  if (!all(keep)) {
-    tst <- fisher.test(table(horvath$sign, ifelse(keep, "+", "-")))
-    message("Fisher's exact test (assessing sign bias due to dropped regions):")
-    message("Odds ratio: ", round(tst$estimate,3), 
-            " (p-value: ", round(tst$p.value,3), ") -- ",
-            ifelse(tst$p.value < 0.1, "likely", "unlikely"), 
-            " to significantly bias estimates.")
-    methWGBSage <- methWGBSage[which(keep), ] 
-  }
+  if (!all(keep)) methWGBSage <- methWGBSage[which(keep), ] 
 
-  fixAge <- function(age, adult.age=20) { 
-    ifelse(age < 0, 
-           (1 + adult.age) * exp(age) - 1, 
-           (1 + adult.age) * age + adult.age)
-  } 
-
-  coefs <- horvath[rownames(methWGBSage)]$score
+  coefs <- clock$gr[rownames(methWGBSage)]$score
   names(coefs) <- rownames(methWGBSage)
-  agePredRaw <- (intercept + (t(methWGBSage) %*% coefs)[,1])
-
+  agePredRaw <- (clock$intercept + (t(methWGBSage) %*% coefs)[,1])
   res <- list(call=sys.call(), 
-              percentRegionsMissing=pctMissing,
               droppedSamples=droppedSamples,
               droppedRegions=droppedRegions,
-              unimputableRegion=subM, 
               intercept=intercept,
               meth=methWGBSage, 
               coefs=coefs,
-              age=fixAge(agePredRaw))
+              age=clock$cleanup(agePredRaw))
   return(res)
     
 }
