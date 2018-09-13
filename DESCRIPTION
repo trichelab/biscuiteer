@@ -4,7 +4,7 @@ Title: a bunch of convenience functions for Biscuit
 Description: A test harness for bsseq loading of Biscuit output, summarization
              of WGBS data over defined regions and in mappable samples, with or
              without imputation, dropping of mostly-NA rows, age estimates, etc.
-Version: 0.9.61
+Version: 0.9.63
 Date: 2018-09-11
 Author: Tim Triche, Jr. [aut, cre], Wanding Zhou [aut], Lyong Heo [ctb]
 Maintainer: Tim Triche, Jr. <tim.triche@vai.org>

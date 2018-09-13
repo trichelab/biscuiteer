@@ -32,7 +32,7 @@ WGBSage(x, model = c("horvath", "shrunk", "hannum", "skinandblood"),
 \item{...}{arguments to be passed to impute.knn, such as rng.seed}
 }
 \value{
-\preformatted{     a list: call, methylation estimates, coefs, age estimates 
+\preformatted{     a list: call, methylation estimates, coefs, age (estimates)
 }
 }
 \description{
@@ -54,4 +54,8 @@ For the 'skinandblood' clock, cite Horvath et al, Aging 2018.
 
 Last but not least, keep track of the parameters YOU used for YOUR estimates.
 The \code{call} element in the returned list of results is for this exact purpose.
+If you need to recover the GRanges object used to average (or impute) DNAme
+values for the model, try \code{as.character(rownames(result$meth))} on a result.
+The coefficients for each of these regions are stored in result$coefs, and
+the age estimates are stored in result$age (named, in case dropBad == TRUE).
 }
