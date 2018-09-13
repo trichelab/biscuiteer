@@ -84,10 +84,11 @@ read.biscuit <- function(BEDfile,
   tbl[, 2] <- tbl[, 2] + 1 # FIXME: can this be done automagically? 
   message("Loaded ", params$tbx$path, ". Creating bsseq object...")
   if (params$hdf5) {
-    res <- .addGenome(makeBSseq_hdf5(tbl, params, simplify=simplify), genome)
-  } else { 
-    res <- .addGenome(makeBSseq(tbl, params, simplify=simplify), genome)
+    res <- makeBSseq_hdf5(tbl, params, simplify=simplify)
+  } else {
+    res <- makeBSseq(tbl, params, simplify=simplify)
   }
+  genome(rowRanges(res)) <- genome
   metadata(res)$vcfHeader <- params$vcfHeader
   return(res)
 
