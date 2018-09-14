@@ -10,12 +10,15 @@
 #' specificity and user-supplied possibilities exist). 
 #' 
 #' The return value of the function is an idiotically simple measure, comprised
-#' of hyper5mC/hypo5mC (both the components and the ratio). That's all: no more
-#' and no less. By providing different targets a user can customize as needed.
+#' of hyperCGI/hypoPMD (both the components and the ratio). The PMD "score" is 
+#' a base-coverage-weighted average of losses to solo-WCGW bases within PMDs;
+#' the CGI score is similarly base-coverage-weighted but across HMM CGI CpGs. 
+#' 
+#' By providing different targets a user can customize as needed.
 #' 
 #' @param x       a BSseq object
-#' @param CpGi    a GRanges of hypermethylation targets, or NULL (default CpGis)
-#' @param WCGWs   a GRanges of hypomethylation targets, or NULL (deafult WCGWs)
+#' @param CGIs    a GRanges of hypermethylation targets, or NULL (default CGIs)
+#' @param WCGW    a GRanges of hypomethylation targets, or NULL (default WCGW)
 #'
 #' @return        a list: `hyper`, `hypo`, and `ratio` (data.frame) by sample
 #' 
@@ -23,7 +26,7 @@
 #' @import GenomeInfoDb
 #' 
 #' @export 
-CpGindex <- function(x, CpGi=NULL, WCGWs=NULL) {
+CpGindex <- function(x, CGIs=NULL, WCGW=NULL, PMDs=NULL) {
 
   if (is.null(unique(genome(x)))) { 
     stop("You must assign a genome to your BSseq object")
@@ -34,25 +37,25 @@ CpGindex <- function(x, CpGi=NULL, WCGWs=NULL) {
     else stop("Only human genomes (hg19/GRCh37, hg38/GRCh38) are supported ATM")
   } 
 
-  if (is.null(CpGi)) {
+  if (is.null(CGIs)) {
     dat <- paste0("HMM_CpG_islands.", suffix)
     message("Loading ", dat, "...") 
     data(list=dat, package="biscuiteer") 
-    CpGi <- get(dat)
-    seqlevelsStyle(CpGi) <- seqlevelsStyle(x)
+    CGIs <- get(dat)
+    seqlevelsStyle(CGIs) <- seqlevelsStyle(x)
   }
   message("Computing hypermethylation indices...") 
-  hyper <- getMeth(x, regions=CpGi, type="raw", what="perRegion")
+  hyper <- getMeth(x, regions=CGIs, type="raw", what="perRegion")
 
-  if (is.null(WCGWs)) { 
+  if (is.null(WCGW)) { 
     dat <- paste0("Zhou_solo_WCGW_inCommonPMDs.", suffix)
     message("Loading ", dat, "...") 
     data(list=dat, package="biscuiteer") 
-    WCGWs <- get(dat) 
-    seqlevelsStyle(WCGWs) <- seqlevelsStyle(x)
+    WCGW <- get(dat) 
+    seqlevelsStyle(WCGW) <- seqlevelsStyle(x)
   }
   message("Computing hypomethylation indices...") 
-  hypo <- getMeth(x, regions=WCGWs, type="raw", what="perRegion")
+  hypo <- getMeth(x, regions=WCGW, type="raw", what="perRegion")
 
   message("Computing ratio...") 
   ratio <- DataFrame(hyper=DelayedArray::colMeans(hyper, na.rm=TRUE),

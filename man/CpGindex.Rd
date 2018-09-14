@@ -4,14 +4,14 @@
 \alias{CpGindex}
 \title{simple index of hypermethylation-at-CpG-islands vs hypomethylation-in-WCGWs}
 \usage{
-CpGindex(x, CpGi = NULL, WCGWs = NULL)
+CpGindex(x, CGIs = NULL, WCGW = NULL, PMDs = NULL)
 }
 \arguments{
 \item{x}{a BSseq object}
 
-\item{CpGi}{a GRanges of hypermethylation targets, or NULL (default CpGis)}
+\item{CGIs}{a GRanges of hypermethylation targets, or NULL (default CGIs)}
 
-\item{WCGWs}{a GRanges of hypomethylation targets, or NULL (deafult WCGWs)}
+\item{WCGW}{a GRanges of hypomethylation targets, or NULL (default WCGW)}
 }
 \value{
 \preformatted{   a list: `hyper`, `hypo`, and `ratio` (data.frame) by sample
@@ -29,6 +29,9 @@ specificity and user-supplied possibilities exist).
 }
 \details{
 The return value of the function is an idiotically simple measure, comprised
-of hyper5mC/hypo5mC (both the components and the ratio). That's all: no more
-and no less. By providing different targets a user can customize as needed.
+of hyperCGI/hypoPMD (both the components and the ratio). The PMD "score" is
+a base-coverage-weighted average of losses to solo-WCGW bases within PMDs;
+the CGI score is similarly base-coverage-weighted but across HMM CGI CpGs.
+
+By providing different targets a user can customize as needed.
 }
