@@ -19,6 +19,7 @@
 #' @param x       a BSseq object
 #' @param CGIs    a GRanges of hypermethylation targets, or NULL (default CGIs)
 #' @param WCGW    a GRanges of hypomethylation targets, or NULL (default WCGW)
+#' @param PMDs    a GRanges of hypomethylation regions, or NULL (default PMDs)
 #'
 #' @return        a list: `hyper`, `hypo`, and `ratio` (data.frame) by sample
 #' 
@@ -44,6 +45,8 @@ CpGindex <- function(x, CGIs=NULL, WCGW=NULL, PMDs=NULL) {
     CGIs <- get(dat)
     seqlevelsStyle(CGIs) <- seqlevelsStyle(x)
   }
+
+  # score by region then aggregate 
   message("Computing hypermethylation indices...") 
   hyper <- getMeth(x, regions=CGIs, type="raw", what="perRegion")
 
@@ -54,9 +57,19 @@ CpGindex <- function(x, CGIs=NULL, WCGW=NULL, PMDs=NULL) {
     WCGW <- get(dat) 
     seqlevelsStyle(WCGW) <- seqlevelsStyle(x)
   }
+  if (is.null(PMDs)) {
+    dat <- paste0("PMDs", suffix)
+    message("Loading ", dat, "...") 
+    data(list=dat, package="biscuiteer") 
+    PMDs <- get(dat) 
+    seqlevelsStyle(PMDs) <- seqlevelsStyle(x)
+  }
+  
+  # if using actual WCGWs and PMDs, first subset then score then aggregate
   message("Computing hypomethylation indices...") 
   hypo <- getMeth(x, regions=WCGW, type="raw", what="perRegion")
 
+  # FIXME: aggregate & compute
   message("Computing ratio...") 
   ratio <- DataFrame(hyper=DelayedArray::colMeans(hyper, na.rm=TRUE),
                      hypo=DelayedArray::colMeans(hypo, na.rm=TRUE))

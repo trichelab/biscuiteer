@@ -12,6 +12,8 @@ CpGindex(x, CGIs = NULL, WCGW = NULL, PMDs = NULL)
 \item{CGIs}{a GRanges of hypermethylation targets, or NULL (default CGIs)}
 
 \item{WCGW}{a GRanges of hypomethylation targets, or NULL (default WCGW)}
+
+\item{PMDs}{a GRanges of hypomethylation regions, or NULL (default PMDs)}
 }
 \value{
 \preformatted{   a list: `hyper`, `hypo`, and `ratio` (data.frame) by sample
