@@ -61,7 +61,7 @@ WGBSage <- function(x, model=c("horvath","shrunk","hannum","skinandblood"),
   message("Assessing coverage across age-associated regions...") 
   covgWGBSage <- getCoverage(x, regions=clock$gr, what="perRegionTotal")
   rownames(covgWGBSage) <- names(clock$gr)
-  NAs <- which(covgWGBSage < minCovg, arr.ind=TRUE)
+  NAs <- which(as.matrix(covgWGBSage) < minCovg, arr.ind=TRUE)
 
   # for sample/region dropping
   subM <- rep(FALSE, nrow(covgWGBSage))
@@ -70,8 +70,8 @@ WGBSage <- function(x, model=c("horvath","shrunk","hannum","skinandblood"),
   # tabulate for above
   if (nrow(NAs) > 0) {
     # either way, probably a good idea to fix stuff 
-    message("You have NAs. Raise `padding` (",padding,"), lower `minCovg` (",
-            minCovg,"), set `useHMMI` and/or `useENSR`")
+    message("You have NAs. Change `padding` (",padding,"), `minCovg` (",
+            minCovg,"), `useHMMI`, and/or `useENSR`.")
   } else { 
     message("All regions in all samples appear to be sufficiently covered.") 
   }
