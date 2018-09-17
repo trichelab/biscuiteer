@@ -4,26 +4,28 @@
 \alias{CpGindex}
 \title{simple index of hypermethylation-at-CpG-islands vs hypomethylation-in-WCGWs}
 \usage{
-CpGindex(x, CGIs = NULL, WCGW = NULL, PMDs = NULL)
+CpGindex(x, CGIs = NULL, PRCs = NULL, WCGW = NULL, PMDs = NULL)
 }
 \arguments{
 \item{x}{a BSseq object}
 
-\item{CGIs}{a GRanges of hypermethylation targets, or NULL (default CGIs)}
+\item{CGIs}{a GRanges of CpG island regions, or NULL (default is HMM CGIs)}
 
-\item{WCGW}{a GRanges of hypomethylation targets, or NULL (default WCGW)}
+\item{PRCs}{a GRanges of Polycomb targets, or NULL (default H9 bivalent)}
 
-\item{PMDs}{a GRanges of hypomethylation regions, or NULL (default PMDs)}
+\item{WCGW}{a GRanges of solo-WCGW sites, or NULL (default is PMD WCGWs)}
+
+\item{PMDs}{a GRanges of hypomethylating regions, or NULL (default PMDs)}
 }
 \value{
-\preformatted{   a list: `hyper`, `hypo`, and `ratio` (data.frame) by sample
+\preformatted{   a data.frame with columns `hyper`, `hypo`, and `ratio`
 }
 }
 \description{
 The default for this function is to use the HMM-defined CpG islands from
 Hao Wu's paper (Wu, Caffo, Jaffee, Irizarry & Feinberg, Biostatistics 2010)
 as generic "hypermethylation" targets (obviously tissue-specific subsets
-might be more informative on a number of levels, e.g. as bivalent sites),
+might be more informative on a number of levels, e.g. PRC bivalent sites),
 and the solo-WCGW sites within common partially methylated domains from
 Wanding Zhou and Huy Dinh's paper (Zhou, Dinh, et al, Nat Genetics 2018)
 as genetic "hypomethylation" targets (as above, obvious caveats about tissue
@@ -31,9 +33,11 @@ specificity and user-supplied possibilities exist).
 }
 \details{
 The return value of the function is an idiotically simple measure, comprised
-of hyperCGI/hypoPMD (both the components and the ratio). The PMD "score" is
+of hyperCGI/hypoPMD (both components, and the ratio). The PMD "score" is
 a base-coverage-weighted average of losses to solo-WCGW bases within PMDs;
-the CGI score is similarly base-coverage-weighted but across HMM CGI CpGs.
+the CGI score is similarly base-coverage-weighted but across HMM CGI CpGs,
+within polycomb repressor complex sites if provided (by default, hESC PRCs;
+specifically, state 23 in the REMC imputed 25-state, 12-mark model for H9).
 
-By providing different targets a user can customize as needed.
+By providing different targets and/or regions, users can customize as needed.
 }
