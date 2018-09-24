@@ -1,30 +1,71 @@
-#' simple index of hypermethylation-at-CpG-islands vs hypomethylation-in-WCGWs
+#' Measure hypermethylation-at-PRCs-in-CGIs and hypomethylation-at-WCGWs-in-PMDs
 #'
+#' At some point in some conference call somewhere, a collaborator suggested
+#' that a simple index of Polycomb repressor complex (PRC) binding site hyper-
+#' methylation and CpG-poor "partially methylated domain" (PMD) hypomethylation
+#' would be a handy yardstick for both deterministic and stochastic changes 
+#' associated with proliferation, aging, and cancer. This function provides 
+#' such an index by compiling measures of aberrant hyper- and hypo-methylation
+#' along with the ratio of hyper- to hypo-methylation. (The logic for this is 
+#' that while the phenomena tend to occur together, there are many exceptions)
+#' The resulting measures can provide a high-level summary of proliferation-,
+#' aging-, and/or disease-associated changes in DNA methylation across samples.
+#' 
+#' The choice of defaults is fairly straightforward: in 2006, three independent 
+#' groups reported recurrent hypermethylation in cancer at sites marked by both
+#' H3K4me3 (activating) and H3K27me3 (repressive) histone marks in embryonic
+#' stem cells; these became known as "bivalent" sites. The Roadmap Epigenome 
+#' project performed ChIP-seq on hundreds of normal primary tissues and cell 
+#' line results from the ENCODE project to generate a systematic catalog of 
+#' "chromatin states" alongside dozens of whole-genome bisulfite sequencing 
+#' experiments in the same tissues. We used both to generate a default atlas 
+#' of bivalent (Polycomb-associated and transcriptionally-poised) sites from 
+#' H9 human embryonic stem cells which retain low DNA methylation across normal
+#' (non-placental) REMC tissues. In 2018, Zhou and Dinh (Nature Genetics) found
+#' isolated [AT]CG[AT] sites, or "solo-WCGW" motifs, in common PMDs as the most
+#' universal barometer of proliferation- and aging-associated methylation loss 
+#' in mammalian cells, so we use their solo-WCGW sites in common PMDs as the 
+#' default measure for hypomethylation. The resulting CpGindex is a vector of
+#' length 3 for each sample: hypermethylation, hypomethylation, and their ratio.
+#'
+#' We suggest fitting a model for the composition of bulk samples (tumor/normal,
+#' tissue1/tissue2, or whatever is most appropriate) prior to drawing any firm 
+#' conclusions from the results of this function. For example, a mixture of 
+#' two-thirds normal tissue and one-third tumor tissue may produce the same or 
+#' lower degree of hyper/hypomethylation than high-tumor-content cell-free DNA 
+#' samples from the blood plasma of the same patient. Intuition is simply not 
+#' a reliable guide in such situations, which occur with some regularity. If 
+#' orthogonal estimates of purity/composition are available (flow cytometry, 
+#' ploidy, yield of filtered cfDNA), it is a Very Good Idea to include them. 
+#' 
 #' The default for this function is to use the HMM-defined CpG islands from 
 #' Hao Wu's paper (Wu, Caffo, Jaffee, Irizarry & Feinberg, Biostatistics 2010) 
-#' as generic "hypermethylation" targets (obviously tissue-specific subsets 
-#' might be more informative on a number of levels, e.g. PRC bivalent sites),
+#' as generic "hypermethylation" targets inside of "bivalent" (H3K27me3+H3K4me3)
+#' sites (identified in H9 embryonic stem cells & unmethylated across normals),
 #' and the solo-WCGW sites within common partially methylated domains from 
 #' Wanding Zhou and Huy Dinh's paper (Zhou, Dinh, et al, Nat Genetics 2018)
 #' as genetic "hypomethylation" targets (as above, obvious caveats about tissue
-#' specificity and user-supplied possibilities exist). 
+#' specificity and user-supplied possibilities exist, but the defaults are sane
+#' for many purposes, and can be exchanged for whatever targets a user wishes). 
 #' 
-#' The return value of the function is an idiotically simple measure, comprised
-#' of hyperCGI/hypoPMD (both components, and the ratio). The PMD "score" is 
+#' The function returns all three components of the "CpG index", comprised of 
+#' hyperCGI and hypoPMD (i.e. hyper, hypo, and their ratio). The PMD "score" is 
 #' a base-coverage-weighted average of losses to solo-WCGW bases within PMDs;
-#' the CGI score is similarly base-coverage-weighted but across HMM CGI CpGs,
-#' within polycomb repressor complex sites if provided (by default, hESC PRCs; 
-#' specifically, state 23 in the REMC imputed 25-state, 12-mark model for H9).
+#' the PRC score is similarly base-coverage-weighted but across HMM CGI CpGs,
+#' within polycomb repressor complex sites (by default, the subset of state 23
+#' segments in the 25-state, 12-mark ChromImpute model for H9 which have less 
+#' than 10 percent CpG methylation across the CpG-island-overlapping segment in
+#' all normal primary tissues and cells from the Reference Epigenome project). 
 #' 
 #' By providing different targets and/or regions, users can customize as needed.
 #' 
 #' @param x       a BSseq object
 #' @param CGIs    a GRanges of CpG island regions, or NULL (default is HMM CGIs)
-#' @param PRCs    a GRanges of Polycomb targets, or NULL (default H9 bivalent)
+#' @param PRCs    a GRanges of Polycomb targets, or NULL (H9 state 23 low-meth)
 #' @param WCGW    a GRanges of solo-WCGW sites, or NULL (default is PMD WCGWs)
 #' @param PMDs    a GRanges of hypomethylating regions, or NULL (default PMDs) 
 #'
-#' @return        a data.frame with columns `hyper`, `hypo`, and `ratio`
+#' @return        a DataFrame with columns `hyper`, `hypo`, and `ratio`
 #' 
 #' @import DelayedMatrixStats
 #' @import GenomicRanges
@@ -46,7 +87,7 @@ CpGindex <- function(x, CGIs=NULL, PRCs=NULL, WCGW=NULL, PMDs=NULL) {
   # summarize hypermethylation by region 
   message("Computing hypermethylation indices...") 
   if (is.null(CGIs)) CGIs <- .fetch(x, "HMM_CpG_islands", suffix) 
-  if (is.null(PRCs)) PRCs <- .fetch(x, "H9bivalent", suffix)
+  if (is.null(PRCs)) PRCs <- .fetch(x, "H9state23unmeth", suffix)
   hyperMeth <- .subsettedWithin(x, y=CGIs, z=PRCs) 
 
   # summarize hypomethylation (at WCGWs) by region
