@@ -18,7 +18,7 @@ CpGindex(x, CGIs = NULL, PRCs = NULL, WCGW = NULL, PMDs = NULL)
 \item{PMDs}{a GRanges of hypomethylating regions, or NULL (default PMDs)}
 }
 \value{
-\preformatted{   a DataFrame with columns `hyper`, `hypo`, and `ratio`
+\preformatted{   a CpGindex (DataFrame w/cols `hyper`, `hypo`, `ratio` + 2 GRs)
 }
 }
 \description{
@@ -79,6 +79,9 @@ within polycomb repressor complex sites (by default, the subset of state 23
 segments in the 25-state, 12-mark ChromImpute model for H9 which have less
 than 10 percent CpG methylation across the CpG-island-overlapping segment in
 all normal primary tissues and cells from the Reference Epigenome project).
-
 By providing different targets and/or regions, users can customize as needed.
+
+The return value is a CpGindex object, which is really just a DataFrame that
+knows about the regions at which it was summarized, and reminds the user of
+this when they implicitly call the \code{show} method on it.
 }

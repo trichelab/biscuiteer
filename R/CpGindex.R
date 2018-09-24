@@ -56,8 +56,11 @@
 #' segments in the 25-state, 12-mark ChromImpute model for H9 which have less 
 #' than 10 percent CpG methylation across the CpG-island-overlapping segment in
 #' all normal primary tissues and cells from the Reference Epigenome project). 
-#' 
 #' By providing different targets and/or regions, users can customize as needed.
+#'
+#' The return value is a CpGindex object, which is really just a DataFrame that 
+#' knows about the regions at which it was summarized, and reminds the user of 
+#' this when they implicitly call the `show` method on it.
 #' 
 #' @param x       a BSseq object
 #' @param CGIs    a GRanges of CpG island regions, or NULL (default is HMM CGIs)
@@ -65,11 +68,12 @@
 #' @param WCGW    a GRanges of solo-WCGW sites, or NULL (default is PMD WCGWs)
 #' @param PMDs    a GRanges of hypomethylating regions, or NULL (default PMDs) 
 #'
-#' @return        a DataFrame with columns `hyper`, `hypo`, and `ratio`
+#' @return        a CpGindex (DataFrame w/cols `hyper`, `hypo`, `ratio` + 2 GRs)
 #' 
 #' @import DelayedMatrixStats
 #' @import GenomicRanges
 #' @import GenomeInfoDb
+#' @import S4Vectors
 #' 
 #' @export 
 CpGindex <- function(x, CGIs=NULL, PRCs=NULL, WCGW=NULL, PMDs=NULL) {
@@ -97,13 +101,43 @@ CpGindex <- function(x, CGIs=NULL, PRCs=NULL, WCGW=NULL, PMDs=NULL) {
   hypoMeth <- .subsettedWithin(x, y=WCGW, z=PMDs) 
 
   # summarize both via ratios
-  message("Computing ratios...") 
-  res <- data.frame(hyper=hyperMeth, hypo=hypoMeth, ratio=hyperMeth/hypoMeth)
-  attr(res, "hyperMethRegions") <- PRCs
-  attr(res, "hypoMethRegions") <- PMDs
+  message("Computing indices...") 
+  res <- new("CpGindex", 
+             hyperMethRegions=PRCs, 
+             hypoMethRegions=PMDs,
+             DataFrame(hyper=hyperMeth, 
+                       hypo=hypoMeth, 
+                       ratio=hyperMeth/hypoMeth))
   return(res)
 
 }
+
+# class definition
+setClass("CpGindex", contains="DataFrame",
+         slots=c(hyperMethRegions="GenomicRanges", 
+                 hypoMethRegions="GenomicRanges"))
+
+# default show method 
+setMethod("show", "CpGindex", 
+  function(object) {
+    callNextMethod()
+    if (length(slot(object, "hyperMethRegions")) > 0 | 
+        length(slot(object, "hypoMethRegions")) > 0) {
+      cat("  -------\n")
+      cat("This object is just a DataFrame that",
+          "has an idea of where it came from:\n")
+    }
+    if (length(slot(object, "hyperMethRegions")) > 0) { 
+      cat("Hypermethylation was tallied across", 
+          length(slot(object, "hyperMethRegions")), "regions (see", 
+          paste0(as.character(match.call()[[2]]), "@hyperMethRegions)."), "\n")
+    }
+    if (length(slot(object, "hypoMethRegions")) > 0) {
+      cat("Hypomethylation was tallied across", 
+          length(slot(object, "hypoMethRegions")), "regions (see", 
+          paste0(as.character(match.call()[[2]]), "@hypoMethRegions)."), "\n")
+    }
+  }) 
 
 # helper fn
 .fetch <- function(x, prefix, suffix) {
