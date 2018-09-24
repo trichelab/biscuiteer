@@ -53,7 +53,8 @@ metadata(SvNS)$vcfHeader
 
 ### Downstream bits 
 
-Examples of A/B compartment inference, age estimation from WGBS, copy number segmentation, and so forth will appear here presently. For example, a shorthand summary of hypo- and hyper-methylation at some regions commonly associated with each:
+A/B compartment inference, age estimation from WGBS, copy number segmentation, and so forth (examples to appear).    
+To wit, a shorthand summary of hypo- and hyper-methylation at some regions commonly associated with each:
 
 ```R
 SvNS.CpGindex <- CpGindex(SvNS) 
