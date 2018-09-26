@@ -51,8 +51,9 @@ read.biscuit <- function(BEDfile,
   if (params$how == "data.table") {
     # {{{
     select <- grep("\\.context", params$colNames, invert=TRUE)
-    tbl <- fread(paste("gunzip -c", params$tbx$path), # for mac compatibility
-                 sep="\t", sep2=",", fill=TRUE, na.string=".", select=select)
+    cmd <- paste("gunzip -c", params$tbx$path) # for mac compatibility
+    tbl <- fread(cmd=cmd, sep="\t", sep2=",", fill=TRUE, na.string=".", 
+                 select=select)
     if (params$hasHeader == FALSE) names(tbl) <- params$colNames[select]
     names(tbl) <- sub("^#", "", names(tbl))
     # }}}
