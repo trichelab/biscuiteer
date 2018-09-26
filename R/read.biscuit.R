@@ -44,7 +44,7 @@ read.biscuit <- function(BEDfile,
   how <- match.arg(how)
   params <- checkBiscuitBED(BEDfile=BEDfile, VCFfile=VCFfile, how=how, chr=chr,
                             sampleNames=sampleNames, chunk=chunkSize, hdf5=hdf5,
-                            merged=merged)
+                            sparse=sparse, merged=merged)
   message("Reading ", ifelse(params$merged, "merged", "unmerged"), 
           " input from ", params$tbx$path, "...")
 
@@ -81,13 +81,22 @@ read.biscuit <- function(BEDfile,
   }
 
   # shift from 0-based to 1-based coordinates  
-  tbl[, 2] <- tbl[, 2] + 1 # FIXME: can this be done automagically? 
+  tbl[, 2] <- tbl[, 2] + 1 # FIXME: can this be done automagically?
+  
+  # Remove CpG sites with zero-coverage
+  if(!params$sparse) {
+      message("sparse = FALSE")
+      message("Excluding CpG sites with zero-coverage...")
+      tbl <- tbl[rowSums(is.na(tbl)) == 0, ]
+  }
+  
   message("Loaded ", params$tbx$path, ". Creating bsseq object...")
   if (params$hdf5) {
-    res <- .addGenome(makeBSseq_hdf5(tbl, params, simplify=simplify), genome)
-  } else { 
-    res <- .addGenome(makeBSseq(tbl, params, simplify=simplify), genome)
+    res <- makeBSseq_hdf5(tbl, params, simplify=simplify)
+  } else {
+    res <- makeBSseq(tbl, params, simplify=simplify)
   }
+  genome(rowRanges(res)) <- genome
   metadata(res)$vcfHeader <- params$vcfHeader
   return(res)
 

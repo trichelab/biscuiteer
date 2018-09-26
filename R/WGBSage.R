@@ -39,7 +39,7 @@
 #' @import  impute
 #' 
 #' @export
-WGBSage <- function(x, model=c("horvath","shrunk","hannum","skinandblood"),
+WGBSage <- function(x, model=c("horvath","horvathshrunk","hannum","skinandblood"),
                     padding=15, useENSR=FALSE, useHMMI=FALSE, 
                     minCovg=5, impute=FALSE, minSamp=5, genome=NULL, 
                     dropBad=FALSE, ...) { 
