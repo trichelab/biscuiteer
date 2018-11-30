@@ -12,7 +12,8 @@
 #' @param genome      what genome assembly were the runs aligned against? (hg19)
 #' @param how         how to load the data? "data.table" (default) or "readr"
 #' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
-#' @param sparse      are there a lot of zero-coverage sites? (TRUE, usually)
+#' @param hdf5dir     if hdf5 is TRUE, where should HDF5 files be stored? (NULL)
+#' @param sparse      are there a lot of zero-coverage sites? (default is FALSE)
 #' @param merged      are CpG sites merged? (default NULL; figure out from BED)
 #' @param chunkSize   number of rows before readr reading becomes chunked (1e6)
 #' @param chr         load a specific chromosome (to rbind() later)? (NULL)
@@ -36,7 +37,8 @@ read.biscuit <- function(BEDfile,
                          genome="hg19",
                          how=c("data.table","readr"),
                          hdf5=FALSE, 
-                         sparse=TRUE,
+                         hdf5dir=NULL,
+                         sparse=FALSE,
                          merged=NULL, 
                          chunkSize=1e6, 
                          chr=NULL) { 
@@ -99,6 +101,10 @@ read.biscuit <- function(BEDfile,
   }
   genome(rowRanges(res)) <- genome
   metadata(res)$vcfHeader <- params$vcfHeader
+
+  if (hdf5 && !is.null(hdf5dir)) {
+    res <- HDF5Array::saveHDF5SummarizedExperiment(res, dir=hdf5dir)
+  } 
   return(res)
 
 }

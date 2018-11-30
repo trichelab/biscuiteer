@@ -7,8 +7,8 @@
 \usage{
 read.biscuit(BEDfile, VCFfile = NULL, sampleNames = NULL,
   simplify = FALSE, genome = "hg19", how = c("data.table", "readr"),
-  hdf5 = FALSE, sparse = TRUE, merged = NULL, chunkSize = 1e+06,
-  chr = NULL)
+  hdf5 = FALSE, hdf5dir = NULL, sparse = FALSE, merged = NULL,
+  chunkSize = 1e+06, chr = NULL)
 }
 \arguments{
 \item{BEDfile}{the file (compressed or not, doesn't matter) to load}
@@ -25,7 +25,9 @@ read.biscuit(BEDfile, VCFfile = NULL, sampleNames = NULL,
 
 \item{hdf5}{make the object HDF5-backed? (FALSE; use in-core storage)}
 
-\item{sparse}{are there a lot of zero-coverage sites? (TRUE, usually)}
+\item{hdf5dir}{if hdf5 is TRUE, where should HDF5 files be stored? (NULL)}
+
+\item{sparse}{are there a lot of zero-coverage sites? (default is FALSE)}
 
 \item{merged}{are CpG sites merged? (default NULL; figure out from BED)}
 
