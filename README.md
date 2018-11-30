@@ -53,7 +53,53 @@ metadata(SvNS)$vcfHeader
 
 ### Downstream bits 
 
-Examples of A/B compartment inference, age estimation from WGBS, copy number segmentation, and so forth will appear here presently.
+A/B compartment inference, age estimation from WGBS, copy number segmentation, and so forth (examples to appear).    
+To wit, a shorthand summary of hypo- and hyper-methylation at some regions commonly associated with each:
+
+```R
+SvNS.CpGindex <- CpGindex(SvNS) 
+# Computing hypermethylation indices...
+# Loading HMM_CpG_islands.hg19...
+# Loading H9state23unmeth.hg19...
+# Computing hypomethylation indices...
+# Loading PMDs.hg19...
+# Loading Zhou_solo_WCGW_inCommonPMDs.hg19...
+# Computing indices...
+
+SvNS.CpGindex
+# CpGindex with 6 rows and 3 columns
+#                         hyper              hypo              ratio
+#                     <numeric>         <numeric>          <numeric>
+# 052314-2-N 0.0257280213640668  0.85695245688856 0.0300226939747399
+# 052314-2-S 0.0199967524923102 0.778438421291039 0.0256882907438531
+# 052314-3-N 0.0259634680610258 0.866410364528792 0.0299667099148177
+# 052314-3-S 0.0223123531642581 0.862420672085278 0.0258717745138324
+# 060614-2-N 0.0352164982188626 0.858982911495614 0.0409979031568225
+# 060614-2-S  0.026870818880881 0.858271082834001 0.0313080790187569
+#   -------
+# This object is just a DataFrame that has an idea of where it came from:
+# Hypermethylation was tallied across 120 regions (see x@hyperMethRegions). 
+# Hypomethylation was tallied across 15315 regions (see x@hypoMethRegions). 
+
+SvNS.CpGindex@hyperMethRegions
+# GRanges object with 120 ranges and 1 metadata column:
+#       seqnames            ranges strand |              score
+#          <Rle>         <IRanges>  <Rle> |          <numeric>
+#     1     chr1 32230201-32230224      * | 0.0399999991059303
+#     2     chr1 43638401-43638449      * | 0.0399999991059303
+#     3     chr1 44884001-44884005      * | 0.0399999991059303
+#     4     chr1 46860401-46860406      * | 0.0599999986588955
+#     5     chr1 51435801-51436075      * | 0.0499999998137355
+#   ...      ...               ...    ... .                ...
+#   116    chr20   8112392-8112400      * | 0.0299999993294477
+#   117    chr20 17207801-17208191      * | 0.0599999986588955
+#   118    chr22 20004801-20004802      * | 0.0350000001490116
+#   119    chr22 37252601-37252731      * | 0.0599999986588955
+#   120    chr22 43781850-43781952      * | 0.0449999999254942
+#   -------
+#   seqinfo: 21 sequences from hg19 genome
+
+```
 
 
 ### Updating documentation

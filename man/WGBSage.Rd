@@ -4,9 +4,10 @@
 \alias{WGBSage}
 \title{Guess ages using various Horvath-style (Genome Biology, 2012) 'clock' models}
 \usage{
-WGBSage(x, model = c("horvath", "shrunk", "hannum", "skinandblood"),
-  padding = 15, useENSR = FALSE, useHMMI = FALSE, minCovg = 5,
-  impute = FALSE, minSamp = 5, genome = NULL, dropBad = FALSE, ...)
+WGBSage(x, model = c("horvath", "horvathshrunk", "hannum",
+  "skinandblood"), padding = 15, useENSR = FALSE, useHMMI = FALSE,
+  minCovg = 5, impute = FALSE, minSamp = 5, genome = NULL,
+  dropBad = FALSE, ...)
 }
 \arguments{
 \item{x}{a BSseq object (must have assays named \code{M} and \code{Cov})}

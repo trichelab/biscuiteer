@@ -113,7 +113,7 @@ checkBiscuitBED <- function(BEDfile,
 
   # by now, we know what our sampleNames are, one way or another...
   if (is(sampleNames, "DataFrame") | is(sampleNames, "data.frame")) {
-    if (length(sampleNames) != nSamples) {
+    if (nrow(sampleNames) != nSamples) {
       message("The length of param$sampleNames differs from param$nSamples.")
       stop("Try setting the value of merged (TRUE or FALSE) and rerunning.")
     }
@@ -123,7 +123,7 @@ checkBiscuitBED <- function(BEDfile,
       message("The length of param$sampleNames differs from param$nSamples.")
       stop("Try setting the value of merged (TRUE or FALSE) and rerunning.")
     }
-    params$pData <- DataFrame(sampleName=sampleNames)
+    params$pData <- DataFrame(sampleNames=sampleNames)
   } 
 
   # and if they're a data.frame, use them
@@ -135,6 +135,7 @@ checkBiscuitBED <- function(BEDfile,
   params$sampleNames <- rownames(params$pData)
   params$nLines <- countTabix(params$tbx)[[1]]
   message(BEDfile," has ", params$nLines," indexed loci.")
+  
   if (params$how == "readr") { 
     # {{{
     params$chunkSize <- chunkSize
