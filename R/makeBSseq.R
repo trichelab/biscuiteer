@@ -15,15 +15,29 @@
 makeBSseq <- function(tbl, params, simplify=FALSE) {
 
   gr <- resize(makeGRangesFromDataFrame(tbl[, 1:3]), 1) 
+
+  # helper fn  
+  matMe <- function(x, gr) {
+    if (!is(x, "matrix")) return(as.matrix(x)) 
+    else return(x)
+  }
+
+  # deal with data.table weirdness 
   if (params$how == "data.table") { 
     betas <- match(params$betaCols, names(tbl))
     covgs <- match(params$covgCols, names(tbl))
-    M <- fixNAs(round(tbl[, ..betas] * tbl[, ..covgs]), y=0, params$sparse)
-    Cov <- fixNAs(tbl[, ..covgs], y=0, params$sparse)
+    M <- matMe(fixNAs(round(tbl[,..betas]*tbl[,..covgs]),y=0,params$sparse), gr)
+    Cov <- matMe(fixNAs(tbl[, ..covgs], y=0, params$sparse), gr)
   } else { 
-    M <- with(params, fixNAs(round(tbl[,betaCols]*tbl[,covgCols]), y=0, sparse))
-    Cov <- with(params, fixNAs(tbl[, covgCols], y=0, sparse)) 
+    M <- with(params, 
+              matMe(fixNAs(round(tbl[,betaCols]*tbl[,covgCols]),y=0,sparse),gr))
+    Cov <- with(params, 
+                matMe(fixNAs(tbl[, covgCols], y=0, sparse), gr))
   }
+  colnames(M) <- base::sub("beta", "M", colnames(M))
+  if (is.null(rownames(M))) rownames(M) <- as.character(gr)
+  colnames(Cov) <- base::sub("beta", "Cov", colnames(Cov))
+  if (is.null(rownames(Cov))) rownames(Cov) <- as.character(gr)
   res <- BSseq(gr=gr, M=M, Cov=Cov, pData=params$pData, rmZeroCov=TRUE) 
   if (simplify) res <- simplifySampleNames(res)
   return(res)
