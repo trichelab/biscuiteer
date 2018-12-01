@@ -17,6 +17,7 @@
 #' @param merged      are CpG sites merged? (default NULL; figure out from BED)
 #' @param chunkSize   number of rows before readr reading becomes chunked (1e6)
 #' @param chr         load a specific chromosome (to rbind() later)? (NULL)
+#' @param which       a GRanges of regions to load (default NULL, load them all)
 #' 
 #' @return            a bsseq::BSseq object, possibly Matrix- or HDF5-backed
 #'
@@ -41,7 +42,8 @@ read.biscuit <- function(BEDfile,
                          sparse=FALSE,
                          merged=NULL, 
                          chunkSize=1e6, 
-                         chr=NULL) { 
+                         chr=NULL,
+                         which=NULL) { 
 
   how <- match.arg(how)
   params <- checkBiscuitBED(BEDfile=BEDfile, VCFfile=VCFfile, how=how, chr=chr,
@@ -53,7 +55,13 @@ read.biscuit <- function(BEDfile,
   if (params$how == "data.table") {
     # {{{
     select <- grep("\\.context", params$colNames, invert=TRUE)
-    cmd <- paste("gunzip -c", params$tbx$path) # for mac compatibility
+    if (is.null(which)) {
+      cmd <- paste("gunzip -c", params$tbx$path) # for mac compatibility
+    } else { 
+      tmpBed <- tempfile(fileext=".bed")
+      export(which, tmpBed)
+      cmd <- paste("tabix -R", tmpBed, params$tbx$path)
+    }
     tbl <- fread(cmd=cmd, sep="\t", sep2=",", fill=TRUE, na.string=".", 
                  select=select)
     if (params$hasHeader == FALSE) names(tbl) <- params$colNames[select]
@@ -88,9 +96,8 @@ read.biscuit <- function(BEDfile,
   
   # Remove CpG sites with zero-coverage
   if(!params$sparse) {
-      message("sparse = FALSE")
-      message("Excluding CpG sites with zero-coverage...")
-      tbl <- tbl[rowSums(is.na(tbl)) == 0, ]
+    message("Excluding CpG sites with zero-coverage...")
+    tbl <- tbl[rowSums(is.na(tbl)) == 0, ]
   }
   
   message("Loaded ", params$tbx$path, ". Creating bsseq object...")
