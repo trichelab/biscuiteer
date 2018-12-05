@@ -18,6 +18,7 @@
 #' @param chunkSize   number of rows before readr reading becomes chunked (1e6)
 #' @param chr         load a specific chromosome (to rbind() later)? (NULL)
 #' @param which       a GRanges of regions to load (default NULL, load them all)
+#' @param verbose     be verbose? (FALSE) 
 #' 
 #' @return            a bsseq::BSseq object, possibly Matrix- or HDF5-backed
 #'
@@ -43,7 +44,8 @@ read.biscuit <- function(BEDfile,
                          merged=NULL, 
                          chunkSize=1e6, 
                          chr=NULL,
-                         which=NULL) { 
+                         which=NULL,
+                         verbose=FALSE) { 
 
   how <- match.arg(how)
   params <- checkBiscuitBED(BEDfile=BEDfile, VCFfile=VCFfile, how=how, chr=chr,
@@ -101,13 +103,9 @@ read.biscuit <- function(BEDfile,
   }
   
   message("Loaded ", params$tbx$path, ". Creating bsseq object...")
-  if (params$hdf5) {
-    res <- makeBSseq_hdf5(tbl, params, simplify=simplify)
-  } else {
-    res <- makeBSseq(tbl, params, simplify=simplify)
-  }
-  genome(rowRanges(res)) <- genome
+  res <- makeBSseq(tbl, params, simplify=simplify, verbose=verbose)
   metadata(res)$vcfHeader <- params$vcfHeader
+  genome(rowRanges(res)) <- genome
 
   if (hdf5 && !is.null(hdf5dir)) {
     res <- HDF5Array::saveHDF5SummarizedExperiment(res, dir=hdf5dir)

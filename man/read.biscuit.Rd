@@ -8,7 +8,7 @@
 read.biscuit(BEDfile, VCFfile = NULL, sampleNames = NULL,
   simplify = FALSE, genome = "hg19", how = c("data.table", "readr"),
   hdf5 = FALSE, hdf5dir = NULL, sparse = FALSE, merged = NULL,
-  chunkSize = 1e+06, chr = NULL, which = NULL)
+  chunkSize = 1e+06, chr = NULL, which = NULL, verbose = FALSE)
 }
 \arguments{
 \item{BEDfile}{the file (compressed or not, doesn't matter) to load}
@@ -36,6 +36,8 @@ read.biscuit(BEDfile, VCFfile = NULL, sampleNames = NULL,
 \item{chr}{load a specific chromosome (to rbind() later)? (NULL)}
 
 \item{which}{a GRanges of regions to load (default NULL, load them all)}
+
+\item{verbose}{be verbose? (FALSE)}
 }
 \value{
 \preformatted{       a bsseq::BSseq object, possibly Matrix- or HDF5-backed
