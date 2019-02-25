@@ -4,8 +4,8 @@ Title: a bunch of convenience functions for Biscuit
 Description: A test harness for bsseq loading of Biscuit output, summarization
              of WGBS data over defined regions and in mappable samples, with or
              without imputation, dropping of mostly-NA rows, age estimates, etc.
-Version: 0.9.81
-Date: 2018-12-04
+Version: 0.9.90
+Date: 2019-02-25
 Author: Tim Triche, Jr. [aut, cre], Wanding Zhou [aut], Lyong Heo [ctb]
 Maintainer: Tim Triche, Jr. <tim.triche@vai.org>
 URL: https://github.com/trichelab/biscuiteer
@@ -27,6 +27,7 @@ Imports: readr,
          DelayedMatrixStats,
          Homo.sapiens,
          matrixStats,
+         QDNAseq,
          fastseg,
          HMMcopy,
          dmrseq,
@@ -36,7 +37,9 @@ Suggests: DSS,
           scmeth,
           pkgdown, 
           roxygen2,
-          testthat
+          testthat,
+          QDNAseq.hg19,
+          QDNAseq.mm10
 Encoding: UTF-8
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)

@@ -1,37 +1,62 @@
-#' bin read coverage to simplify and improve CNA calling 
+#' bin CpG/CpH coverage to simplify & improve CNA "sketching" (e.g. for E-M) 
 #' 
-#' helper function for binning .covg.hg19.bw bigWigs (see below for note)
-#' nb. it is best to extract these from Biscuit BAMs via genomeCoverageBed
+#' FIXME: turn this into a generic for bsseq objects, for bigWigs, for [...]
 #' FIXME: figure out how to estimate the most likely GCbias ~ DNAme linkage
 #'
-#' @param covg      the coverage track (a GRanges) or a bigWig filename 
-#' @param bins      the bins to summarize over (use tileGenome to generate)
-#' @param tilewidth if is.null(bins), what width should be used? (1000bp)
-#' @param which     if covg is a filename, what regions should be imported?
+#' @param x         a bsseq object, maybe HDF5-backed, for getCoverage()
+#' @param bins      bins to summarize over (from tileGenome or QDNAseq.xxYY)
+#' @param which     limit to specific regions? (functions as in import())
+#' @param QDNAseq   return a QDNAseqReadCounts? (if FALSE, return a GRanges)
 #'
 #' @return          binned read counts
 #'
 #' @import GenomicRanges
+#' @import Mus.musculus
 #' @import Homo.sapiens
-#' @import rtracklayer
+#' @import Biobase 
+#' @import QDNAseq 
 #' 
 #' @export
-binCoverage <- function(covg, bins=NULL, tilewidth=1000, which=NULL) {
+binCoverage <- function(x, bins, which=NULL, QDNAseq=TRUE) {
 
-  if (is(covg, "character")) covg <- import(covg)
-  if (is.null(bins)) {
-    bins <- tileGenome(seqlengths(Homo.sapiens), 
-                       tilewidth=tilewidth, 
-                       cut.last=TRUE)
+  # turn QDNAseq bins into an annotated GRanges object 
+  if (is(bins, "AnnotatedDataFrame") & # QDNAseq bins 
+      !is.null(attr(bins, "QDNAseq")$build)) {
+    message("Converting QDNAseq bins to GRanges for coverage")
+    gr <- makeGRangesFromDataFrame(pData(bins), keep=TRUE)
+    genome(gr) <- attr(bins, "QDNAseq")$build
+  } else if (is(bins, "GenomicRanges")) {
+    message("You really should use QDNAseq bins if you can.")
+    gr <- bins
+  } else { 
+    stop("Don't know what to do with bins of class ", class(bins), "!")
   }
-  bins$score <- 0 
-  olaps <- findOverlaps(covg, bins, type="within")
-  summed <- tapply(covg$score[queryHits(olaps)], subjectHits(olaps), sum)
-  bins$score[as.integer(names(summed))] <- summed 
-  attr(bins, "binned") <- TRUE
-
-  if (!is.null(which)) bins <- subsetByOverlaps(bins, which)
-	
-  return(bins)
-
+  origStyle <- seqlevelsStyle(gr)
+  if (!is.null(which)) {
+    seqlevelsStyle(gr) <- seqlevelsStyle(which)
+    gr <- subsetByOverlaps(gr, which)
+  }
+  seqlevelsStyle(gr) <- seqlevelsStyle(x)
+  names(gr) <- as(granges(gr), "character")
+  summed <- getCoverage(x, gr, what="perRegionTotal", withDimnames=TRUE) 
+  gc(,TRUE) # cautious
+  gr$score <- summed
+  attr(gr, "binned") <- TRUE
+  if (QDNAseq) {
+    seqlevelsStyle(gr) <- origStyle 
+    names(gr) <- as(granges(gr), "character")
+    condition <- rowSums(is.na(gr$score)) < ncol(x) & gr$use == TRUE
+    phenodata <- data.frame(name=colnames(gr$score), 
+                            row.names=colnames(gr$score),
+                            stringsAsFactors=FALSE)
+    phenodata$total.reads <- colSums(score(gr))
+    phenodata$used.reads <- colSums(score(subset(gr, condition)))
+    object <- new("QDNAseqReadCounts", 
+                  bins=subset(bins, featureNames(bins) %in% names(gr)),
+                  counts=gr$score, phenodata=phenodata)
+    object$expected.variance <- expectedVariance(object)
+    return(object) 
+  } else { 
+    return(subset(gr, rowSums(is.na(gr$score)) < ncol(x) & use == TRUE))
+  }
 }

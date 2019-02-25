@@ -25,6 +25,7 @@ TN_WGBS_CNA(stub0, stub1 = NULL, bsgc = NULL, maps = NULL, ...)
 Matched tumor-normal coverage processing & segmentation
 }
 \examples{
+
   stubs <- c("P01-010", "P01-012", "P01-015", "P01-016", "P01-017")
   stubs <- c(stubs, "P01-018", "P01-020", "P01-021")
   names(stubs) <- paste0(stubs, "-T06-T-P01")

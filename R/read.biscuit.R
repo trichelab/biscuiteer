@@ -98,7 +98,7 @@ read.biscuit <- function(BEDfile,
   
   # Remove CpG sites with zero-coverage
   if(!params$sparse) {
-    message("Excluding CpG sites with zero-coverage...")
+    message("Excluding CpG sites with uniformly zero coverage...")
     tbl <- tbl[rowSums(is.na(tbl)) == 0, ]
   }
   
@@ -107,8 +107,16 @@ read.biscuit <- function(BEDfile,
   metadata(res)$vcfHeader <- params$vcfHeader
   genome(rowRanges(res)) <- genome
 
-  if (hdf5 && !is.null(hdf5dir)) {
-    res <- HDF5Array::saveHDF5SummarizedExperiment(res, dir=hdf5dir)
+  if (hdf5) {
+    if (is.null(hdf5dir)) {
+      stop("You must provide an `hdf5dir` argument if you set `hdf5` to TRUE.")
+    } else {
+      if (dir.exists(hdfdir)) {
+        stop("The directory you specified already exists!")
+      } else { 
+        res <- HDF5Array::saveHDF5SummarizedExperiment(res, dir=hdf5dir)
+      }
+    }
   } 
   return(res)
 

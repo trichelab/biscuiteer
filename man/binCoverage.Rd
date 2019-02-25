@@ -2,25 +2,24 @@
 % Please edit documentation in R/binCoverage.R
 \name{binCoverage}
 \alias{binCoverage}
-\title{bin read coverage to simplify and improve CNA calling}
+\title{bin CpG/CpH coverage to simplify & improve CNA "sketching" (e.g. for E-M)}
 \usage{
-binCoverage(covg, bins = NULL, tilewidth = 1000, which = NULL)
+binCoverage(x, bins, which = NULL, QDNAseq = TRUE)
 }
 \arguments{
-\item{covg}{the coverage track (a GRanges) or a bigWig filename}
+\item{x}{a bsseq object, maybe HDF5-backed, for getCoverage()}
 
-\item{bins}{the bins to summarize over (use tileGenome to generate)}
+\item{bins}{bins to summarize over (from tileGenome or QDNAseq.xxYY)}
 
-\item{tilewidth}{if is.null(bins), what width should be used? (1000bp)}
+\item{which}{limit to specific regions? (functions as in import())}
 
-\item{which}{if covg is a filename, what regions should be imported?}
+\item{QDNAseq}{return a QDNAseqReadCounts? (if FALSE, return a GRanges)}
 }
 \value{
 \preformatted{     binned read counts
 }
 }
 \description{
-helper function for binning .covg.hg19.bw bigWigs (see below for note)
-nb. it is best to extract these from Biscuit BAMs via genomeCoverageBed
+FIXME: turn this into a generic for bsseq objects, for bigWigs, for \link{...}
 FIXME: figure out how to estimate the most likely GCbias ~ DNAme linkage
 }
