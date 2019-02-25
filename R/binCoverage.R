@@ -54,7 +54,7 @@ binCoverage <- function(x, bins, which=NULL, QDNAseq=TRUE) {
     object <- new("QDNAseqReadCounts", 
                   bins=subset(bins, featureNames(bins) %in% names(gr)),
                   counts=gr$score, phenodata=phenodata)
-    object$expected.variance <- expectedVariance(object)
+    object$expected.variance <- QDNAseq:::expectedVariance(object)
     return(object) 
   } else { 
     return(subset(gr, rowSums(is.na(gr$score)) < ncol(x) & use == TRUE))
