@@ -4,7 +4,7 @@
 \alias{binCoverage}
 \title{bin CpG/CpH coverage to simplify & improve CNA "sketching" (e.g. for E-M)}
 \usage{
-binCoverage(x, bins, which = NULL, QDNAseq = TRUE)
+binCoverage(x, bins, which = NULL, QDNAseq = TRUE, readLen = 100)
 }
 \arguments{
 \item{x}{a bsseq object, maybe HDF5-backed, for getCoverage()}
@@ -14,6 +14,8 @@ binCoverage(x, bins, which = NULL, QDNAseq = TRUE)
 \item{which}{limit to specific regions? (functions as in import())}
 
 \item{QDNAseq}{return a QDNAseqReadCounts? (if FALSE, return a GRanges)}
+
+\item{readLen}{correction factor for coverage: read length in bp (100)}
 }
 \value{
 \preformatted{     binned read counts

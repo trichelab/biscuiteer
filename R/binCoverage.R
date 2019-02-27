@@ -7,6 +7,7 @@
 #' @param bins      bins to summarize over (from tileGenome or QDNAseq.xxYY)
 #' @param which     limit to specific regions? (functions as in import())
 #' @param QDNAseq   return a QDNAseqReadCounts? (if FALSE, return a GRanges)
+#' @param readLen   correction factor for coverage: read length in bp (100)
 #'
 #' @return          binned read counts
 #'
@@ -17,7 +18,7 @@
 #' @import QDNAseq 
 #' 
 #' @export
-binCoverage <- function(x, bins, which=NULL, QDNAseq=TRUE) {
+binCoverage <- function(x, bins, which=NULL, QDNAseq=TRUE, readLen=100) {
 
   # turn QDNAseq bins into an annotated GRanges object 
   if (is(bins, "AnnotatedDataFrame") & # QDNAseq bins 
@@ -38,7 +39,8 @@ binCoverage <- function(x, bins, which=NULL, QDNAseq=TRUE) {
   }
   seqlevelsStyle(gr) <- seqlevelsStyle(x)
   names(gr) <- as(granges(gr), "character")
-  summed <- getCoverage(x, gr, what="perRegionTotal", withDimnames=TRUE) 
+  summed <- getCoverage(x, gr, what="perRegionTotal", withDimnames=TRUE)
+  summed <- round(summed/readLen) # mostly so plot titles don't look insane
   gc(,TRUE) # cautious
   gr$score <- summed
   attr(gr, "binned") <- TRUE
