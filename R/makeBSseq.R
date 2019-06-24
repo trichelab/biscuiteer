@@ -52,8 +52,10 @@ makeBSseq <- function(tbl, params, simplify=FALSE, verbose=FALSE) {
   }
   Cov <- fixNames(Cov, gr, what="Cov", verbose=verbose)
   M <- fixNames(M, gr, what="M", verbose=verbose)
+  colnames(Cov) <- colnames(M) <- params$pData$sampleNames
   if (verbose) message("Creating bsseq object...") 
-  res <- BSseq(gr=gr, M=M, Cov=Cov, pData=params$pData, rmZeroCov=TRUE) 
+  res <- BSseq(gr=gr, M=M, Cov=Cov, pData=params$pData,
+               rmZeroCov=TRUE, sampleNames=params$pData$sampleNames) 
   if (simplify) res <- simplifySampleNames(res)
   return(res)
 
