@@ -11,7 +11,6 @@
 #' 
 #' @return a DelayedMatrix
 #'
-#' @import DelayedArray
 #' @importFrom Matrix Matrix
 #' @importClassesFrom Matrix Matrix 
 #' @importMethodsFrom Matrix cbind2 rbind2

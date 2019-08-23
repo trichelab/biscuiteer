@@ -5,8 +5,6 @@
 #' 
 #' @return          a data.frame just like the one from grToSeg 
 #' 
-#' @import rtracklayer
-#' 
 #' @export
 bigWigsToSegs <- function(suffix=".CN.hg19.bw", filename=NULL) {
   bigWigs <- list.files(pattern=suffix)

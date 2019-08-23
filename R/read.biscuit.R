@@ -23,7 +23,6 @@
 #' @return            a bsseq::BSseq object, possibly Matrix- or HDF5-backed
 #'
 #' @import data.table
-#' @import tibble
 #' @import readr
 #' @import bsseq
 #'
@@ -95,13 +94,13 @@ read.biscuit <- function(BEDfile,
 
   # shift from 0-based to 1-based coordinates  
   tbl[, 2] <- tbl[, 2] + 1 # FIXME: can this be done automagically?
-  
+
   # Remove CpG sites with zero-coverage
   if(!params$sparse) {
     message("Excluding CpG sites with uniformly zero coverage...")
     tbl <- tbl[rowSums(is.na(tbl)) == 0, ]
   }
-  
+
   message("Loaded ", params$tbx$path, ". Creating bsseq object...")
   res <- makeBSseq(tbl, params, simplify=simplify, verbose=verbose)
   metadata(res)$vcfHeader <- params$vcfHeader

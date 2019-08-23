@@ -16,7 +16,6 @@
 #' @importFrom Matrix Matrix
 #' @importClassesFrom Matrix Matrix 
 #' @importMethodsFrom Matrix cbind2 rbind2
-#' @import methods 
 #' @import bsseq
 #' 
 #' @export

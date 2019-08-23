@@ -72,7 +72,6 @@
 #' 
 #' @import DelayedMatrixStats
 #' @import GenomicRanges
-#' @import GenomeInfoDb
 #' @import S4Vectors
 #' 
 #' @export 

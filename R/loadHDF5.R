@@ -4,7 +4,6 @@
 #' 
 #' @return        a SummarizedExperiment-derived object (such as a BSseq object)
 #' 
-#' @import SummarizedExperiment
 #' @import HDF5Array
 #' 
 #' @export

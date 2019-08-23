@@ -6,8 +6,6 @@
 #' 
 #' @return          A data.frame(ID,chrom,loc.start,loc.end,num.mark,seg.mean)
 #'
-#' @import rtracklayer
-#' 
 #' @export
 grToSeg <- function(gr, filename=NULL, minAbs=NULL) { 
   if (is(gr, "GRangesList")) {

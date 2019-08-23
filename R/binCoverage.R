@@ -14,7 +14,6 @@
 #' @import GenomicRanges
 #' @import Mus.musculus
 #' @import Homo.sapiens
-#' @import Biobase 
 #' @import QDNAseq 
 #' 
 #' @export

@@ -6,7 +6,6 @@
 #' 
 #' @return        invisibly, the HDF5-backed version of the object being saved
 #' 
-#' @import SummarizedExperiment
 #' @import HDF5Array
 #' 
 #' @export
