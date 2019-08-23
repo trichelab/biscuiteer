@@ -87,40 +87,59 @@ checkBiscuitBED <- function(BEDfile,
     }
   }
 
-  # look for Tabix header, then look for problems
+  # Set up columns based on number of header/number of samples
+  # Do some checks to make sure things are kosher
   params$hasHeader <- (length(headerTabix(tbx)$header) > 0)
-  if (params$hasHeader) { 
-    # {{{ has a header; easy and verifiable for ASM
-    message(BEDfile," has a header line and is ", appendLF=FALSE)
+  if (params$hasHeader) {
+    # BED file has a header line ---> Not standard on a biscuit BED file
+    # TODO: Can probably remove this as a biscuit BED file should never have this information
+    message(BEDfile, " has a header line")
+
     params$colNames <- strsplit(sub("^#","",headerTabix(tbx)$header),"\t")[[1]]
     preamble <- read.table(tbx$path, header=TRUE, sep="\t", na.strings=".", 
                            comment.char="#", nrows=3)
-    colnames(preamble) <- params$colNames 
-    if (is.null(merged)) merged <- any(grepl("context", colnames(preamble)))
-    message(ifelse(merged, "merged", "unmerged"), " data.") 
+    colnames(preamble) <- params$colNames
+    
+    message("Assuming ", ifelse(merged, "merged", "unmerged"), " data. Checking now...", appendLF=FALSE)
+    if (!merged & any(grepl("context", colnames(preamble)))) {
+      stop("merged flag is FALSE, but appears to be a merged BED file. Set merged = TRUE.")
+    }
+    if (merged & !any(grepl("context", colnames(preamble)))) {
+      stop("merged flag is TRUE, but does not appear to be a merged BED file. Set merged = FALSE.")
+    }
+    message(" ...", ifelse(merged, "merged", "unmerged"), " file seems okay.")
+
     params$betaCols <- grep("beta", colnames(preamble), value=TRUE) 
     params$covgCols <- grep("covg", colnames(preamble), value=TRUE) 
-    params$contextCols <- grep("context", colnames(preamble), value=TRUE) 
+    if (merged) params$contextCols <- grep("context", colnames(preamble), value=TRUE) 
     sNames <- condenseSampleNames(tbx, stride=ifelse(merged, 3, 2))
     if (is.null(sampleNames)) sampleNames <- sNames 
     nSamples <- length(sNames)
-    # }}}
   } else {
-    # {{{ no header; guesswork
-    message(paste0(BEDfile," has no header (!) and is "), appendLF=FALSE)
+    message(paste0(BEDfile, " does not have a header. ",
+                   "Using VCF file header information to help set column names."))
+
     preamble <- read.table(tbx$path, sep="\t", na.strings=".", nrows=3)
-    if (is.null(merged)) merged <- grepl("(MERGE|MCG)", BEDfile, ignore=TRUE)
-    message(ifelse(merged, "merged", "unmerged"), " data.") 
     cols <- c("chr","start","end")
     colsPerSample <- ifelse(merged, 3, 2)
     nSamples <- (ncol(preamble) - 3) / colsPerSample
+
+    message("Assuming ", ifelse(merged, "merged", "unmerged"), " data. Checking now...", appendLF=FALSE)
+    if (nSamples != 0) {
+      stop(paste0("Number of columns per sample does not seem to line up. ",
+                  "Double check your merge flag is correct."))
+    }
+    if (nSamples != length(sampleNames)) {
+        stop(paste0("nSamples (", nSamples, ") does not match the number of sampleNames (", length(sampleNames)))
+    }
+    message(paste0(" ...The file might be alright. Double check if you're worried."))
+
     if (is.null(sampleNames)) sampleNames <- paste0("sample", seq_len(nSamples))
     colSuffixes <- c(".beta",".covg")
     if (merged) colSuffixes <- c(".beta",".covg",".context")
     sampcols <- paste0(rep(sampleNames, each=colsPerSample), 
                        rep(colSuffixes, nSamples))
     params$colNames <- base::gsub(" ", "", c(cols, sampcols)) # quirk
-    # }}}
   }
   params$merged <- merged
   params$preamble <- preamble
