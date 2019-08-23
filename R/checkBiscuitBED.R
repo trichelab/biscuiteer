@@ -54,11 +54,13 @@ checkBiscuitBED <- function(BEDfile,
   params$vcfHeader <- NULL 
   if (!is.null(params$VCFfile)) {
     if (!base::grepl(".gz$", params$VCFfile)) {
-      top("Only tabix'ed VCFs are supported.")
+      stop("Only tabix'ed VCFs are supported.")
     }
     message("Extracting sample names from ", params$VCFfile, "...") 
     params$vcfHeader <- scanVcfHeader(params$VCFfile)
     if (is.null(sampleNames)) sampleNames <- samples(params$vcfHeader)
+  } else {
+    stop("tabix'ed VCF must be supplied")
   }
 
   # if restricting to one chromosome:
@@ -161,7 +163,7 @@ checkBiscuitBED <- function(BEDfile,
   params$colSpec[["cols"]][[params$colNames[1]]] <- col_character()
   params$colSpec[["cols"]][[params$colNames[2]]] <- col_integer()
   params$colSpec[["cols"]][[params$colNames[3]]] <- col_integer()
-  for ( i in rownames(params$pData) ) { 
+  for ( i in 1:length(rownames(params$pData)) ) { 
     params$colSpec[["cols"]][[params$betaCols[i]]] <- col_double()
     params$colSpec[["cols"]][[params$covgCols[i]]] <- col_integer()
   }
@@ -171,7 +173,7 @@ checkBiscuitBED <- function(BEDfile,
   params$colClasses[params$colNames[1]] <- "character"
   params$colClasses[params$colNames[2]] <- "integer"
   params$colClasses[params$colNames[3]] <- "integer"
-  for ( i in rownames(params$pData) ) { 
+  for ( i in 1:length(rownames(params$pData)) ) { 
     params$colClasses[params$betaCols[i]] <- "double"
     params$colClasses[params$covgCols[i]] <- "integer"
     params$colClasses[params$contextCols[i]]  <- "NULL"
