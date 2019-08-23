@@ -5,15 +5,17 @@
 \alias{load.biscuit}
 \title{a bsseq loader for Biscuit output (BED-like format, 2 or 3 cols/sample)}
 \usage{
-read.biscuit(BEDfile, VCFfile = NULL, sampleNames = NULL,
+read.biscuit(BEDfile, VCFfile, merged, sampleNames = NULL,
   simplify = FALSE, genome = "hg19", how = c("data.table", "readr"),
-  hdf5 = FALSE, hdf5dir = NULL, sparse = FALSE, merged = NULL,
-  chunkSize = 1e+06, chr = NULL, which = NULL, verbose = FALSE)
+  hdf5 = FALSE, hdf5dir = NULL, sparse = FALSE, chunkSize = 1e+06,
+  chr = NULL, which = NULL, verbose = FALSE)
 }
 \arguments{
 \item{BEDfile}{the file (compressed or not, doesn't matter) to load}
 
 \item{VCFfile}{the file (compressed and tabixed, with header) to load}
+
+\item{merged}{are CpG sites merged?}
 
 \item{sampleNames}{if NULL, create; if VCF, read; if data.frame, make pData}
 
@@ -28,8 +30,6 @@ read.biscuit(BEDfile, VCFfile = NULL, sampleNames = NULL,
 \item{hdf5dir}{if hdf5 is TRUE, where should HDF5 files be stored? (NULL)}
 
 \item{sparse}{are there a lot of zero-coverage sites? (default is FALSE)}
-
-\item{merged}{are CpG sites merged? (default NULL; figure out from BED)}
 
 \item{chunkSize}{number of rows before readr reading becomes chunked (1e6)}
 

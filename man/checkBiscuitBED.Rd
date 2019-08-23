@@ -4,8 +4,8 @@
 \alias{checkBiscuitBED}
 \title{inspect Biscuit BED and/or VCF output to make sure all is as it should be}
 \usage{
-checkBiscuitBED(BEDfile, VCFfile = NULL, sampleNames = NULL,
-  chunkSize = 5e+07, merged = NULL, hdf5 = FALSE, sparse = TRUE,
+checkBiscuitBED(BEDfile, VCFfile, merged, sampleNames = NULL,
+  chunkSize = 5e+07, hdf5 = FALSE, sparse = TRUE,
   how = c("data.table", "readr"), chr = NULL)
 }
 \arguments{
@@ -13,11 +13,11 @@ checkBiscuitBED(BEDfile, VCFfile = NULL, sampleNames = NULL,
 
 \item{VCFfile}{a VCF file (compressed and tabixed; only needs the header)}
 
+\item{merged}{boolean; is this merged CpG data?}
+
 \item{sampleNames}{if NULL create; if vector assign; if data.frame make pData}
 
 \item{chunkSize}{for files > \code{yieldSize} lines long, chunk the file (5e7)}
-
-\item{merged}{boolean; is this merged CpG data? (NULL; guess if merged)}
 
 \item{hdf5}{boolean; use HDF5 arrays for backing of the data? (FALSE)}
 

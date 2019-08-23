@@ -7,9 +7,9 @@
 #' 
 #' @param BEDfile     a BED-like file (compressed and tabixed, maybe w/header)
 #' @param VCFfile     a VCF file (compressed and tabixed; only needs the header)
+#' @param merged      boolean; is this merged CpG data?
 #' @param sampleNames if NULL create; if vector assign; if data.frame make pData
 #' @param chunkSize   for files > `yieldSize` lines long, chunk the file (5e7)
-#' @param merged      boolean; is this merged CpG data? (NULL; guess if merged)
 #' @param hdf5        boolean; use HDF5 arrays for backing of the data? (FALSE)
 #' @param sparse      boolean; use sparse Matrix objects for the data? (TRUE)
 #' @param how         how to load the data? "data.table" (default) or "readr"
@@ -25,14 +25,29 @@
 #'
 #' @export
 checkBiscuitBED <- function(BEDfile, 
-                            VCFfile=NULL, 
+                            VCFfile, 
+                            merged,
                             sampleNames=NULL, 
                             chunkSize=5e7, 
-                            merged=NULL,
                             hdf5=FALSE,
                             sparse=TRUE,
                             how=c("data.table","readr"),
                             chr=NULL) {
+
+  # Check if required inputs are missing
+  # Print more useful messages if they are
+  if (is_missing(BEDfile)) stop("Tabix'ed BED file from biscuit is required.\n")
+  if (is_missing(VCFfile)) {
+    err_message <- paste("Tabix'ed VCF file from biscuit is required.",
+                         "Header information is used to set up column names.\n")
+    stop(err_message)
+  }
+  if (is_missing(merged)) {
+    err_message <- paste("merged flag is required.",
+                         "merged = TRUE if 'biscuit mergecg' was run after 'biscuit vcf2bed'.",
+                         "Otherwise use merged = FALSE.\n")
+    stop(err_message)
+  }
 
   # eventual result
   params <- list() 
@@ -59,8 +74,6 @@ checkBiscuitBED <- function(BEDfile,
     message("Extracting sample names from ", params$VCFfile, "...") 
     params$vcfHeader <- scanVcfHeader(params$VCFfile)
     if (is.null(sampleNames)) sampleNames <- samples(params$vcfHeader)
-  } else {
-    stop("tabix'ed VCF must be supplied")
   }
 
   # if restricting to one chromosome:

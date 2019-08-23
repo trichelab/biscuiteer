@@ -7,6 +7,7 @@
 #'
 #' @param BEDfile    the file (compressed or not, doesn't matter) to load
 #' @param VCFfile     the file (compressed and tabixed, with header) to load
+#' @param merged      are CpG sites merged?
 #' @param sampleNames if NULL, create; if VCF, read; if data.frame, make pData
 #' @param simplify    simplify sample names by dropping .foo.bar.hg19 or similar
 #' @param genome      what genome assembly were the runs aligned against? (hg19)
@@ -14,7 +15,6 @@
 #' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
 #' @param hdf5dir     if hdf5 is TRUE, where should HDF5 files be stored? (NULL)
 #' @param sparse      are there a lot of zero-coverage sites? (default is FALSE)
-#' @param merged      are CpG sites merged? (default NULL; figure out from BED)
 #' @param chunkSize   number of rows before readr reading becomes chunked (1e6)
 #' @param chr         load a specific chromosome (to rbind() later)? (NULL)
 #' @param which       a GRanges of regions to load (default NULL, load them all)
@@ -25,6 +25,7 @@
 #' @import data.table
 #' @import readr
 #' @import bsseq
+#' @import rlang
 #'
 #' @seealso BSseq
 #' @aliases load.biscuit
@@ -32,7 +33,8 @@
 #'
 #' @export
 read.biscuit <- function(BEDfile, 
-                         VCFfile=NULL, 
+                         VCFfile, 
+                         merged, 
                          sampleNames=NULL, 
                          simplify=FALSE, 
                          genome="hg19",
@@ -40,11 +42,25 @@ read.biscuit <- function(BEDfile,
                          hdf5=FALSE, 
                          hdf5dir=NULL,
                          sparse=FALSE,
-                         merged=NULL, 
                          chunkSize=1e6, 
                          chr=NULL,
                          which=NULL,
                          verbose=FALSE) { 
+
+  # Check if required inputs are missing
+  # Print more useful messages if they are
+  if (is_missing(BEDfile)) stop("Tabix'ed BED file from biscuit is required.\n")
+  if (is_missing(VCFfile)) {
+    err_message <- paste("Tabix'ed VCF file from biscuit is required.",
+                         "Header information is used to set up column names.\n")
+    stop(err_message)
+  }
+  if (is_missing(merged)) {
+    err_message <- paste("merged flag is required.",
+                         "merged = TRUE if 'biscuit mergecg' was run after 'biscuit vcf2bed'.",
+                         "Otherwise use merged = FALSE.\n")
+    stop(err_message)
+  }
 
   how <- match.arg(how)
   params <- checkBiscuitBED(BEDfile=BEDfile, VCFfile=VCFfile, how=how, chr=chr,
