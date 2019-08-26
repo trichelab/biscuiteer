@@ -87,7 +87,7 @@ checkBiscuitBED <- function(BEDfile,
     }
   }
 
-  # Set up columns based on number of header/number of samples
+  # Set up columns based on number of samples in header of BED file or VCF file
   # Do some checks to make sure things are kosher
   params$hasHeader <- (length(headerTabix(tbx)$header) > 0)
   if (params$hasHeader) {
@@ -125,12 +125,12 @@ checkBiscuitBED <- function(BEDfile,
     nSamples <- (ncol(preamble) - 3) / colsPerSample
 
     message("Assuming ", ifelse(merged, "merged", "unmerged"), " data. Checking now...", appendLF=FALSE)
-    if (nSamples != 0) {
+    if (((ncol(preamble) - 3) %% colsPerSample) != 0) {
       stop(paste0("Number of columns per sample does not seem to line up. ",
                   "Double check your merge flag is correct."))
     }
     if (nSamples != length(sampleNames)) {
-        stop(paste0("nSamples (", nSamples, ") does not match the number of sampleNames (", length(sampleNames)))
+        stop(paste0("nSamples (", nSamples, ") does not match the number of sampleNames (", length(sampleNames),")"))
     }
     message(paste0(" ...The file might be alright. Double check if you're worried."))
 
