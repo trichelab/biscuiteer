@@ -2,21 +2,32 @@
 % Please edit documentation in R/atRegions.R
 \name{atRegions}
 \alias{atRegions}
-\title{summarize a bsseq dataset over defined regions (for e.g. cBioPortal)}
+\title{Summarize a bsseq dataset over defined regions}
 \usage{
 atRegions(bsseq, regions, mappings = NULL, nm = "POETICname", ...)
 }
 \arguments{
-\item{bsseq}{a bsseq object}
+\item{bsseq}{A bsseq object}
 
-\item{regions}{a GRanges or GRangesList of regions}
+\item{regions}{A GRanges or GRangesList of regions}
 
-\item{mappings}{a mapping table, with rownames(mappings) == colnames(bsseq)}
+\item{mappings}{A mapping table with rownames(mappings) == colnames(bsseq)
+(DEFAULT: NULL)}
 
-\item{nm}{column of the mapping table to map to (default "POETICname")}
+\item{nm}{Column of the mapping table to map to
+(DEFAULT: "POETICname")}
 
-\item{...}{other arguments to pass on to summarizeBsSeqOver}
+\item{...}{Other arguments to pass to summarizeBsSeqOver}
+}
+\value{
+\preformatted{     Summarized information about the bsseq object for the given
+               DNA regions
+}
 }
 \description{
-summarize a bsseq dataset over defined regions (for e.g. cBioPortal)
+Calls summarizeBsSeqOver to summarize a bsseq object over provided DNA
+regions. Useful for exploring genomic data using cBioPortal.
+}
+\examples{
+
 }

@@ -1,12 +1,18 @@
-#' wrapper fn to process large numbers of bigWig'ed CN segmentations
-#' 
-#' @param suffix    suffix of segmentation files (default is ".CN.hg19.bw")
-#' @param filename  where to save the result (unsaved if NULL)
-#' 
-#' @return          a data.frame just like the one from grToSeg 
-#' 
+#' Process many bigWig'ed CN segmentations
+#'
+#' Wrapper function to grToSeg to make processing large numbers of bigWigs easier
+#'
+#' @param suffix    Suffix of segmentation files (DEFAULT: ".CN.hg19.bw")
+#' @param filename  Where to save the result - unsaved if NULL (DEFAULT: NULL)
+#'
+#' @return          A data.frame like the one returned from grToSeg
+#'
+#' @examples
+#'
 #' @export
-bigWigsToSegs <- function(suffix=".CN.hg19.bw", filename=NULL) {
+#'
+bigWigsToSegs <- function(suffix = ".CN.hg19.bw",
+                          filename = NULL) {
   bigWigs <- list.files(pattern=suffix)
   names(bigWigs) <- sub(suffix, "", bigWigs)
   grl <- GRangesList(lapply(bigWigs, import))

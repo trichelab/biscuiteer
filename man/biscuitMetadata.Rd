@@ -3,19 +3,25 @@
 \name{biscuitMetadata}
 \alias{biscuitMetadata}
 \alias{getBiscuitMetadata}
-\title{metadata about a Biscuit run using its vcfHeader metadata element, or its VCF}
+\title{Biscuit metadata from VCF header}
 \usage{
-biscuitMetadata(x = NULL, VCF = NULL)
+biscuitMetadata(bsseq = NULL, VCF = NULL)
 }
 \arguments{
-\item{x}{a bsseq object with a $vcfHeader element (or NULL)}
+\item{bsseq}{A bsseq object with a vcfHeader element (DEFAULT: NULL)}
 
-\item{VCF}{a tabix'ed VCF file (can just be the header) whence x is derived}
+\item{VCF}{A tabix'ed VCF file (can just be the header information)
+from which the bsseq vcfHeader element is derived
+(DEFAULT: NULL)}
 }
 \value{
-\preformatted{ information about the run
+\preformatted{  Information regarding the Biscuit run
 }
 }
 \description{
-metadata about a Biscuit run using its vcfHeader metadata element, or its VCF
+Returns metadata from a Biscuit run using either a supplied VCF file or
+the vcfHeader metadata element from the bsseq object
+}
+\examples{
+
 }

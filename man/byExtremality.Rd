@@ -2,31 +2,33 @@
 % Please edit documentation in R/byExtremality.R
 \name{byExtremality}
 \alias{byExtremality}
-\title{choose loci or features by extremality (fraction of Bernoulli variance)}
+\title{Choose loci or features by extremality}
 \usage{
-byExtremality(x, r = NULL, k = 500)
+byExtremality(bsseq, r = NULL, k = 500)
 }
 \arguments{
-\item{x}{a bsseq object}
+\item{bsseq}{A bsseq object}
 
-\item{r}{regions to consider (default is NULL, all loci... !)}
+\item{r}{Regions to consider - NULL covers all loci (DEFAULT: NULL)}
 
-\item{k}{how many rows/regions to return (500)}
+\item{k}{How many rows/regions to return (DEFAULT: 500)}
 }
 \value{
-a matrix-like object with methylation values, by extremality
+\preformatted{  A matrix-like object with methylation values sorted by extremality
+}
 }
 \description{
-For DNA methylation, particularly summarized across regions,
-we can do better (a lot better) than MAD.  Since we know that
+This function finds the k most extremal features (features above a certain
+fraction of the Bernoulli variance) in 'bsseq' and returns their values.
 }
 \details{
+For DNA methylation, particularly when summarized across regions, we can do
+better (a lot better) than MAD. Since we know:
 max(SD(X_j)) if X_j ~ Beta(a, b) < max(SD(X_j)) if X_j ~ Bernoulli(a/(a+b))
-
-for X having a known mean and SD, hence solvable for a + b by MoM, define
-
+for X with a known mean and standard deviation (SD), then we can solve for
+(a+b) by MoM. We can then define the extremality by:
 extremality = sd(X_j) / bernoulliSD(mean(X_j))
+}
+\examples{
 
-This function finds the k most extremal features in x & returns their values.
-For count-based proportions,
 }

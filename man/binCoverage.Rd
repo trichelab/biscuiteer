@@ -2,26 +2,31 @@
 % Please edit documentation in R/binCoverage.R
 \name{binCoverage}
 \alias{binCoverage}
-\title{bin CpG/CpH coverage to simplify & improve CNA "sketching" (e.g. for E-M)}
+\title{Bin CpG or CpH coverage to simplify and improve CNA "sketching"}
 \usage{
-binCoverage(x, bins, which = NULL, QDNAseq = TRUE, readLen = 100)
+binCoverage(bsseq, bins, which = NULL, QDNAseq = TRUE, readLen = 100)
 }
 \arguments{
-\item{x}{a bsseq object, maybe HDF5-backed, for getCoverage()}
+\item{bsseq}{A bsseq object - supplied to getCoverage()}
 
-\item{bins}{bins to summarize over (from tileGenome or QDNAseq.xxYY)}
+\item{bins}{Bins to summarize over - from tileGenome or QDNAseq.xxYY}
 
-\item{which}{limit to specific regions? (functions as in import())}
+\item{which}{Limit to specific regions? - functions as an import()
+(DEFAULT: NULL)}
 
-\item{QDNAseq}{return a QDNAseqReadCounts? (if FALSE, return a GRanges)}
+\item{QDNAseq}{Return a QDNAseqReadCounts? - if FALSE, returns a GRanges
+(DEFAULT: TRUE)}
 
-\item{readLen}{correction factor for coverage: read length in bp (100)}
+\item{readLen}{Correction factor for coverage - read length in bp
+(DEFAULT: 100)}
 }
 \value{
-\preformatted{     binned read counts
+\preformatted{    Binned read counts
 }
 }
 \description{
-FIXME: turn this into a generic for bsseq objects, for bigWigs, for \link{...}
-FIXME: figure out how to estimate the most likely GCbias ~ DNAme linkage
+Example usage for E-M
+}
+\examples{
+
 }

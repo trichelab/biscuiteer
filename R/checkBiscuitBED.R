@@ -1,38 +1,48 @@
-#' inspect Biscuit BED and/or VCF output to make sure all is as it should be 
-#' 
-#' A BED checker for Biscuit cg/ch output (BED-like format, 2 or 3 cols/sample).
-#' By default, files with over 50 million loci will be processed iteratively,
-#' since data.table tends to run into problems with .gzipped joint CpH files. 
-#' This function absolutely assumes that BED files are tabixed. No exceptions!
-#' 
-#' @param BEDfile     a BED-like file (compressed and tabixed, maybe w/header)
-#' @param VCFfile     a VCF file (compressed and tabixed; only needs the header)
-#' @param merged      boolean; is this merged CpG data?
-#' @param sampleNames if NULL create; if vector assign; if data.frame make pData
-#' @param chunkSize   for files > `yieldSize` lines long, chunk the file (5e7)
-#' @param hdf5        boolean; use HDF5 arrays for backing of the data? (FALSE)
-#' @param sparse      boolean; use sparse Matrix objects for the data? (TRUE)
-#' @param how         how to load the data? "data.table" (default) or "readr"
-#' @param chr         load a specific chromosome (to rbind() later)? (NULL)
-#' 
-#' @return            parameters for makeBSseq or makeBSseq_hdf5
+#' Inspect Biscuit VCF and BED files
 #'
-#' @import            VariantAnnotation
-#' @import            Rsamtools 
-#' @import            readr
+#' A BED checker for Biscuit CpG/CpH output (BED-like format with 2 or 3
+#' columns per sample). By default, files with more than 50 million loci will
+#' be processed iteratively, since data.table tends to run into problems with
+#' gzipped joint CpH files.
 #'
-#' @seealso           load.biscuit
+#' Input BED and VCF files must be tabix'ed. No exceptions!
+#'
+#' @param BEDfile      A BED-like file - must be compressed and tabix'ed
+#' @param VCFfile      A VCF file - must be compressed and tabix'ed. Only the
+#'                       header information is needed.
+#' @param merged       Is this merged CpG data?
+#' @param sampleNames  Names of samples - NULL: create names, vector: assign
+#'                       names, data.frame: make pData (DEFAULT: NULL)
+#' @param chunkSize    For files longer than `yieldSize` number of lines long,
+#'                       chunk the file (DEFAULT: 5e7)
+#' @param hdf5         Use HDF5 arrays for backing the data? (DEFAULT: FALSE)
+#' @param sparse       Use sparse Matrix objects for the data? (DEFAULT: TRUE)
+#' @param how          How to load the data - "data.table" or "readr"?
+#'                       (DEFAULT: data.table)
+#' @param chr          Load a specific chromosome to rbind() later?
+#'                       (DEFAULT: NULL)
+#'
+#' @return             Parameters to be supplied to makeBSseq
+#'
+#' @import VariantAnnotation
+#' @import Rsamtools
+#' @import readr
+#'
+#' @seealso read.biscuit
+#'
+#' @examples
 #'
 #' @export
+#'
 checkBiscuitBED <- function(BEDfile, 
                             VCFfile, 
                             merged,
-                            sampleNames=NULL, 
-                            chunkSize=5e7, 
-                            hdf5=FALSE,
-                            sparse=TRUE,
-                            how=c("data.table","readr"),
-                            chr=NULL) {
+                            sampleNames = NULL, 
+                            chunkSize = 5e7, 
+                            hdf5 = FALSE,
+                            sparse = TRUE,
+                            how = c("data.table","readr"),
+                            chr = NULL) {
 
   # Check if required inputs are missing
   # Print more useful messages if they are

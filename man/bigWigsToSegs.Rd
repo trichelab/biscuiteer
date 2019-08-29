@@ -2,19 +2,22 @@
 % Please edit documentation in R/bigWigsToSegs.R
 \name{bigWigsToSegs}
 \alias{bigWigsToSegs}
-\title{wrapper fn to process large numbers of bigWig'ed CN segmentations}
+\title{Process many bigWig'ed CN segmentations}
 \usage{
 bigWigsToSegs(suffix = ".CN.hg19.bw", filename = NULL)
 }
 \arguments{
-\item{suffix}{suffix of segmentation files (default is ".CN.hg19.bw")}
+\item{suffix}{Suffix of segmentation files (DEFAULT: ".CN.hg19.bw")}
 
-\item{filename}{where to save the result (unsaved if NULL)}
+\item{filename}{Where to save the result - unsaved if NULL (DEFAULT: NULL)}
 }
 \value{
-\preformatted{     a data.frame just like the one from grToSeg 
+\preformatted{     A data.frame like the one returned from grToSeg
 }
 }
 \description{
-wrapper fn to process large numbers of bigWig'ed CN segmentations
+Wrapper function to grToSeg to make processing large numbers of bigWigs easier
+}
+\examples{
+
 }

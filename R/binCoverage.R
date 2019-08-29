@@ -1,23 +1,34 @@
-#' bin CpG/CpH coverage to simplify & improve CNA "sketching" (e.g. for E-M) 
-#' 
-#' FIXME: turn this into a generic for bsseq objects, for bigWigs, for [...]
-#' FIXME: figure out how to estimate the most likely GCbias ~ DNAme linkage
+#' Bin CpG or CpH coverage to simplify and improve CNA "sketching"
 #'
-#' @param x         a bsseq object, maybe HDF5-backed, for getCoverage()
-#' @param bins      bins to summarize over (from tileGenome or QDNAseq.xxYY)
-#' @param which     limit to specific regions? (functions as in import())
-#' @param QDNAseq   return a QDNAseqReadCounts? (if FALSE, return a GRanges)
-#' @param readLen   correction factor for coverage: read length in bp (100)
+#' Example usage for E-M
 #'
-#' @return          binned read counts
+#' @param bsseq    A bsseq object - supplied to getCoverage()
+#' @param bins     Bins to summarize over - from tileGenome or QDNAseq.xxYY
+#' @param which    Limit to specific regions? - functions as an import()
+#'                   (DEFAULT: NULL)
+#' @param QDNAseq  Return a QDNAseqReadCounts? - if FALSE, returns a GRanges
+#'                   (DEFAULT: TRUE)
+#' @param readLen  Correction factor for coverage - read length in bp
+#'                   (DEFAULT: 100)
+#'
+#' @return         Binned read counts
 #'
 #' @import GenomicRanges
 #' @import Mus.musculus
 #' @import Homo.sapiens
-#' @import QDNAseq 
-#' 
+#' @import QDNAseq
+#'
+#' @examples
+#'
 #' @export
-binCoverage <- function(x, bins, which=NULL, QDNAseq=TRUE, readLen=100) {
+#'
+binCoverage <- function(bsseq,
+                        bins,
+                        which = NULL,
+                        QDNAseq = TRUE,
+                        readLen = 100) {
+  # FIXME: turn this into a generic for bsseq objects, for bigWigs, for [...]
+  # FIXME: figure out how to estimate the most likely GCbias ~ DNAme linkage
 
   # turn QDNAseq bins into an annotated GRanges object 
   if (is(bins, "AnnotatedDataFrame") & # QDNAseq bins 
@@ -36,9 +47,9 @@ binCoverage <- function(x, bins, which=NULL, QDNAseq=TRUE, readLen=100) {
     seqlevelsStyle(gr) <- seqlevelsStyle(which)
     gr <- subsetByOverlaps(gr, which)
   }
-  seqlevelsStyle(gr) <- seqlevelsStyle(x)
+  seqlevelsStyle(gr) <- seqlevelsStyle(bsseq)
   names(gr) <- as(granges(gr), "character")
-  summed <- getCoverage(x, gr, what="perRegionTotal", withDimnames=TRUE)
+  summed <- getCoverage(bsseq, gr, what="perRegionTotal", withDimnames=TRUE)
   summed <- round(summed/readLen) # mostly so plot titles don't look insane
   gc(,TRUE) # cautious
   gr$score <- summed
@@ -59,6 +70,6 @@ binCoverage <- function(x, bins, which=NULL, QDNAseq=TRUE, readLen=100) {
                                 packageVersion("biscuiteer"))
     return(object) 
   } else { 
-    return(subset(gr, rowSums(is.na(gr$score)) < ncol(x) & use == TRUE))
+    return(subset(gr, rowSums(is.na(gr$score)) < ncol(bsseq) & use == TRUE))
   }
 }

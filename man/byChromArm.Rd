@@ -2,22 +2,26 @@
 % Please edit documentation in R/byChromArm.R
 \name{byChromArm}
 \alias{byChromArm}
-\title{an idiotically simple parallelization step}
+\title{A simple parallization step}
 \usage{
 byChromArm(x, arms = NULL)
 }
 \arguments{
-\item{x}{anything with a GRanges in it: BSseq, SummarizedExperiment, etc.}
+\item{x}{Any object with a GRanges in it: bsseq, SummarizedExperiment...}
 
-\item{arms}{(optional) another GRanges, but just specifying chromosome arms.}
+\item{arms}{Another GRanges, but specifying chromosome arms (DEFAULT: NULL)}
 }
 \value{
-\preformatted{ a list, List, or *List, with pieces of x by chromosome arm.
+\preformatted{ A list, List, or *list, with pieces of x by chromosome arm
 }
 }
 \description{
-This function just splits an object by chromosome arm, which tends to make
-parallelization MUCH easier, as cross-arm dependencies are unusual, and the
-larger chromosomes can thus be split across processes or machines without
-worrying much about data starvation for processes on smaller chromosomes.
+This function splits an object by chromosome arm, which tends to make
+parallelization much easier, as cross-arm dependencies are unusual.
+Therefore, the larger chromosomes can be split across processes or machines
+without worrying much about data starvation for processes on smaller
+chromosomes.
+}
+\examples{
+
 }
