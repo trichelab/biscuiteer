@@ -1,6 +1,6 @@
 #' plotting WGBScopy results (modified from HMMcopy)
 #' 
-#' @param cn    	binned, corrected read depths from correctCoverage()
+#' @param cn    	binned, corrected read depths from correctBsSeqCoverage()
 #' @param segs		a segmentation result from WGBScopy()
 #' @param chr 		what chromosome to display (chr22)
 #' @param name		a name for the plot ("Segmented")

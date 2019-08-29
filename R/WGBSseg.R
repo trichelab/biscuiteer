@@ -4,7 +4,7 @@
 #'        on length (as opposed to right now where it is done rather roughly)
 #' FIXME: use findOverlaps(resize(segs, width(segs) + minWidth, fix="center"))
 #' 
-#' @param cn    	binned, corrected read depths from correctCoverage()
+#' @param cn    	binned, corrected read depths from correctBsSeqCoverage()
 #' @param minAbs	minimum absolute value of a segment to keep it (0.1)
 #' @param minWidth      minimum width of segment (NOT A GAP) to keep (25000)
 #' @param ...           other parameters passed to fastseg

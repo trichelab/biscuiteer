@@ -7,7 +7,7 @@
 plotSegs(cn, segs = NULL, chr = "chr22", name = "Segmented", ...)
 }
 \arguments{
-\item{cn}{binned, corrected read depths from correctCoverage()}
+\item{cn}{binned, corrected read depths from correctBsSeqCoverage()}
 
 \item{segs}{a segmentation result from WGBScopy()}
 

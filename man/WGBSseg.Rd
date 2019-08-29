@@ -7,7 +7,7 @@
 WGBSseg(cn, minAbs = 0.3, minWidth = 20000, ...)
 }
 \arguments{
-\item{cn}{binned, corrected read depths from correctCoverage()}
+\item{cn}{binned, corrected read depths from correctBsSeqCoverage()}
 
 \item{minAbs}{minimum absolute value of a segment to keep it (0.1)}
 
