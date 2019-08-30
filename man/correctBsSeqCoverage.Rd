@@ -2,23 +2,31 @@
 % Please edit documentation in R/correctBsSeqCoverage.R
 \name{correctBsSeqCoverage}
 \alias{correctBsSeqCoverage}
-\title{tweaked version of TitanCNA's preprocessing}
+\title{Tweaked version of TitanCNA's preprocessing}
 \usage{
 correctBsSeqCoverage(tumor, normal, bsgc = NULL, maps = NULL)
 }
 \arguments{
-\item{tumor}{binned tumor coverage (a GRanges from binCoverage)}
+\item{tumor}{Binned tumor coverage - a GRanges from binCoverage}
 
-\item{normal}{binned normal coverage (a GRanges from binCoverage)}
+\item{normal}{Binned normal coverage - a GRanges from binCoverage}
 
-\item{bsgc}{binned c2t GC content (default is bsgc.hg19, 1kb bins)}
+\item{bsgc}{Binned c2t GC content (DEFAULT: bsgc.hg19, 1 kb bins)}
 
-\item{maps}{binned c2t mappability (default is maps.hg19, 1kb bins)}
+\item{maps}{Binned c2t mappability (DEFAULT: maps.hg19, 1 kb bins)}
 }
 \value{
-\preformatted{     corrected tumor and normal read counts
+\preformatted{   Corrected tumor and normal read counts
 }
 }
 \description{
-limits coverage to chr{1:22,X}, for better or for worse
+Limits coverage to chromosomes 1 through 22 and X (for better or for worse)
+}
+\examples{
+
+}
+\seealso{
+binCoverage
+
+TitanCNA::correctReadDepth
 }

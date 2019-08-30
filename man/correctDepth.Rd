@@ -2,24 +2,35 @@
 % Please edit documentation in R/correctDepth.R
 \name{correctDepth}
 \alias{correctDepth}
-\title{tweaked version of HMMcopy's GC bias and mappability function}
+\title{Tweaked version of HMMcopy's GC bias and mappability function}
 \usage{
 correctDepth(x, mappability = 0.9, samplesize = 50000,
   verbose = TRUE)
 }
 \arguments{
-\item{x}{binned hg19 coverage with GC content and mappability cols}
+\item{x}{Binned hg19 coverage with GC content and mappability
+columns}
 
-\item{mappability}{minimum mappability to use bins as examplars for others}
+\item{mappability}{Mappability threshold \link{0, 1} below which points are
+ignored while creating the correction curve}
 
-\item{samplesize}{lowess sample size (points to sample; default 50000)}
+\item{samplesize}{Number of points sampled during LOESS fitting
+(DEFAULT: 50 000)}
 
-\item{verbose}{be chatty? (TRUE)}
+\item{verbose}{Print extra statements? (DEFAULT: TRUE)}
 }
 \value{
-\preformatted{       corrected tumor and normal read counts
+\preformatted{        Corrected tumor and normal read counts
 }
 }
 \description{
-tweaked version of HMMcopy's GC bias and mappability function
+Also used by correctBsSeqCoverage
+}
+\examples{
+
+}
+\seealso{
+correctBsSeqCoverage
+
+HMMcopy::correctReadcount
 }

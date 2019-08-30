@@ -1,42 +1,44 @@
-#' filter loci with zero coverage in one or more conditions
-#' 
-#' This function used to be part of dmrseq, or so we recall. In any event, 
-#' it is a colossal drag to set up a dmrseq run only to discover that it fails
-#' for seemingly mysterious reasons owing to lack of coverage. 
+#' Filter loci with zero coverage
 #'
-#' The code is adapted from the precheck loop of dmrseq::dmrseq().
+#' Function potentially used to be a part of dmrseq. Included here to avoid
+#' dmrseq failing due to any number of reasons related to lack of coverage.
 #'
-#' @param bs              a bsseq object for filtration
-#' @param testCovariate   the name of the pData column dmrseq will test on 
-#' @param ...             not currently used; may pass to dmrseq in the future
+#' The code is adapted from the precheck loop of dmrseq::dmrseq
 #'
-#' @return                a bsseq object ready for dmrseq to use
+#' @param bsseq          A bsseq object for filtering
+#' @param testCovariate  The name of the pData column dmrseq will test on
+#'
+#' @return               A bsseq object ready for dmrseq to use
 #'
 #' @seealso dmrseq
 #' @seealso WGBSeq
 #' @seealso RRBSeq
 #'
-#' @import bsseq
 #' @importFrom DelayedMatrixStats rowCounts
+#' @import bsseq
+#'
+#' @examples
 #'
 #' @export
-filterLoci <- function(bs, testCovariate, ...) { 
+#'
+filterLoci <- function(bsseq,
+                       testCovariate) {
 
   filt <- c()
-  lev <- unique(pData(bs)[[testCovariate]])
+  lev <- unique(pData(bsseq)[[testCovariate]])
   for (l in seq_along(lev)) {
-    inLev <- which(pData(bs)[[testCovariate]] == lev[l])
+    inLev <- which(pData(bsseq)[[testCovariate]] == lev[l])
     filt <- c(filt, 
-              which(DelayedMatrixStats::rowCounts(getCoverage(bs[,inLev]),
+              which(DelayedMatrixStats::rowCounts(getCoverage(bsseq[,inLev]),
                                                   value=0) == length(inLev)))
   }
   if (length(filt) > 0) {
     message(length(filt), " loci with 0 coverage in at least 1 condition.")
-    retain <- setdiff(seq_len(nrow(bs)), filt)
+    retain <- setdiff(seq_len(nrow(bsseq)), filt)
     message("Retaining ", length(retain), " loci.")
-    return(bs[retain,])
+    return(bsseq[retain,])
   } else {
-    return(bs)
+    return(bsseq)
   }
 
 } 

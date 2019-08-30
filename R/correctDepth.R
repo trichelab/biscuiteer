@@ -1,17 +1,31 @@
-#' tweaked version of HMMcopy's GC bias and mappability function
+#' Tweaked version of HMMcopy's GC bias and mappability function
 #'
-#' @param x           binned hg19 coverage with GC content and mappability cols
-#' @param mappability minimum mappability to use bins as examplars for others
-#' @param samplesize  lowess sample size (points to sample; default 50000)
-#' @param verbose     be chatty? (TRUE)
+#' Also used by correctBsSeqCoverage
 #'
-#' @return            corrected tumor and normal read counts
+#' @param x            Binned hg19 coverage with GC content and mappability
+#'                       columns
+#' @param mappability  Mappability threshold [0, 1] below which points are
+#'                       ignored while creating the correction curve
+#' @param samplesize   Number of points sampled during LOESS fitting
+#'                       (DEFAULT: 50 000)
+#' @param verbose      Print extra statements? (DEFAULT: TRUE)
+#'
+#' @return             Corrected tumor and normal read counts
 #'
 #' @import GenomicRanges
 #' @import HMMcopy
-#' 
+#'
+#' @seealso correctBsSeqCoverage
+#' @seealso HMMcopy::correctReadcount
+#'
+#' @examples
+#'
 #' @export
-correctDepth <- function(x, mappability=0.9, samplesize=50000, verbose=TRUE) {
+#'
+correctDepth <- function(x,
+                         mappability = 0.9,
+                         samplesize = 50000,
+                         verbose = TRUE) {
 
   if (!all( c("reads","gc","map") %in% names(mcols(x)))) {
     stop("Missing one of required columns: reads, gc, map")

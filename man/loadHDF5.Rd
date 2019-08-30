@@ -2,17 +2,24 @@
 % Please edit documentation in R/loadHDF5.R
 \name{loadHDF5}
 \alias{loadHDF5}
-\title{a simple local wrapper around HDF5Array::loadHDF5SummarizedExperiment}
+\title{Load HDF5-backed SummarizedExperiment}
 \usage{
 loadHDF5(dir = "HDF5")
 }
 \arguments{
-\item{dir}{path to the file assays.h5 (and se.rds); default is "HDF5"}
+\item{dir}{Path to the assays.h5 (and se.rds) files (DEFAULT: "HDF5")}
 }
 \value{
-\preformatted{   a SummarizedExperiment-derived object (such as a BSseq object)
+\preformatted{A SummarizedExperiment-derived object (list a bsseq object)
 }
 }
 \description{
-a simple local wrapper around HDF5Array::loadHDF5SummarizedExperiment
+Local wrapper around HDF5Array::loadHDF5SummarizedExperiment. NOTE: CURRENTLY
+BISCUITEER DOES NOT HAVE HDF5-BACKING FUNCTIONALITY. USE AT YOUR OWN RISK!!!!
+}
+\examples{
+
+}
+\seealso{
+HDF5Array::loadHDF5SummarizedExperiment
 }

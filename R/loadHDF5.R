@@ -1,13 +1,21 @@
-#' a simple local wrapper around HDF5Array::loadHDF5SummarizedExperiment
-#' 
-#' @param   dir   path to the file assays.h5 (and se.rds); default is "HDF5"
-#' 
-#' @return        a SummarizedExperiment-derived object (such as a BSseq object)
-#' 
-#' @import HDF5Array
-#' 
+#' Load HDF5-backed SummarizedExperiment
+#'
+#' Local wrapper around HDF5Array::loadHDF5SummarizedExperiment. NOTE: CURRENTLY
+#' BISCUITEER DOES NOT HAVE HDF5-BACKING FUNCTIONALITY. USE AT YOUR OWN RISK!!!!  
+#'
+#' @param dir  Path to the assays.h5 (and se.rds) files (DEFAULT: "HDF5")
+#'
+#' @return     A SummarizedExperiment-derived object (list a bsseq object)
+#'
+#' @importFrom HDF5Array loadHDF5SummarizedExperiment
+#'
+#' @seealso HDF5Array::loadHDF5SummarizedExperiment
+#'
+#' @examples
+#'
 #' @export
-loadHDF5 <- function(dir="HDF5") {
+#'
+loadHDF5 <- function(dir = "HDF5") {
   # lop off the filename if it is supplied
   dir <- base::sub("assays.h5$", "", dir)
   loadHDF5SummarizedExperiment(dir=dir)

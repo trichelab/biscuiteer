@@ -1,19 +1,28 @@
-#' tweaked version of TitanCNA's preprocessing
-#' 
-#' limits coverage to chr{1:22,X}, for better or for worse
+#' Tweaked version of TitanCNA's preprocessing
 #'
-#' @param tumor     binned tumor coverage (a GRanges from binCoverage)
-#' @param normal    binned normal coverage (a GRanges from binCoverage)
-#' @param bsgc      binned c2t GC content (default is bsgc.hg19, 1kb bins)
-#' @param maps      binned c2t mappability (default is maps.hg19, 1kb bins)
+#' Limits coverage to chromosomes 1 through 22 and X (for better or for worse)
 #'
-#' @return          corrected tumor and normal read counts
+#' @param tumor   Binned tumor coverage - a GRanges from binCoverage
+#' @param normal  Binned normal coverage - a GRanges from binCoverage
+#' @param bsgc    Binned c2t GC content (DEFAULT: bsgc.hg19, 1 kb bins)
+#' @param maps    Binned c2t mappability (DEFAULT: maps.hg19, 1 kb bins)
+#'
+#' @return        Corrected tumor and normal read counts
 #'
 #' @import GenomicRanges
 #' @import HMMcopy
-#' 
+#'
+#' @seealso binCoverage
+#' @seealso TitanCNA::correctReadDepth
+#'
+#' @examples
+#'
 #' @export
-correctBsSeqCoverage <- function(tumor, normal, bsgc=NULL, maps=NULL) {
+#'
+correctBsSeqCoverage <- function(tumor,
+                                 normal,
+                                 bsgc = NULL,
+                                 maps = NULL) {
 
   if (is.null(bsgc)) { # FIXME: support hg38
     data(bsgc.hg19) 

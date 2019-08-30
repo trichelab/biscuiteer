@@ -1,13 +1,22 @@
-#' dump GRanges to .seg files
-#' 
-#' @param gr        A GRanges or GRangesList to dump as .seg
-#' @param filename  Where to save the result (unsaved if NULL, the default)
-#' @param minAbs    Optional minimum absolute gain/loss cutoff (default is NULL)
-#' 
-#' @return          A data.frame(ID,chrom,loc.start,loc.end,num.mark,seg.mean)
+#' Dump GRanges to segmented data data.frame
+#'
+#' Output data.frame can be written to a .seg file if supplied with filename
+#' input argument
+#'
+#' @param gr        A GRanges or GRangesList to dump to .seg file
+#' @param filename  Where to save the result - unsaved if NULL (DEFAULT: NULL)
+#' @param minAbs    Minimum absolute gain/loss cutoff (DEFAULT: NULL)
+#'
+#' @return          A data.frame with columns:
+#'                    (ID, chrom, loc.start, loc.end, num.mark, seg.mean)
+#'
+#' @examples
 #'
 #' @export
-grToSeg <- function(gr, filename=NULL, minAbs=NULL) { 
+#'
+grToSeg <- function(gr,
+                    filename = NULL,
+                    minAbs = NULL) { 
   if (is(gr, "GRangesList")) {
     seglist <- lapply(gr, grToSeg, filename=NULL)
     for (i in names(seglist)) seglist[[i]][, "ID"] <- i

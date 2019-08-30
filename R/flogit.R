@@ -1,15 +1,19 @@
-#' Helper function: squeezed logit
+#' Calculate squeezed logit function
 #'
-#' @param x       a vector of values between 0 and 1 inclusive
-#' @param sqz     the amount by which to 'squeeze', default is .000001
+#' Helper function for calculating squeezed logit
 #'
-#' @return        a vector of values between -Inf and +Inf
+#' @param x    A vector of values between 0 and 1 inclusive
+#' @param sqz  The amount by which to 'squeeze' (DEFAULT: 0.000001)
 #'
-#' @import        gtools
+#' @return     A vector of values between -Inf and +Inf
+#'
+#' @importFrom gtools logit
 #'
 #' @export 
-flogit <- function(x, sqz=0.000001) {
+#'
+flogit <- function(x,
+                   sqz = 0.000001) {
   x[ which(x < sqz) ] <- sqz 
   x[ which(x > (1 - sqz)) ] <- (1 - sqz)
-  logit(x)
+  gtools::logit(x)
 }

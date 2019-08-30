@@ -2,25 +2,27 @@
 % Please edit documentation in R/makeBSseq.R
 \name{makeBSseq}
 \alias{makeBSseq}
-\title{make an in-core BSseq object from a biscuit BED}
+\title{Make an in-memory bsseq object from a biscuit BED}
 \usage{
 makeBSseq(tbl, params, simplify = FALSE, verbose = FALSE)
 }
 \arguments{
-\item{tbl}{a tibble (from read_tsv) or a data.table (from fread())}
+\item{tbl}{A tibble (from read_tsv) or a data.table (from fread)}
 
-\item{params}{parameters (from checkBiscuitBED)}
+\item{params}{Parameters from checkBiscuitBED}
 
-\item{simplify}{simplify sample names by dropping .foo.bar.hg19 & similar}
+\item{simplify}{Simplify sample names by dropping .foo.bar.hg19? (or
+similar) (DEFAULT: FALSE)}
 
-\item{verbose}{be verbose about what is happening? (FALSE)}
+\item{verbose}{Print extra statements? (DEFAULT: FALSE)}
 }
 \value{
-an in-core BSseq object
+\preformatted{     An in-memory bsseq object
+}
 }
 \description{
-make an in-core BSseq object from a biscuit BED
+Beware that any reasonably large BED files may not fit into memory!
 }
-\seealso{
-makeBSseq_HDF5
+\examples{
+
 }

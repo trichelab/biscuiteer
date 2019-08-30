@@ -1,19 +1,26 @@
-#' make an in-core BSseq object from a biscuit BED
+#' Make an in-memory bsseq object from a biscuit BED
 #'
-#' @param tbl         a tibble (from read_tsv) or a data.table (from fread())
-#' @param params      parameters (from checkBiscuitBED)
-#' @param simplify    simplify sample names by dropping .foo.bar.hg19 & similar
-#' @param verbose     be verbose about what is happening? (FALSE) 
+#' Beware that any reasonably large BED files may not fit into memory!
 #'
-#' @return an in-core BSseq object
-#' 
+#' @param tbl       A tibble (from read_tsv) or a data.table (from fread)
+#' @param params    Parameters from checkBiscuitBED
+#' @param simplify  Simplify sample names by dropping .foo.bar.hg19? (or
+#'                    similar) (DEFAULT: FALSE)
+#' @param verbose   Print extra statements? (DEFAULT: FALSE)
+#'
+#' @return          An in-memory bsseq object
+#'
 #' @import GenomicRanges
-#' @import bsseq 
+#' @import bsseq
 #'
-#' @seealso makeBSseq_HDF5
+#' @examples
 #'
-#' @export 
-makeBSseq <- function(tbl, params, simplify=FALSE, verbose=FALSE) {
+#' @export
+#'
+makeBSseq <- function(tbl,
+                      params,
+                      simplify = FALSE,
+                      verbose = FALSE) {
 
   gr <- resize(makeGRangesFromDataFrame(tbl[, 1:3]), 1) 
 

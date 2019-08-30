@@ -2,19 +2,22 @@
 % Please edit documentation in R/fexpit.R
 \name{fexpit}
 \alias{fexpit}
-\title{Helper function: expanded expit}
+\title{Calculate expanded expit function}
 \usage{
-fexpit(x, sqz)
+fexpit(x, sqz = 1e-06)
 }
 \arguments{
-\item{x}{a vector of values between -Inf and +Inf}
+\item{x}{A vector of values between -Inf and +Inf}
 
-\item{sqz}{the amount by which to 'squeeze', default is .000001}
+\item{sqz}{The amount by which to 'squeeze' (DEFAULT: 0.000001)}
 }
 \value{
-\preformatted{   a vector of values between 0 and 1 inclusive
+\preformatted{A vector of values between 0 and 1 inclusive
 }
 }
 \description{
-Helper function: expanded expit
+Helper function for calculating expanded expit
+}
+\examples{
+
 }
