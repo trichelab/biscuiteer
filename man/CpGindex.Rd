@@ -51,7 +51,7 @@ experiments in the same tissues. We used both to generate a default atlas
 of bivalent (Polycomb-associated and transcriptionally-poised) sites from
 H9 human embryonic stem cells which retain low DNA methylation across normal
 (non-placental) REMC tissues. In 2018, Zhou and Dinh (Nature Genetics) found
-isolated \link{AT}CG\link{AT} sites, or "solo-WCGW" motifs, in common PMDs as the most
+isolated (AT)CG(AT) sites, or "solo-WCGW" motifs, in common PMDs as the most
 universal barometer of proliferation- and aging-associated methylation loss
 in mammalian cells, so we use their solo-WCGW sites in common PMDs as the
 default measure for hypomethylation. The resulting CpGindex is a vector of
