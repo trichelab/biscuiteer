@@ -2,27 +2,28 @@
 % Please edit documentation in R/TN_WGBS_CNA.R
 \name{TN_WGBS_CNA}
 \alias{TN_WGBS_CNA}
-\title{Matched tumor-normal coverage processing & segmentation}
+\title{Matched tumor-normal coverage processing and segmentation}
 \usage{
 TN_WGBS_CNA(stub0, stub1 = NULL, bsgc = NULL, maps = NULL, ...)
 }
 \arguments{
-\item{stub0}{bigWig stub for normal: paste0(stub0, ".covg.hg19.bw")}
+\item{stub0}{bigWig base file name for normal (i.e. stub0.covg.hg19.bw)}
 
-\item{stub1}{bigWig stub for tumor: paste0(stub1, ".covg.hg19.bw") \link{NULL}}
+\item{stub1}{bigWig base file name for tumor (i.e. stub1.covg.hg19.bw)
+(DEFAULT: NULL)}
 
-\item{bsgc}{binned c2t GC content (default is bsgc.hg19, 1k bins) \link{NULL}}
+\item{bsgc}{Binned c2t GC content (DEFAULT: bsgc.hg19, 1 kb bins)}
 
-\item{maps}{binned c2t mappability (default is maps.hg19, 1k bins)\link{NULL}}
+\item{maps}{Binned c2t mappability (DEFAULT: maps.hg19, 1 kb bins)}
 
-\item{...}{other parameters passed to WGBSseg}
+\item{...}{Other parameters to pass to WGBSseg}
 }
 \value{
-\preformatted{     a GRanges
+\preformatted{  A GRanges object
 }
 }
 \description{
-Matched tumor-normal coverage processing & segmentation
+Matched tumor-normal coverage processing and segmentation
 }
 \examples{
 
@@ -35,4 +36,7 @@ Matched tumor-normal coverage processing & segmentation
   segs <- GRangesList(segs) # to feed to grToSeg and get full .seg output
   for(i in names(segs)) export(segs[[i]], paste0(i, ".CN.hg19.bw"))
 
+}
+\seealso{
+WGBSseg
 }

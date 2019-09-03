@@ -10,7 +10,7 @@
 \alias{fixed,BSseq-method}
 \alias{info,BSseq-method}
 \alias{geno,BSseq,ANY-method}
-\title{BSseq class methods (VCF-centric) added by biscuiteer (centralized manpage).}
+\title{bsseq class methods (VCF-centric) added by biscuiteer}
 \usage{
 \S4method{samples}{BSseq}(object)
 
@@ -25,18 +25,21 @@
 \S4method{geno}{BSseq,ANY}(x)
 }
 \arguments{
-\item{object}{a BSseq object, preferably with !is.null(metadata(x)$vcfHeader)}
+\item{object}{A bsseq object, preferably with !is.null(metadata(x)$vcfHeader)}
 
-\item{x}{a BSseq object, preferably with !is.null(metadata(x)$vcfHeader)}
+\item{x}{A bsseq object, preferably with !is.null(metadata(x)$vcfHeader)}
 }
 \value{
-depends on the method; usually a List-like object of some sort
+\preformatted{  Depends on the method - usually a List-like object of some sort
+}
 }
 \description{
-biscuiteer adds VariantAnnotation methods to BSseq objects with VCF headers:
-\code{samples},\code{header},\code{meta},\code{fixed},\code{info},\code{geno}
+See biscuiteer manpage for package description
 }
 \details{
+biscuiteer adds VariantAnnotation methods to BSseq objects with VCF headers:
+\code{samples},\code{header},\code{meta},\code{fixed},\code{info},\code{geno}
+
 Due to inherited method signatures, the argument (singular) to the method may
 be named \code{x} or it may be named \code{object}. Either way, it is a BSseq object.
 

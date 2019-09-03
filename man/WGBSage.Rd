@@ -2,41 +2,51 @@
 % Please edit documentation in R/WGBSage.R
 \name{WGBSage}
 \alias{WGBSage}
-\title{Guess ages using various Horvath-style (Genome Biology, 2012) 'clock' models}
+\title{Guess ages using Horvath-style 'clock' models}
 \usage{
-WGBSage(x, model = c("horvath", "horvathshrunk", "hannum",
+WGBSage(bsseq, model = c("horvath", "horvathshrunk", "hannum",
   "skinandblood"), padding = 15, useENSR = FALSE, useHMMI = FALSE,
   minCovg = 5, impute = FALSE, minSamp = 5, genome = NULL,
   dropBad = FALSE, ...)
 }
 \arguments{
-\item{x}{a BSseq object (must have assays named \code{M} and \code{Cov})}
+\item{bsseq}{A bsseq object (must have assays named \code{M} and \code{Cov})}
 
-\item{model}{which model ("horvath","shrunk","hannum","skinandblood")}
+\item{model}{Which model ("horvath", "shrunk", "hannum", "skinandblood")}
 
-\item{padding}{how many bases +/- to pad the target CpG by (default is 15)}
+\item{padding}{How many bases +/- to pad the target CpG by (DEFAULT: 15)}
 
-\item{useENSR}{use ENSEMBL regulatory region bounds instead of CpGs (FALSE)}
+\item{useENSR}{Use ENSEMBL regulatory region bounds instead of CpGs
+(DEFAULT: FALSE)}
 
-\item{useHMMI}{use HMM CpG island boundaries instead of padded CpGs (FALSE)}
+\item{useHMMI}{Use HMM CpG island boundaries instead of padded CpGs
+(DEFAULT: FALSE)}
 
-\item{minCovg}{minimum regional read coverage desired to estimate 5mC (5)}
+\item{minCovg}{Minimum regional read coverage desired to estimate 5mC
+(DEFAULT: 5)}
 
-\item{impute}{use k-NN imputation to fill in low-coverage regions? (FALSE)}
+\item{impute}{Use k-NN imputation to fill in low-coverage regions?
+(DEFAULT: FALSE)}
 
-\item{minSamp}{minimum number of non-NA samples to perform imputation (5)}
+\item{minSamp}{Minimum number of non-NA samples to perform imputation
+(DEFAULT: 5)}
 
-\item{genome}{genome to use as reference, if no genome(x) is set (NULL)}
+\item{genome}{Genome to use as reference, if no genome(bsseq) is set
+(DEFAULT: NULL)}
 
-\item{dropBad}{drop rows/cols with > half missing pre-imputation? (FALSE)}
+\item{dropBad}{Drop rows/cols with > half missing pre-imputation?
+(DEFAULT: FALSE)}
 
-\item{...}{arguments to be passed to impute.knn, such as rng.seed}
+\item{...}{Arguments to be passed to impute.knn, such as rng.seed}
 }
 \value{
-\preformatted{     a list: call, methylation estimates, coefs, age (estimates)
+\preformatted{    A list: call, methylation estimates, coefs, age (estimates)
 }
 }
 \description{
+See Horvath, Genome Biology, 2012 for more information
+}
+\details{
 Note: the accuracy of the prediction will increase or decrease depending on
 how various \link{hyper}parameters are set by the user. This is NOT a hands-off
 procedure, and the defaults are only a starting point for exploration. It
@@ -45,8 +55,7 @@ WGBS or RRBS experiment (and the latter may be impacted by whether dupes are
 removed prior to importing data). Consider yourself forewarned. In the near
 future we may add support for arbitrary region-coefficient inputs and result
 transformation functions, which of course will just make the problems worse.
-}
-\details{
+
 Also, please cite the appropriate papers for the Epigenetic Clock(s) you use:
 
 For the 'horvath' or 'shrunk' clocks, cite Horvath, Genome Biology 2012.
@@ -59,4 +68,7 @@ If you need to recover the GRanges object used to average (or impute) DNAme
 values for the model, try \code{as.character(rownames(result$meth))} on a result.
 The coefficients for each of these regions are stored in result$coefs, and
 the age estimates are stored in result$age (named, in case dropBad == TRUE).
+}
+\examples{
+
 }

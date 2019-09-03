@@ -2,27 +2,26 @@
 % Please edit documentation in R/WGBSseg.R
 \name{WGBSseg}
 \alias{WGBSseg}
-\title{Copy number segmentation of GC- & mapping-corrected WGBS coverage}
+\title{Copy number segmentation of GC- and mapping-corrected WGBS coverage}
 \usage{
 WGBSseg(cn, minAbs = 0.3, minWidth = 20000, ...)
 }
 \arguments{
-\item{cn}{binned, corrected read depths from correctBsSeqCoverage()}
+\item{cn}{Binned, corrected read depths from correctBsSeqCoverage}
 
-\item{minAbs}{minimum absolute value of a segment to keep it (0.1)}
+\item{minAbs}{Minimum absolute value of a segment to keep (DEFAULT: 0.3)}
 
-\item{minWidth}{minimum width of segment (NOT A GAP) to keep (25000)}
+\item{minWidth}{Minimum width of segment (NOT A GAP) to keep
+(DEFAULT: 20 000)}
 
-\item{...}{other parameters passed to fastseg}
+\item{...}{Other parameters passed to fastseg}
 }
 \value{
-\preformatted{         a GRanges (hg19 seqinfo)
+\preformatted{     A GRanges (hg19 seqinfo)
 }
 }
 \description{
-FIXME: use some form of smoothing to glob segments together and THEN filter
-on length (as opposed to right now where it is done rather roughly)
-FIXME: use findOverlaps(resize(segs, width(segs) + minWidth, fix="center"))
+Copy number segmentation of GC- and mapping-corrected WGBS coverage
 }
 \examples{
 

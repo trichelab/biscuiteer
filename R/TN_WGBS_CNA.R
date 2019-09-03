@@ -1,16 +1,19 @@
-#' Matched tumor-normal coverage processing & segmentation
+#' Matched tumor-normal coverage processing and segmentation
 #'
-#' @param stub0     bigWig stub for normal: paste0(stub0, ".covg.hg19.bw")
-#' @param stub1     bigWig stub for tumor: paste0(stub1, ".covg.hg19.bw") [NULL]
-#' @param bsgc      binned c2t GC content (default is bsgc.hg19, 1k bins) [NULL]
-#' @param maps      binned c2t mappability (default is maps.hg19, 1k bins)[NULL]
-#' @param ...       other parameters passed to WGBSseg
+#' @param stub0  bigWig base file name for normal (i.e. stub0.covg.hg19.bw)
+#' @param stub1  bigWig base file name for tumor (i.e. stub1.covg.hg19.bw)
+#'                 (DEFAULT: NULL)
+#' @param bsgc   Binned c2t GC content (DEFAULT: bsgc.hg19, 1 kb bins)
+#' @param maps   Binned c2t mappability (DEFAULT: maps.hg19, 1 kb bins)
+#' @param ...    Other parameters to pass to WGBSseg
 #'
-#' @return          a GRanges
+#' @return       A GRanges object
 #'
 #' @import fastseg
 #' @import Biostrings
-#' 
+#'
+#' @seealso WGBSseg
+#'
 #' @examples
 #'
 #'   stubs <- c("P01-010", "P01-012", "P01-015", "P01-016", "P01-017")
@@ -23,7 +26,12 @@
 #'   for(i in names(segs)) export(segs[[i]], paste0(i, ".CN.hg19.bw"))
 #'
 #' @export
-TN_WGBS_CNA <- function(stub0, stub1=NULL, bsgc=NULL, maps=NULL, ...) {
+#'
+TN_WGBS_CNA <- function(stub0,
+                        stub1 = NULL,
+                        bsgc = NULL,
+                        maps = NULL,
+                        ...) {
   if (is.null(stub1)) {
     stub <- stub0
     stub0 <- paste0(stub, "-normal")

@@ -1,15 +1,25 @@
-#' plotting WGBScopy results (modified from HMMcopy)
-#' 
-#' @param cn    	binned, corrected read depths from correctBsSeqCoverage()
-#' @param segs		a segmentation result from WGBScopy()
-#' @param chr 		what chromosome to display (chr22)
-#' @param name		a name for the plot ("Segmented")
-#' @param ... 		other arguments to pass on to plot
-#' 
+#' Plot WGBScopy results
+#'
+#' Modified from HMMcopy
+#'
+#' @param cn    Binned, corrected read depths from correctBsSeqCoverage
+#' @param segs  Segmentation result from WGBScopy
+#' @param chr   Chromosome to display (DEFAULT: "chr22")
+#' @param name  Name for the plot (DEFAULT: "Segmented")
+#' @param ...   Other arguments to pass on to plot
+#'
+#' @import GenomicRanges
 #' @import HMMcopy
-#' 
+#'
+#' @examples
+#'
 #' @export
-plotSegs <- function(cn, segs=NULL, chr="chr22", name="Segmented", ...) {
+#'
+plotSegs <- function(cn,
+                     segs = NULL,
+                     chr = "chr22",
+                     name = "Segmented",
+                     ...) {
 
   # accept a list from TN_WGBS_CNA()
   if (is.null(segs) & is.list(cn)) {

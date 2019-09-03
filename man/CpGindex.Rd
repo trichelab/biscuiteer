@@ -2,26 +2,33 @@
 % Please edit documentation in R/CpGindex.R
 \name{CpGindex}
 \alias{CpGindex}
-\title{Measure hypermethylation-at-PRCs-in-CGIs and hypomethylation-at-WCGWs-in-PMDs}
+\title{Measure methylation status for PRCs or PMDs}
 \usage{
-CpGindex(x, CGIs = NULL, PRCs = NULL, WCGW = NULL, PMDs = NULL)
+CpGindex(bsseq, CGIs = NULL, PRCs = NULL, WCGW = NULL, PMDs = NULL)
 }
 \arguments{
-\item{x}{a BSseq object}
+\item{bsseq}{A BSseq object}
 
-\item{CGIs}{a GRanges of CpG island regions, or NULL (default is HMM CGIs)}
+\item{CGIs}{A GRanges of CpG island regions - HMM CGIs if NULL
+(DEFAULT: NULL)}
 
-\item{PRCs}{a GRanges of Polycomb targets, or NULL (H9 state 23 low-meth)}
+\item{PRCs}{A GRanges of Polycomb targets - H9 state 23 low-meth if NULL
+(DEFAULT: NULL)}
 
-\item{WCGW}{a GRanges of solo-WCGW sites, or NULL (default is PMD WCGWs)}
+\item{WCGW}{A GRanges of solo-WCGW sites - PMD WCGWs if NULL
+(DEFAULT: NULL)}
 
-\item{PMDs}{a GRanges of hypomethylating regions, or NULL (default PMDs)}
+\item{PMDs}{A GRanges of hypomethylating regions - PMDs if NULL
+(DEFAULT: NULL)}
 }
 \value{
-\preformatted{   a CpGindex (DataFrame w/cols `hyper`, `hypo`, `ratio` + 2 GRs)
+\preformatted{  A CpGindex (DataFrame w/cols `hyper`, `hypo`, `ratio` + 2 GRs)
 }
 }
 \description{
+Measures hypermethylation at PRCs in CGIs or hypomethylation at WCGWs in PMDs
+}
+\details{
 At some point in some conference call somewhere, a collaborator suggested
 that a simple index of Polycomb repressor complex (PRC) binding site hyper-
 methylation and CpG-poor "partially methylated domain" (PMD) hypomethylation
@@ -32,8 +39,7 @@ along with the ratio of hyper- to hypo-methylation. (The logic for this is
 that while the phenomena tend to occur together, there are many exceptions)
 The resulting measures can provide a high-level summary of proliferation-,
 aging-, and/or disease-associated changes in DNA methylation across samples.
-}
-\details{
+
 The choice of defaults is fairly straightforward: in 2006, three independent
 groups reported recurrent hypermethylation in cancer at sites marked by both
 H3K4me3 (activating) and H3K27me3 (repressive) histone marks in embryonic
@@ -84,4 +90,7 @@ By providing different targets and/or regions, users can customize as needed.
 The return value is a CpGindex object, which is really just a DataFrame that
 knows about the regions at which it was summarized, and reminds the user of
 this when they implicitly call the \code{show} method on it.
+}
+\examples{
+
 }

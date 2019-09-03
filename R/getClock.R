@@ -1,4 +1,7 @@
-#' biscuiteer supports several "epigenetic clock" models. This fetches them.
+#' Retrieve 'epigenetic clock' models
+#'
+#' Biscuiteer supports several 'epigenetic clock' models. This function
+#' retrieves the various models.
 #'
 #' The remapped coordinates for the Horvath (2012) and Hannum (2013) clocks, 
 #' along with shrunken Horvath (2012) and improved Horvath (2018) models, are
@@ -17,9 +20,14 @@
 #' such options in the event that defaults don't work well for a user. 
 #' 
 #' The precedence of options is as follows: 
-#'   - if a feature has neither ENSR nor HMMI IDs, it is padded (only) +/- bp.
-#'   - if it has an HMMI but not ENSR ID or ENSR==FALSE, the HMM island is used.
-#'   - if a feature has an ENSR ID, and ENSR==TRUE, the ENSR feature is used.
+#' \enumerate{
+#'   \item If a feature has neither ENSR nor HMMI IDs, it is padded
+#'         (only) +/- bp.
+#'   \item If it has an HMMI but not ENSR ID or ENSR==FALSE, the HMM island
+#'         is used.
+#'   \item If a feature has an ENSR ID, and ENSR==TRUE, the ENSR feature
+#'         is used.
+#' }
 #'
 #' If a feature has both an ENSR ID and an HMMI ID, and both options are TRUE, 
 #' then the ENSR start and end coordinates will take precedence over its HMMI. 
@@ -28,17 +36,30 @@
 #' The `intercept` value returned with the model is its fixed (B0) coefficient.
 #' The `cleanup` function returned with the model transforms its raw output. 
 #' 
-#' @param model   one of "horvath", "horvathshrunk", "hannum", or "skinandblood"
-#' @param padding how many base pairs (+/-) to expand a feature's footprint (15)
-#' @param genome  one of "hg19" (default), "GRCh37", "hg38", or "GRCh38" (hg19)
-#' @param useENSR substitute ENSEMBL regulatory feature boundaries? (FALSE) 
-#' @param useHMMI substitute HMM-based CpG island boundaries? (FALSE) 
+#' @param model    One of "horvath", "horvathshrunk", "hannum", or
+#'                   "skinandblood"
+#' @param padding  How many base pairs (+/-) to expand a feature's footprint
+#'                   (DEFAULT: 15)
+#' @param genome   One of "hg19", "GRCh37", "hg38", or "GRCh38"
+#'                   (DEFAULT: "hg19")
+#' @param useENSR  Substitute ENSEMBL regulatory feature boundaries?
+#'                   (DEFAULT: FALSE) 
+#' @param useHMMI  Substitute HMM-based CpG island boundaries?
+#'                   (DEFAULT: FALSE) 
 #'
-#' @return  a List with elements `model`, `gr`, `intercept`, and `cleanup`
+#' @return         a List with elements `model`, `gr`, `intercept`,
+#'                   and `cleanup`
 #' 
+#' @examples
+#'
 #' @export
-getClock <- function(model=c("horvath","horvathshrunk","hannum","skinandblood"),
-                     padding=15, genome="hg19", useENSR=FALSE, useHMMI=FALSE) {
+#'
+getClock <- function(model = c("horvath","horvathshrunk",
+                               "hannum","skinandblood"),
+                     padding = 15,
+                     genome = "hg19",
+                     useENSR = FALSE,
+                     useHMMI = FALSE) {
 
   model <- match.arg(model) 
   genome <- match.arg(genome)

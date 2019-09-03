@@ -10,6 +10,10 @@
 #' @return          A data.frame with columns:
 #'                    (ID, chrom, loc.start, loc.end, num.mark, seg.mean)
 #'
+#' @import GenomicRanges
+#'
+#' @seealso segToGr
+#'
 #' @examples
 #'
 #' @export

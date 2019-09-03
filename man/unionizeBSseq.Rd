@@ -2,24 +2,31 @@
 % Please edit documentation in R/unionizeBSseq.R
 \name{unionizeBSseq}
 \alias{unionizeBSseq}
-\title{Smoosh a couple of BSseq objects together, sensibly.}
+\title{Combine two bsseq objects together}
 \usage{
-unionizeBSseq(bs1, bs2, biggrl, what = c("M", "Cov"), parallel = TRUE)
+unionizeBSseq(bs1, bs2, biggrl, what = c("M", "Cov"))
 }
 \arguments{
-\item{bs1}{a BSseq object}
+\item{bs1}{bsseq object number 1}
 
-\item{bs2}{another BSseq object}
+\item{bs2}{bsseq object number 2}
 
-\item{biggrl}{a GRangesList with (bs1-only, both, bs2-only) regions}
+\item{biggrl}{A GRangesList with (bs1-only, both, and bs2-only) regions}
 
 \item{what}{"M" (methylation) or "Cov" (coverage)}
 }
 \value{
-a DelayedMatrix
+\preformatted{   A Matrix
+}
 }
 \description{
-take two bsseq objects and the overlaps of the union of their rowRanges,
-pad out un-covered sites with 0M/0Cov (i.e., ./. in a sparse Matrix),
-and return a Matrix containing the joint information from both.
+Takes two bsseq objects and the overlaps of the union of their rowRanges,
+fills the sites not in the union with 0M/0Cov (or ./. in a sparse Matrix),
+then returns a Matrix containing the joint information from both objects.
+}
+\examples{
+
+}
+\seealso{
+unionize
 }

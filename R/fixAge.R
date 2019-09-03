@@ -1,5 +1,7 @@
-#' project Horvath-type 'epigenetic clock' raw output onto actual ages 
-#' 
+#' Turn 'epigenetic clock' into actual age
+#'
+#' Uses Horvath-type 'epigenetic clock' raw output to project into actual ages
+#'
 #' The 'Epigenetic Clock' (Horvath 2012) and similar schemes use a number of 
 #' CpG loci (or regions, or perhaps CpH loci -- it doesn't really matter what)
 #' to estimate the chronological/biological age of samples from DNA methylation
@@ -13,13 +15,17 @@
 #'
 #' This function implements the above standard output transformation step.
 #' 
-#' @param x       untransformed or raw prediction(s)
-#' @param adult   age of adulthood (default is 21) 
+#' @param x      Untransformed or raw prediction(s)
+#' @param adult  Age of adulthood (DEFAULT: 21)
 #' 
-#' @return        transformed prediction(s) 
+#' @return       Transformed prediction(s)
+#'
+#' @examples
 #' 
 #' @export
-fixAge <- function(x, adult=21) {
+#'
+fixAge <- function(x,
+                   adult = 21) {
   if (x < 0) {
     return(adult * exp(x) - 1)
   } else {

@@ -1,51 +1,66 @@
-#' a bsseq loader for Biscuit output (BED-like format, 2 or 3 cols/sample)
-#' 
-#' e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and 9 columns total,
-#' while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns.
-#' Note: the defaults assume alignment against hg19 (use genome=xyz to override)
-#' Note 2: if a BED has no header, a VCF header can be used to autodetect names.
+#' Read biscuit output into bsseq object
 #'
-#' @param BEDfile    the file (compressed or not, doesn't matter) to load
-#' @param VCFfile     the file (compressed and tabixed, with header) to load
-#' @param merged      are CpG sites merged?
-#' @param sampleNames if NULL, create; if VCF, read; if data.frame, make pData
-#' @param simplify    simplify sample names by dropping .foo.bar.hg19 or similar
-#' @param genome      what genome assembly were the runs aligned against? (hg19)
-#' @param how         how to load the data? "data.table" (default) or "readr"
-#' @param hdf5        make the object HDF5-backed? (FALSE; use in-core storage) 
-#' @param hdf5dir     if hdf5 is TRUE, where should HDF5 files be stored? (NULL)
-#' @param sparse      are there a lot of zero-coverage sites? (default is FALSE)
-#' @param chunkSize   number of rows before readr reading becomes chunked (1e6)
-#' @param chr         load a specific chromosome (to rbind() later)? (NULL)
-#' @param which       a GRanges of regions to load (default NULL, load them all)
-#' @param verbose     be verbose? (FALSE) 
-#' 
-#' @return            a bsseq::BSseq object, possibly Matrix- or HDF5-backed
+#' Takes BED-like format with 2 or 3 columns per sample. Unmerged CpG files
+#' have 2 columns (beta values and coverage), whereas merged CpG files have
+#' 3 columns (beta values, coverage, and context).
+#'
+#' NOTE: Assumes alignment against hg19 (use genome argument to override).
+#' NOTE: Requires header from VCF file to detect sample names
+#'
+#' @param BEDfile      A BED-like file - must be compressed and tabix'ed
+#' @param VCFfile      A VCF file - must be compressed and tabix'ed. Only the
+#'                       header information is needed.
+#' @param merged       Is this merged CpG data?
+#' @param sampleNames  Names of samples - NULL: create names, vector: assign
+#'                       names, data.frame: make pData (DEFAULT: NULL)
+#' @param simplify     Simplify sample names by dropping .foo.bar.hg19? (or
+#'                       similar) (DEFAULT: FALSE)
+#' @param genome       Genome assembly the runs were aligned against
+#'                       (DEFAULT: "hg19")
+#' @param how          How to load data - either data.table or readr
+#'                       (DEFAULT: "data.table")
+#' @param hdf5         Make the object HDF5-backed - CURRENTLY NOT AVAILABLE
+#'                       (DEFAULT: FALSE)
+#' @param hdf5dir      Directory to store HDF5 files if 'hdf5' = TRUE
+#'                       (DEFAULT: NULL)
+#' @param sparse       Use sparse Matrix objects for the data? (DEFAULT: FALSE)
+#' @param chunkSize    Number of rows before readr reading becomes chunked
+#'                       (DEFAULT: 1e6)
+#' @param chr          Load a specific chromosome? (DEFAULT: NULL)
+#' @param which        A GRanges of regions to load - NULL loads them all
+#'                       (DEFAULT: NULL)
+#' @param verbose      Print extra statements? (DEFAULT: FALSE)
+#'
+#' @return             A bsseq::BSseq object
 #'
 #' @import data.table
 #' @import readr
 #' @import bsseq
 #' @import rlang
 #'
-#' @seealso BSseq
-#' @aliases load.biscuit
+#' @seealso bsseq
 #' @seealso checkBiscuitBED
 #'
+#' @aliases load.biscuit
+#'
+#' @examples
+#'
 #' @export
+#'
 read.biscuit <- function(BEDfile, 
                          VCFfile, 
                          merged, 
-                         sampleNames=NULL, 
-                         simplify=FALSE, 
-                         genome="hg19",
-                         how=c("data.table","readr"),
-                         hdf5=FALSE, 
-                         hdf5dir=NULL,
-                         sparse=FALSE,
-                         chunkSize=1e6, 
-                         chr=NULL,
-                         which=NULL,
-                         verbose=FALSE) { 
+                         sampleNames = NULL, 
+                         simplify = FALSE, 
+                         genome = "hg19",
+                         how = c("data.table", "readr"),
+                         hdf5 = FALSE, 
+                         hdf5dir = NULL,
+                         sparse = FALSE,
+                         chunkSize = 1e6, 
+                         chr = NULL,
+                         which = NULL,
+                         verbose = FALSE) { 
 
   # Check if required inputs are missing
   # Print more useful messages if they are
@@ -138,5 +153,9 @@ read.biscuit <- function(BEDfile,
 }
 
 
+#' Alias for read.biscuit
+#'
+#' @seealso read.biscuit
+#'
 #' @export
 load.biscuit <- read.biscuit

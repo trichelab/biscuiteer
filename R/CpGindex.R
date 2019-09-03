@@ -1,5 +1,7 @@
-#' Measure hypermethylation-at-PRCs-in-CGIs and hypomethylation-at-WCGWs-in-PMDs
+#' Measure methylation status for PRCs or PMDs
 #'
+#' Measures hypermethylation at PRCs in CGIs or hypomethylation at WCGWs in PMDs
+#' 
 #' At some point in some conference call somewhere, a collaborator suggested
 #' that a simple index of Polycomb repressor complex (PRC) binding site hyper-
 #' methylation and CpG-poor "partially methylated domain" (PMD) hypomethylation
@@ -62,26 +64,37 @@
 #' knows about the regions at which it was summarized, and reminds the user of 
 #' this when they implicitly call the `show` method on it.
 #' 
-#' @param x       a BSseq object
-#' @param CGIs    a GRanges of CpG island regions, or NULL (default is HMM CGIs)
-#' @param PRCs    a GRanges of Polycomb targets, or NULL (H9 state 23 low-meth)
-#' @param WCGW    a GRanges of solo-WCGW sites, or NULL (default is PMD WCGWs)
-#' @param PMDs    a GRanges of hypomethylating regions, or NULL (default PMDs) 
+#' @param bsseq  A BSseq object
+#' @param CGIs   A GRanges of CpG island regions - HMM CGIs if NULL
+#'                 (DEFAULT: NULL)
+#' @param PRCs   A GRanges of Polycomb targets - H9 state 23 low-meth if NULL
+#'                 (DEFAULT: NULL)
+#' @param WCGW   A GRanges of solo-WCGW sites - PMD WCGWs if NULL
+#'                 (DEFAULT: NULL)
+#' @param PMDs   A GRanges of hypomethylating regions - PMDs if NULL
+#'                 (DEFAULT: NULL)
 #'
-#' @return        a CpGindex (DataFrame w/cols `hyper`, `hypo`, `ratio` + 2 GRs)
+#' @return       A CpGindex (DataFrame w/cols `hyper`, `hypo`, `ratio` + 2 GRs)
 #' 
 #' @import DelayedMatrixStats
 #' @import GenomicRanges
 #' @import S4Vectors
+#'
+#' @examples
 #' 
-#' @export 
-CpGindex <- function(x, CGIs=NULL, PRCs=NULL, WCGW=NULL, PMDs=NULL) {
+#' @export
+#'
+CpGindex <- function(bsseq,
+                     CGIs = NULL,
+                     PRCs = NULL,
+                     WCGW = NULL,
+                     PMDs = NULL) {
 
   # necessary evil 
-  if (is.null(unique(genome(x)))) { 
+  if (is.null(unique(genome(bsseq)))) { 
     stop("You must assign a genome to your BSseq object before proceeding.")
   } else { 
-    genome <- unique(genome(x))
+    genome <- unique(genome(bsseq))
     if (genome %in% c("hg19","GRCh37")) suffix <- "hg19"
     else if (genome %in% c("hg38","GRCh38")) suffix <- "hg38"
     else stop("Only human genomes (hg19/GRCh37, hg38/GRCh38) are supported ATM")
@@ -89,15 +102,15 @@ CpGindex <- function(x, CGIs=NULL, PRCs=NULL, WCGW=NULL, PMDs=NULL) {
 
   # summarize hypermethylation by region 
   message("Computing hypermethylation indices...") 
-  if (is.null(CGIs)) CGIs <- .fetch(x, "HMM_CpG_islands", suffix) 
-  if (is.null(PRCs)) PRCs <- .fetch(x, "H9state23unmeth", suffix)
-  hyperMeth <- .subsettedWithin(x, y=CGIs, z=PRCs) 
+  if (is.null(CGIs)) CGIs <- .fetch(bsseq, "HMM_CpG_islands", suffix) 
+  if (is.null(PRCs)) PRCs <- .fetch(bsseq, "H9state23unmeth", suffix)
+  hyperMeth <- .subsettedWithin(bsseq, y=CGIs, z=PRCs) 
 
   # summarize hypomethylation (at WCGWs) by region
   message("Computing hypomethylation indices...") 
-  if (is.null(PMDs)) PMDs <- .fetch(x, "PMDs", suffix)
-  if (is.null(WCGW)) WCGW <- .fetch(x, "Zhou_solo_WCGW_inCommonPMDs", suffix)
-  hypoMeth <- .subsettedWithin(x, y=WCGW, z=PMDs) 
+  if (is.null(PMDs)) PMDs <- .fetch(bsseq, "PMDs", suffix)
+  if (is.null(WCGW)) WCGW <- .fetch(bsseq, "Zhou_solo_WCGW_inCommonPMDs", suffix)
+  hypoMeth <- .subsettedWithin(bsseq, y=WCGW, z=PMDs) 
 
   # summarize both via ratios
   message("Computing indices...") 
@@ -111,12 +124,12 @@ CpGindex <- function(x, CGIs=NULL, PRCs=NULL, WCGW=NULL, PMDs=NULL) {
 
 }
 
-# class definition
+# Class definition
 setClass("CpGindex", contains="DataFrame",
          slots=c(hyperMethRegions="GenomicRanges", 
                  hypoMethRegions="GenomicRanges"))
 
-# default show method 
+# Default show method 
 setMethod("show", "CpGindex", 
   function(object) {
     callNextMethod()
@@ -138,7 +151,7 @@ setMethod("show", "CpGindex",
     }
   }) 
 
-# helper fn
+# Helper function
 .fetch <- function(x, prefix, suffix) {
   dat <- paste(prefix, suffix, sep=".")
   message("Loading ", dat, "...") 
@@ -148,7 +161,7 @@ setMethod("show", "CpGindex",
   return(xx)
 } 
 
-# helper fn
+# Helper function
 .subsettedWithin <- function(x, y, z) { 
   y <- sort(subsetByOverlaps(y, x))
   z <- sort(subsetByOverlaps(z, y))
@@ -160,7 +173,7 @@ setMethod("show", "CpGindex",
   }
 }
 
-# helper fn
+# Helper function
 .delayedNoNaN <- function(x, z) {
   res <- c() 
   for (i in colnames(x)) {

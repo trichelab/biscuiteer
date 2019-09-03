@@ -18,5 +18,5 @@
 loadHDF5 <- function(dir = "HDF5") {
   # lop off the filename if it is supplied
   dir <- base::sub("assays.h5$", "", dir)
-  loadHDF5SummarizedExperiment(dir=dir)
+  HDF5Array::loadHDF5SummarizedExperiment(dir=dir)
 }

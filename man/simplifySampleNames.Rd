@@ -2,17 +2,20 @@
 % Please edit documentation in R/simplifySampleNames.R
 \name{simplifySampleNames}
 \alias{simplifySampleNames}
-\title{Simplify bsseq sample names (usually VCF columns)}
+\title{Simplify bsseq sample names}
 \usage{
 simplifySampleNames(x)
 }
 \arguments{
-\item{x}{a SummarizedExperiment-like object, or a character vector}
+\item{x}{A SummarizedExperiment-derived object, or a character vector}
 }
 \value{
-\preformatted{   the same object but with simplified sample names
-}
+The input object, but with simplified sample names
 }
 \description{
-Tries using the longest common subsequence to figure out what can be dropped.
+Tries using the longest common subsequence to figure out what can be
+dropped. Usually used for VCF columns.
+}
+\examples{
+
 }

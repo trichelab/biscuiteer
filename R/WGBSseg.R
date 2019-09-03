@@ -1,19 +1,16 @@
-#' Copy number segmentation of GC- & mapping-corrected WGBS coverage
+#' Copy number segmentation of GC- and mapping-corrected WGBS coverage
 #'
-#' FIXME: use some form of smoothing to glob segments together and THEN filter 
-#'        on length (as opposed to right now where it is done rather roughly)
-#' FIXME: use findOverlaps(resize(segs, width(segs) + minWidth, fix="center"))
-#' 
-#' @param cn    	binned, corrected read depths from correctBsSeqCoverage()
-#' @param minAbs	minimum absolute value of a segment to keep it (0.1)
-#' @param minWidth      minimum width of segment (NOT A GAP) to keep (25000)
-#' @param ...           other parameters passed to fastseg
+#' @param cn        Binned, corrected read depths from correctBsSeqCoverage
+#' @param minAbs    Minimum absolute value of a segment to keep (DEFAULT: 0.3)
+#' @param minWidth  Minimum width of segment (NOT A GAP) to keep
+#'                    (DEFAULT: 20 000)
+#' @param ...       Other parameters passed to fastseg
 #'
-#' @return              a GRanges (hg19 seqinfo)
+#' @return          A GRanges (hg19 seqinfo)
 #'
 #' @import fastseg
 #' @import Homo.sapiens
-#' 
+#'
 #' @examples
 #' 
 #'   library(fastseg)
@@ -32,7 +29,12 @@
 #'   plotSegs(RMS2, RMS2seg, "chr10")
 #' 
 #' @export
+#'
 WGBSseg <- function(cn, minAbs=0.3, minWidth=20000, ...) {
+# FIXME: use some form of smoothing to glob segments together and THEN filter 
+#        on length (as opposed to right now where it is done rather roughly)
+# FIXME: use findOverlaps(resize(segs, width(segs) + minWidth, fix="center"))
+# 
 
   if (is.null(attr(cn, "corrected"))) {
     stop("You need to run correctBsSeqCoverage(tumor, normal) first...")

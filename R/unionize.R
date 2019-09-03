@@ -1,25 +1,34 @@
-#' Smoosh BSseq objects together without losing information.
-#' 
-#' take a bunch of bsseq objects, take the union of their granges(), 
-#' pad out un-covered sites with 0M/0Cov (i.e., ./. in a sparse Matrix),
-#' and return the now-even-sparser bsseq holding all of them. All 
-#' conditions governing cbind(bsseq1, bsseq2) also apply to unionize(). 
+#' Combine bsseq objects together without losing information
 #'
-#' @param bs1       a bsseq object (return unaltered if length(list(...)) == 0)
-#' @param ...       one or more bsseq objects to combine with the first one 
-#' @param parallel  split the bsseq objects by chrom and parallelize? (FALSE) 
-#' @param onlyChrs  retain a specific subset of chromosomes? (NULL; keep all)
-#' 
-#' @return        a larger and more sparse bsseq object
+#' Takes provided bsseq objects, the union of their GRanges, fills out the
+#' sites no in the union with 0M/0Cov (or ./. in a sparse Matrix), and returns
+#' the even-sparser bsseq holding all of them.
 #'
-#' @import parallel 
-#' @importFrom Matrix Matrix
-#' @importClassesFrom Matrix Matrix 
-#' @importMethodsFrom Matrix cbind2 rbind2
+#' All conditions governing cbind(bsseq1, bsseq2, ...) also apply to unionize.
+#'
+#' @param bs1       A bsseq object (returned unaltered if length(list(...)) = 0)
+#' @param ...       One or more bsseq objects to combine with bs1
+#' @param parallel  Split the bsseq objects by chrom and parallelize
+#'                    (DEFAULT: FALSE)
+#' @param onlyChrs  Retain a specific subset of chromosomes - if NULL, keep all
+#'                    (DEFAULT: NULL)
+#'
+#' @return          A larger and more sparse bsseq object
+#'
+#' @import parallel
+#' @import Matrix
 #' @import bsseq
-#' 
+#'
+#' @seealso unionizeBSseq
+#'
+#' @examples
+#'
 #' @export
-unionize <- function(bs1, ..., parallel=FALSE, onlyChrs=NULL) { 
+#'
+unionize <- function(bs1,
+                     ...,
+                     parallel = FALSE,
+                     onlyChrs = NULL) { 
 
   stopifnot(is(bs1, "BSseq"))
   if (length(list(...)) == 0) {
@@ -69,9 +78,9 @@ unionize <- function(bs1, ..., parallel=FALSE, onlyChrs=NULL) {
       bs2=suppressWarnings(GenomicRanges::setdiff(granges(bs2), granges(bs1)))
     )
     message("  merging methylated read matrices...") 
-    M <- unionizeBSseq(bs1, bs2, biggrl, what="M", parallel=parallel)
+    M <- unionizeBSseq(bs1, bs2, biggrl, what="M")
     message("  merging read coverage matrices...") 
-    Cov <- unionizeBSseq(bs1, bs2, biggrl, what="Cov", parallel=parallel)
+    Cov <- unionizeBSseq(bs1, bs2, biggrl, what="Cov")
     
     # sort is required due to the trick in unionizeBSseq
     sort(BSseq(M, Cov, pData=bigpd, gr=unlist(biggrl)))

@@ -25,3 +25,6 @@ input argument
 \examples{
 
 }
+\seealso{
+segToGr
+}

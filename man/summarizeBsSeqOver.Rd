@@ -2,22 +2,27 @@
 % Please edit documentation in R/summarizeBsSeqOver.R
 \name{summarizeBsSeqOver}
 \alias{summarizeBsSeqOver}
-\title{Pretty much what it says on the tin.}
+\title{Summarize methylation over provided regions}
 \usage{
 summarizeBsSeqOver(bsseq, segs, dropNA = FALSE, impute = FALSE)
 }
 \arguments{
-\item{bsseq}{the BSseq object to summarize}
+\item{bsseq}{The bsseq object to summarize}
 
-\item{segs}{regions to summarize over (a GRanges; no GRangesLists yet)}
+\item{segs}{Regions to summarize over (GRanges object, no GRangesList yet)}
 
-\item{dropNA}{whether to drop rows with > half of samples NaN (FALSE)}
+\item{dropNA}{Whether to drop rows if more than half of samples are NA
+(DEFAULT: FALSE)}
 
-\item{impute}{whether to impute NAs/NaNs (FALSE)}
+\item{impute}{Whether to impute NAs/NaNs (DEFAULT: FALSE)}
 }
 \value{
-matrix    a matrix of regional methylation fractions
+\preformatted{   A matrix of regional methylation fractions
+}
 }
 \description{
-Summarize methylation over regions. Mostly a wrapper for getMeth.
+Used for bsseq objects. Mostly a local wrapp for getMeth.
+}
+\examples{
+
 }

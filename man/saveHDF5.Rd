@@ -2,21 +2,25 @@
 % Please edit documentation in R/saveHDF5.R
 \name{saveHDF5}
 \alias{saveHDF5}
-\title{a simple local wrapper around HDF5Array::saveHDF5SummarizedExperiment}
+\title{Save HDF5-backed SummarizedExperiment}
 \usage{
 saveHDF5(x, dir = "HDF5", ...)
 }
 \arguments{
-\item{x}{the SummarizedExperiment-derived object to save as HDF5}
+\item{x}{The SummarizedExperiment-derived object to save as HDF5}
 
-\item{dir}{path to store the HDF5 file "assays.h5" (default is "HDF5")}
+\item{dir}{Path to store the HDF5 file "assays.h5" (DEFAULT: "HDF5")}
 
-\item{...}{arguments to pass HDF5Array::saveHDF5SummarizedExperiment}
+\item{...}{Arguments to pass to HDF5Array::saveHDF5SummarizedExperiment}
 }
 \value{
-\preformatted{   invisibly, the HDF5-backed version of the object being saved
+\preformatted{Invisible. The HDF5-backed version of the object being saved
 }
 }
 \description{
-a simple local wrapper around HDF5Array::saveHDF5SummarizedExperiment
+Local wrapper around HDF5Array::saveHDF5SummarizedExperiment: NOTE: CURRENTLY
+BISCUITEER DOES NOT HAVE HDF5-BACKING FUNCTIONALITY. USE AT YOUR OWN RISE!!!!
+}
+\examples{
+
 }
