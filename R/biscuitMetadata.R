@@ -16,6 +16,16 @@
 #'
 #' @examples
 #'
+#'   tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",
+#'                           package = "biscuiteer")
+#'   tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
+#'                           package = "biscuiteer")
+#'   bisc <- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
+#'                        merged = TRUE, genome = "hg38", verbose = TRUE)
+#'
+#'   meta <- biscuitMetadata(bisc)
+#'   meta
+#'   
 #' @export
 #'
 biscuitMetadata <- function(bsseq = NULL,
@@ -34,8 +44,8 @@ biscuitMetadata <- function(bsseq = NULL,
   } else {
     meta <- VariantAnnotation::meta(metadata(bsseq)$vcfHeader)
   }
-  List("Reference genome"=basename(meta$META["reference","Value"]),
-       "Biscuit version"=sub("biscuitV", "", meta$META["source","Value"]),
+  List("Reference genome"=basename(meta$reference[,"Value"]),
+       "Biscuit version"=sub("biscuitV", "", meta$source[,"Value"]),
        "Invocation"=meta$program[,'cmd'])
 }
 
