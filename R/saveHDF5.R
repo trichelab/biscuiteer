@@ -13,8 +13,6 @@
 #'
 #' @examples
 #'
-#' @export
-#'
 saveHDF5 <- function(x,
                      dir = "HDF5",
                      ...) {

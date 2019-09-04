@@ -13,8 +13,6 @@
 #'
 #' @examples
 #'
-#' @export
-#'
 loadHDF5 <- function(dir = "HDF5") {
   # lop off the filename if it is supplied
   dir <- base::sub("assays.h5$", "", dir)
