@@ -10,7 +10,7 @@
 #'
 #' @return        A matrix of regional methylation fractions
 #'
-#' @importFrom DelayedMatrixStats rowSums2
+#' @importFrom matrixStats rowSums2
 #' @import impute
 #' @import bsseq
 #'
@@ -26,10 +26,10 @@ summarizeBsSeqOver <- function(bsseq,
   res <- bsseq::getMeth(bsseq, regions=segs, what="perRegion", type="raw")
   rownames(res) <- as.character(segs)
   if (dropNA) {
-    res <- res[DelayedMatrixStats::rowSums2(is.na(res)) < (ncol(res)/2),]
+    res <- res[matrixStats::rowSums2(is.na(res)) < (ncol(res)/2), , drop=FALSE]
   }
   if (impute && any(is.nan(res))) {
-    res <- DelayedArray(fexpit(impute.knn(flogit(as.matrix(res)))$data))
+    res <- matrix(fexpit(impute.knn(flogit(as.matrix(res)))$data))
   }
   return(res)
 } 
