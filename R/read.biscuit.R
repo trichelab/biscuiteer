@@ -51,7 +51,6 @@
 #'                           package = "biscuiteer")
 #'   bisc <- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
 #'                        merged = TRUE, genome = "hg38", verbose = TRUE)
-#'   bisc
 #'
 #' @export
 #'

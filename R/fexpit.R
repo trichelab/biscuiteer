@@ -11,6 +11,12 @@
 #'
 #' @examples
 #'
+#'   num <- rnorm(100, mean = 0, sd = 100)
+#'   exp <- fexpit(num)
+#'
+#'   num
+#'   exp
+#'
 #' @export
 #'
 fexpit <- function(x,

@@ -14,6 +14,13 @@ age estimates, etc.)
 }
 \examples{
 
+  tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",
+                          package = "biscuiteer")
+  tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
+                          package = "biscuiteer")
+  bisc <- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
+                       merged = TRUE, genome = "hg38", verbose = TRUE)
+
 }
 \seealso{
 Useful links:

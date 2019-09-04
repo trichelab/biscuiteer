@@ -52,12 +52,14 @@
 #' 
 #' @examples
 #'
+#' clock <- getClock(model="horvathshrunk", genome="hg38")
+#'
 #' @export
 #'
 getClock <- function(model = c("horvath","horvathshrunk",
                                "hannum","skinandblood"),
                      padding = 15,
-                     genome = "hg19",
+                     genome = c("hg19","hg38","GRCh37","GRCh38"),
                      useENSR = FALSE,
                      useHMMI = FALSE) {
 

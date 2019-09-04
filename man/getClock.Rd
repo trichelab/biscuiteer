@@ -5,7 +5,8 @@
 \title{Retrieve 'epigenetic clock' models}
 \usage{
 getClock(model = c("horvath", "horvathshrunk", "hannum", "skinandblood"),
-  padding = 15, genome = "hg19", useENSR = FALSE, useHMMI = FALSE)
+  padding = 15, genome = c("hg19", "hg38", "GRCh37", "GRCh38"),
+  useENSR = FALSE, useHMMI = FALSE)
 }
 \arguments{
 \item{model}{One of "horvath", "horvathshrunk", "hannum", or
@@ -67,5 +68,7 @@ The \code{intercept} value returned with the model is its fixed (B0) coefficient
 The \code{cleanup} function returned with the model transforms its raw output.
 }
 \examples{
+
+clock <- getClock(model="horvathshrunk", genome="hg38")
 
 }

@@ -9,6 +9,14 @@
 #'
 #' @importFrom gtools logit
 #'
+#' @examples
+#'
+#'   num <- runif(100, min = 0, max = 1)
+#'   log <- flogit(num)
+#'
+#'   num
+#'   log
+#'
 #' @export 
 #'
 flogit <- function(x,

@@ -20,4 +20,10 @@ Helper function for calculating expanded expit
 }
 \examples{
 
+  num <- rnorm(100, mean = 0, sd = 100)
+  exp <- fexpit(num)
+
+  num
+  exp
+
 }

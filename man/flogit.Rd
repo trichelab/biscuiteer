@@ -18,3 +18,12 @@ flogit(x, sqz = 1e-06)
 \description{
 Helper function for calculating squeezed logit
 }
+\examples{
+
+  num <- runif(100, min = 0, max = 1)
+  log <- flogit(num)
+
+  num
+  log
+
+}

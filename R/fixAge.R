@@ -21,14 +21,15 @@
 #' @return       Transformed prediction(s)
 #'
 #' @examples
+#'
+#'   clock <- getClock(genome="hg38")
+#'   score <- clock$gr$score
+#'
+#'   fixAge(score)
 #' 
 #' @export
 #'
 fixAge <- function(x,
                    adult = 21) {
-  if (x < 0) {
-    return(adult * exp(x) - 1)
-  } else {
-    return(adult * x + adult)
-  }
+  return(ifelse(x < 0, adult*exp(x) - 1, adult*x + adult))
 }
