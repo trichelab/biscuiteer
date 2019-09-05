@@ -36,7 +36,6 @@
 #' @import data.table
 #' @import readr
 #' @import bsseq
-#' @import rlang
 #'
 #' @seealso bsseq
 #' @seealso checkBiscuitBED
@@ -160,9 +159,7 @@ read.biscuit <- function(BEDfile,
 }
 
 
-#' Alias for read.biscuit
-#'
-#' @seealso read.biscuit
+#' @describeIn read.biscuit Alias for read.biscuit
 #'
 #' @export
 load.biscuit <- read.biscuit

@@ -16,6 +16,14 @@
 #'
 #' @examples
 #'
+#'   clock <- getClock(model="horvathshrunk", genome="hg38")
+#'   gr <- clock$gr
+#'
+#'   df <- grToSeg(gr = gr, file = "test_grToSeg.seg")
+#'   segs <- segToGr("test_grToSeg.seg", genome="hg38")
+#'
+#'   if (file.exists("test_grToSeg.seg")) file.remove("test_grToSeg.seg")
+#'
 #' @export
 #'
 segToGr <- function(seg,

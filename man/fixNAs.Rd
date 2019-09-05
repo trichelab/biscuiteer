@@ -22,4 +22,7 @@ Useful for coercing matrices into how bsseq is expecting the M matrix to be.
 }
 \examples{
 
+  nom <- c(rep(c(1,4,NA,9,NA,NA,7,NA), 5))
+  fixNAs(nom)
+
 }

@@ -31,5 +31,4 @@ Sample1_foo, Sample1_bar).
     condenseSampleNames(tcga_bed, 2)
   }
 
-
 }

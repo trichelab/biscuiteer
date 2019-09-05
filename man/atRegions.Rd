@@ -43,6 +43,5 @@ regions. Useful for exploring genomic data using cBioPortal.
                                   end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
                  )
   regions <- atRegions(bsseq = bisc, regions = reg)
-  regions
 
 }

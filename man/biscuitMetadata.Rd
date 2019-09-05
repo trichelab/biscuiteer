@@ -6,6 +6,8 @@
 \title{Biscuit metadata from VCF header}
 \usage{
 biscuitMetadata(bsseq = NULL, VCF = NULL)
+
+getBiscuitMetadata(bsseq = NULL, VCF = NULL)
 }
 \arguments{
 \item{bsseq}{A bsseq object with a vcfHeader element (DEFAULT: NULL)}
@@ -22,6 +24,11 @@ from which the bsseq vcfHeader element is derived
 Returns metadata from a Biscuit run using either a supplied VCF file or
 the vcfHeader metadata element from the bsseq object
 }
+\section{Functions}{
+\itemize{
+\item \code{getBiscuitMetadata}: Alias for biscuitMetadata
+}}
+
 \examples{
 
   tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",

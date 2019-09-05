@@ -49,10 +49,7 @@ biscuitMetadata <- function(bsseq = NULL,
        "Invocation"=meta$program[,'cmd'])
 }
 
-# alias
-#' Alias for biscuitMetadata
-#' 
-#' @seealso biscuitMetadata
+#' @describeIn biscuitMetadata Alias for biscuitMetadata
 #'
 #' @export
 #'

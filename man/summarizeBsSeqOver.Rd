@@ -25,4 +25,18 @@ Used for bsseq objects. Mostly a local wrapp for getMeth.
 }
 \examples{
 
+  tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",
+                          package = "biscuiteer")
+  tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
+                          package = "biscuiteer")
+  bisc <- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
+                       merged = TRUE, genome = "hg38", verbose = TRUE)
+
+  reg <- GRanges(seqnames = rep("chr11",5),
+                 strand = rep("*",5),
+                 ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
+                                  end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
+                 )
+  summary <- summarizeBsSeqOver(bsseq = bisc, segs = reg, dropNA = TRUE)
+
 }

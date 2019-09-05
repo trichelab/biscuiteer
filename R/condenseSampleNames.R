@@ -20,7 +20,6 @@
 #'   if (length(headerTabix(tcga_bed)$header) > 0) {
 #'     condenseSampleNames(tcga_bed, 2)
 #'   }
-#' 
 #'
 #' @export
 #'

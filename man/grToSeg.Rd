@@ -24,6 +24,11 @@ input argument
 }
 \examples{
 
+  clock <- getClock(model="horvathshrunk", genome="hg38")
+  gr <- clock$gr
+
+  df <- grToSeg(gr = gr)
+
 }
 \seealso{
 segToGr

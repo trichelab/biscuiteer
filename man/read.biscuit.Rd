@@ -9,6 +9,11 @@ read.biscuit(BEDfile, VCFfile, merged, sampleNames = NULL,
   simplify = FALSE, genome = "hg19", how = c("data.table", "readr"),
   hdf5 = FALSE, hdf5dir = NULL, sparse = FALSE, chunkSize = 1e+06,
   chr = NULL, which = NULL, verbose = FALSE)
+
+load.biscuit(BEDfile, VCFfile, merged, sampleNames = NULL,
+  simplify = FALSE, genome = "hg19", how = c("data.table", "readr"),
+  hdf5 = FALSE, hdf5dir = NULL, sparse = FALSE, chunkSize = 1e+06,
+  chr = NULL, which = NULL, verbose = FALSE)
 }
 \arguments{
 \item{BEDfile}{A BED-like file - must be compressed and tabix'ed}
@@ -61,6 +66,11 @@ have 2 columns (beta values and coverage), whereas merged CpG files have
 NOTE: Assumes alignment against hg19 (use genome argument to override).
 NOTE: Requires header from VCF file to detect sample names
 }
+\section{Functions}{
+\itemize{
+\item \code{load.biscuit}: Alias for read.biscuit
+}}
+
 \examples{
 
   tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",

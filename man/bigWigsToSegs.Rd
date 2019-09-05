@@ -4,9 +4,11 @@
 \alias{bigWigsToSegs}
 \title{Process many bigWig'ed CN segmentations}
 \usage{
-bigWigsToSegs(suffix = ".CN.hg19.bw", filename = NULL)
+bigWigsToSegs(bwList, suffix = ".CN.hg19.bw", filename = NULL)
 }
 \arguments{
+\item{bwList}{bigWig files to read in}
+
 \item{suffix}{Suffix of segmentation files (DEFAULT: ".CN.hg19.bw")}
 
 \item{filename}{Where to save the result - unsaved if NULL (DEFAULT: NULL)}
