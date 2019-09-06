@@ -2,6 +2,10 @@
 #'
 #' Example usage for E-M
 #'
+#' NOTE: As of early Sept 2019, QDNAseq did not have hg38 capabilities. If you
+#' desire to use the hg38 genome, biscuiteer suggests you use a GRanges object
+#' to define your bins.
+#'
 #' @param bsseq    A bsseq object - supplied to getCoverage()
 #' @param bins     Bins to summarize over - from tileGenome or QDNAseq.xxYY
 #' @param which    Limit to specific regions? - functions as an import()
@@ -20,6 +24,26 @@
 #'
 #' @examples
 #'
+#'   bins <- GRanges(seqnames = rep("chr11",10),
+#'                   strand = rep("*",10),
+#'                   ranges = IRanges(start=100000*0:9, width=100000)
+#'                  )
+#'
+#'   reg <- GRanges(seqnames = rep("chr11",5),
+#'                  strand = rep("*",5),
+#'                  ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
+#'                                   end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
+#'                  )
+#'
+#'   tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",
+#'                           package = "biscuiteer")
+#'   tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
+#'                           package = "biscuiteer")
+#'   bisc <- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
+#'                        merged = TRUE, genome = "hg38")
+#'
+#'   bc <- binCoverage(bsseq = bisc, bins = bins, which = reg, QDNAseq = FALSE)
+#'
 #' @export
 #'
 binCoverage <- function(bsseq,
@@ -37,7 +61,8 @@ binCoverage <- function(bsseq,
     gr <- makeGRangesFromDataFrame(pData(bins), keep=TRUE)
     genome(gr) <- attr(bins, "QDNAseq")$build
   } else if (is(bins, "GenomicRanges")) {
-    message("You really should use QDNAseq bins if you can.")
+    message("You really should use QDNAseq bins IF you can.")
+    message("Output will be a GRanges object.")
     gr <- bins
   } else { 
     stop("Don't know what to do with bins of class ", class(bins), "!")
@@ -54,13 +79,14 @@ binCoverage <- function(bsseq,
   gc(,TRUE) # cautious
   gr$score <- summed
   attr(gr, "binned") <- TRUE
-  if (QDNAseq) {
+  if (QDNAseq & is(bins, "AnnotatedDataFrame")) {
     seqlevelsStyle(gr) <- origStyle 
     names(gr) <- as(granges(gr), "character")
     phenodata <- data.frame(name=colnames(gr$score), 
                             row.names=colnames(gr$score),
                             stringsAsFactors=FALSE)
     phenodata$total.reads <- colSums(score(gr), na.rm=TRUE)
+    if (!exists("use")) use <- seq_len(length(gr))
     phenodata$used.reads <- colSums(score(subset(gr, use)), na.rm=TRUE)
     object <- new("QDNAseqReadCounts", 
                   bins=subset(bins, featureNames(bins) %in% names(gr)),
@@ -70,6 +96,7 @@ binCoverage <- function(bsseq,
                                 packageVersion("biscuiteer"))
     return(object) 
   } else { 
-    return(subset(gr, rowSums(is.na(gr$score)) < ncol(bsseq) & use == TRUE))
+    if (!exists("use")) use <- seq_len(length(gr))
+    return(subset(gr, rowSums(is.na(gr$score)) < ncol(bsseq) & use))
   }
 }
