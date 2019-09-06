@@ -15,6 +15,26 @@
 #'
 #' @examples
 #'
+#'   library(data.table)
+#'
+#'   tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",
+#'                           package = "biscuiteer")
+#'   tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
+#'                           package = "biscuiteer")
+#'
+#'   params <- checkBiscuitBED(BEDfile = tcga_bed, VCFfile = tcga_vcf,
+#'                             merged = TRUE, how = "data.table")
+#'
+#'   select <- grep("\\.context", params$colNames, invert=TRUE)
+#'   cmd <- paste("gunzip -c", params$tbx$path) # for mac compatibility
+#'   tbl <- fread(cmd=cmd, sep="\t", sep2=",", fill=TRUE, na.string=".", 
+#'                select=select)
+#'   if (params$hasHeader == FALSE) names(tbl) <- params$colNames[select]
+#'   names(tbl) <- sub("^#", "", names(tbl))
+#'   
+#'   tbl <- tbl[rowSums(is.na(tbl)) == 0, ]
+#'   bsseq <- makeBSseq(tbl = tbl, params = params)
+#'
 #' @export
 #'
 makeBSseq <- function(tbl,
@@ -25,7 +45,7 @@ makeBSseq <- function(tbl,
   gr <- resize(makeGRangesFromDataFrame(tbl[, 1:3]), 1) 
 
   # helper fn  
-  matMe <- function(x, gr, verbose) {
+  matMe <- function(x, gr, verbose = FALSE) {
     if (!is(x, "matrix")) {
       if (verbose) message("Turning a vector into a matrix...")
       x <- as.matrix(x)
