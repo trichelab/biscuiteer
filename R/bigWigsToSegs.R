@@ -10,6 +10,11 @@
 #'
 #' @examples
 #'
+#' bwList <- system.file("extdata",
+#'                       "TCGA_BLCA_A13J_chr11p15_onlyBetaVal.bw",
+#'                       package="biscuiteer")
+#' df <- bigWigsToSegs(bwList = bwList, suffix = ".bw", filename = NULL)
+#'
 #' @export
 #'
 bigWigsToSegs <- function(bwList,
@@ -17,6 +22,7 @@ bigWigsToSegs <- function(bwList,
                           filename = NULL) {
   bigWigs <- bwList
   names(bigWigs) <- sub(suffix, "", bigWigs)
+  names(bigWigs) <- basename(names(bigWigs))
   grl <- GRangesList(lapply(bigWigs, import))
   grToSeg(grl, filename=filename)
 }
