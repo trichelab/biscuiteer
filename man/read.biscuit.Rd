@@ -78,7 +78,7 @@ NOTE: Requires header from VCF file to detect sample names
   tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
                           package = "biscuiteer")
   bisc <- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
-                       merged = TRUE, genome = "hg38", verbose = TRUE)
+                       merged = TRUE, genome = "hg38")
 
 }
 \seealso{

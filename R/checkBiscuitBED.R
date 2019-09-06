@@ -53,13 +53,13 @@ checkBiscuitBED <- function(BEDfile,
 
   # Check if required inputs are missing
   # Print more useful messages if they are
-  if (is_missing(BEDfile)) stop("Tabix'ed BED file from biscuit is required.\n")
-  if (is_missing(VCFfile)) {
+  if (rlang::is_missing(BEDfile)) stop("Tabix'ed BED file from biscuit is required.\n")
+  if (rlang::is_missing(VCFfile)) {
     err_message <- paste("Tabix'ed VCF file from biscuit is required.",
                          "Header information is used to set up column names.\n")
     stop(err_message)
   }
-  if (is_missing(merged)) {
+  if (rlang::is_missing(merged)) {
     err_message <- paste("merged flag is required.",
                          "merged = TRUE if 'biscuit mergecg' was run after 'biscuit vcf2bed'.",
                          "Otherwise use merged = FALSE.\n")
