@@ -52,6 +52,6 @@ logit-transformed methylated-fraction estimates for compartment calling.
                                   end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
                  )
 
-  getLogitFracMeth(bisc, minSamp = 1, r = reg)
+  frac <- getLogitFracMeth(bisc, minSamp = 1, r = reg)
 
 }

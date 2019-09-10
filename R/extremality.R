@@ -16,6 +16,11 @@
 #'
 #' @examples
 #'
+#'   x <- rnorm(100, mean=0.5, sd=0.15)
+#'   x <- matrix(x, nrow=50, ncol=50)
+#'
+#'   ext <- extremality(x, raw=TRUE)
+#'
 #' @export
 #'
 extremality <- function(x,

@@ -37,6 +37,6 @@ This function implements the above standard output transformation step.
   clock <- getClock(genome="hg38")
   score <- clock$gr$score
 
-  fixAge(score)
+  age <- fixAge(score)
 
 }

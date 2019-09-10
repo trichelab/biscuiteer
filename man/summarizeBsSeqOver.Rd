@@ -36,7 +36,7 @@ Used for bsseq objects. Mostly a local wrapp for getMeth.
                  strand = rep("*",5),
                  ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
                                   end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
-                 )
+                )
   summary <- summarizeBsSeqOver(bsseq = bisc, segs = reg, dropNA = TRUE)
 
 }

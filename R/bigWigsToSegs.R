@@ -10,10 +10,10 @@
 #'
 #' @examples
 #'
-#' bwList <- system.file("extdata",
-#'                       "TCGA_BLCA_A13J_chr11p15_onlyBetaVal.bw",
-#'                       package="biscuiteer")
-#' df <- bigWigsToSegs(bwList = bwList, suffix = ".bw", filename = NULL)
+#'   bwList <- system.file("extdata",
+#'                         "TCGA_BLCA_A13J_chr11p15_onlyBetaVal.bw",
+#'                         package="biscuiteer")
+#'   df <- bigWigsToSegs(bwList = bwList, suffix = ".bw", filename = NULL)
 #'
 #' @export
 #'
