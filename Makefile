@@ -2,7 +2,6 @@ VERSION = $(shell grep ^Version DESCRIPTION | sed s/Version:\ //)
 
 doc:
 	R --slave -e 'library(roxygen2); roxygenise()'
-	-git add --all man/*.Rd
 
 test:
 	R CMD INSTALL --install-tests .
@@ -15,6 +14,9 @@ build: doc
 	R CMD build .
 
 check: build
+	-R CMD check --as-cran biscuiteer_$(VERSION).tar.gz
+
+check-delete-Rcheck-dir: build
 	-R CMD check --as-cran biscuiteer_$(VERSION).tar.gz
 	rm -rf biscuiteer.Rcheck/
 
