@@ -4,30 +4,24 @@
 \alias{unionize}
 \title{Combine bsseq objects together without losing information}
 \usage{
-unionize(bs1, ..., parallel = FALSE, onlyChrs = NULL)
+unionize(bs1, ...)
 }
 \arguments{
-\item{bs1}{A bsseq object (returned unaltered if length(list(...)) = 0)}
+\item{bs1}{A bsseq object}
 
 \item{...}{One or more bsseq objects to combine with bs1}
-
-\item{parallel}{Split the bsseq objects by chrom and parallelize
-(DEFAULT: FALSE)}
-
-\item{onlyChrs}{Retain a specific subset of chromosomes - if NULL, keep all
-(DEFAULT: NULL)}
 }
 \value{
-\preformatted{     A larger and more sparse bsseq object
+\preformatted{A larger and more sparse bsseq object
 }
 }
 \description{
-Takes provided bsseq objects, the union of their GRanges, fills out the
-sites no in the union with 0M/0Cov (or ./. in a sparse Matrix), and returns
-the even-sparser bsseq holding all of them.
+Wrapper for the combine(bsseq1, ...) method in bsseq
 }
 \details{
-All conditions governing cbind(bsseq1, bsseq2, ...) also apply to unionize.
+Takes provided bsseq objects, the union of their GRanges, fills out the
+sites not in the union with 0M/0Cov, and returns the even-sparser bsseq
+holding all of them.
 }
 \examples{
 
@@ -36,17 +30,18 @@ All conditions governing cbind(bsseq1, bsseq2, ...) also apply to unionize.
                           package = "biscuiteer")
   tcga_shf <- system.file("extdata",
                           "TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz",
-                          package = "biscuiteer")
-  tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
-                          package = "biscuiteer")
-  bisc1 <- read.biscuit(BEDfile = tcga_mrg, VCFfile = tcga_vcf,
+                           package = "biscuiteer")
+  tcga_mvcf <- system.file("extdata",
+                           "TCGA_BLCA_A13J_header_only.vcf.gz",
+                           package = "biscuiteer")
+  tcga_svcf <- system.file("extdata",
+                           "TCGA_BLCA_A13J_shuffled_header_only.vcf.gz",
+                           package = "biscuiteer")
+  bisc1 <- read.biscuit(BEDfile = tcga_mrg, VCFfile = tcga_mvcf,
                         merged = FALSE, genome = "hg38")
-  bisc2 <- read.biscuit(BEDfile = tcga_shf, VCFfile = tcga_vcf,
+  bisc2 <- read.biscuit(BEDfile = tcga_shf, VCFfile = tcga_svcf,
                         merged = FALSE, genome = "hg38")
 
   comb <- unionize(bisc1, bisc2)
 
-}
-\seealso{
-unionizeBSseq
 }
