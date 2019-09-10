@@ -15,6 +15,7 @@
 #'
 #' @examples
 #'
+#'   library(Rsamtools)
 #'   tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",
 #'                           package = "biscuiteer")
 #'   if (length(headerTabix(tcga_bed)$header) > 0) {

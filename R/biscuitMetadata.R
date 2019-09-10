@@ -24,7 +24,6 @@
 #'                        merged = TRUE, genome = "hg38")
 #'
 #'   meta <- biscuitMetadata(bisc)
-#'   meta
 #'   
 #' @export
 #'

@@ -39,6 +39,5 @@ chromosomes.
   names(reg) <- as.character(reg)
 
   arms <- byChromArm(bisc, arms = reg)
-  lapply(arms, rowRanges)
 
 }

@@ -39,6 +39,5 @@ the vcfHeader metadata element from the bsseq object
                        merged = TRUE, genome = "hg38")
 
   meta <- biscuitMetadata(bisc)
-  meta
   
 }
