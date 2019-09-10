@@ -18,6 +18,28 @@
 #'
 #' @examples
 #'
+#'   tcga_mrg <- system.file("extdata",
+#'                           "TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz",
+#'                           package = "biscuiteer")
+#'   tcga_shf <- system.file("extdata",
+#'                           "TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz",
+#'                           package = "biscuiteer")
+#'   tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
+#'                           package = "biscuiteer")
+#'   bisc1 <- read.biscuit(BEDfile = tcga_mrg, VCFfile = tcga_vcf,
+#'                         merged = FALSE, genome = "hg38")
+#'   bisc2 <- read.biscuit(BEDfile = tcga_shf, VCFfile = tcga_vcf,
+#'                         merged = FALSE, genome = "hg38")
+#'
+#'   grl <- GRangesList(
+#'            bs1 = GenomicRanges::setdiff(granges(bisc1), granges(bisc2)),
+#'            bss = GenomicRanges::intersect(granges(bisc1), granges(bisc2)),
+#'            bs2 = GenomicRanges::setdiff(granges(bisc2), granges(bisc1))
+#'          )
+#'
+#'   M <- unionizeBSseq(bisc1, bisc2, grl, what="M")
+#'   #Cov <- unionizeBSseq(bisc1, bisc2, grl, what="Cov")
+#'
 #' @export
 #'
 unionizeBSseq <- function(bs1,
@@ -35,13 +57,13 @@ unionizeBSseq <- function(bs1,
   overall <- sum(sapply(biggrl, length))
   rawdata1 <- Matrix(getCoverage(bs1, regions=c(biggrl$bs1, biggrl$bss),
                                  what="perRegionTotal",
-                                 type=what), ncol=ncol(bs1))
+                                 type=what))
   padding1 <- Matrix(0, nrow=length(biggrl$bs2), ncol=ncol(bs1))
   dat1 <- rbind(rawdata1, padding1)
   padding2 <- Matrix(0, nrow=length(biggrl$bs1), ncol=ncol(bs2))
   rawdata2 <- Matrix(getCoverage(bs2, regions=c(biggrl$bss, biggrl$bs2),
                                  what="perRegionTotal", 
-                                 type=what), ncol=ncol(bs2))
+                                 type=what))
   dat2 <- rbind(padding2, rawdata2)  
   unionized <- cbind(dat1, dat2)
   return(unionized)

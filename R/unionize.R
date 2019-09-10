@@ -23,6 +23,21 @@
 #'
 #' @examples
 #'
+#'   tcga_mrg <- system.file("extdata",
+#'                           "TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz",
+#'                           package = "biscuiteer")
+#'   tcga_shf <- system.file("extdata",
+#'                           "TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz",
+#'                           package = "biscuiteer")
+#'   tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
+#'                           package = "biscuiteer")
+#'   bisc1 <- read.biscuit(BEDfile = tcga_mrg, VCFfile = tcga_vcf,
+#'                         merged = FALSE, genome = "hg38")
+#'   bisc2 <- read.biscuit(BEDfile = tcga_shf, VCFfile = tcga_vcf,
+#'                         merged = FALSE, genome = "hg38")
+#'
+#'   comb <- unionize(bisc1, bisc2)
+#'
 #' @export
 #'
 unionize <- function(bs1,
@@ -78,12 +93,12 @@ unionize <- function(bs1,
       bs2=suppressWarnings(GenomicRanges::setdiff(granges(bs2), granges(bs1)))
     )
     message("  merging methylated read matrices...") 
-    M <- unionizeBSseq(bs1, bs2, biggrl, what="M")
+    M <- as.matrix(unionizeBSseq(bs1, bs2, biggrl, what="M"))
     message("  merging read coverage matrices...") 
-    Cov <- unionizeBSseq(bs1, bs2, biggrl, what="Cov")
+    Cov <- as.matrix(unionizeBSseq(bs1, bs2, biggrl, what="Cov"))
     
     # sort is required due to the trick in unionizeBSseq
-    sort(BSseq(M, Cov, pData=bigpd, gr=unlist(biggrl)))
+    sort(BSseq(M, Cov, pData=bigpd, sampleNames=rownames(bigpd), gr=unlist(biggrl)))
   }
 
 }

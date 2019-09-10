@@ -31,6 +31,21 @@ All conditions governing cbind(bsseq1, bsseq2, ...) also apply to unionize.
 }
 \examples{
 
+  tcga_mrg <- system.file("extdata",
+                          "TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz",
+                          package = "biscuiteer")
+  tcga_shf <- system.file("extdata",
+                          "TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz",
+                          package = "biscuiteer")
+  tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
+                          package = "biscuiteer")
+  bisc1 <- read.biscuit(BEDfile = tcga_mrg, VCFfile = tcga_vcf,
+                        merged = FALSE, genome = "hg38")
+  bisc2 <- read.biscuit(BEDfile = tcga_shf, VCFfile = tcga_vcf,
+                        merged = FALSE, genome = "hg38")
+
+  comb <- unionize(bisc1, bisc2)
+
 }
 \seealso{
 unionizeBSseq

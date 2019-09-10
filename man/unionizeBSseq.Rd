@@ -26,6 +26,28 @@ then returns a Matrix containing the joint information from both objects.
 }
 \examples{
 
+  tcga_mrg <- system.file("extdata",
+                          "TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz",
+                          package = "biscuiteer")
+  tcga_shf <- system.file("extdata",
+                          "TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz",
+                          package = "biscuiteer")
+  tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
+                          package = "biscuiteer")
+  bisc1 <- read.biscuit(BEDfile = tcga_mrg, VCFfile = tcga_vcf,
+                        merged = FALSE, genome = "hg38")
+  bisc2 <- read.biscuit(BEDfile = tcga_shf, VCFfile = tcga_vcf,
+                        merged = FALSE, genome = "hg38")
+
+  grl <- GRangesList(
+           bs1 = GenomicRanges::setdiff(granges(bisc1), granges(bisc2)),
+           bss = GenomicRanges::intersect(granges(bisc1), granges(bisc2)),
+           bs2 = GenomicRanges::setdiff(granges(bisc2), granges(bisc1))
+         )
+
+  M <- unionizeBSseq(bisc1, bisc2, grl, what="M")
+  #Cov <- unionizeBSseq(bisc1, bisc2, grl, what="Cov")
+
 }
 \seealso{
 unionize
