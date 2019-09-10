@@ -18,12 +18,46 @@
 #'
 #' @examples
 #'
+#'   tcga_mrg <- system.file("extdata",
+#'                           "TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz",
+#'                           package = "biscuiteer")
+#'   tcga_shf <- system.file("extdata",
+#'                           "TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz",
+#'                           package = "biscuiteer")
+#'   tcga_mvcf <- system.file("extdata",
+#'                            "TCGA_BLCA_A13J_header_only.vcf.gz",
+#'                            package = "biscuiteer")
+#'   tcga_svcf <- system.file("extdata",
+#'                            "TCGA_BLCA_A13J_shuffled_header_only.vcf.gz",
+#'                            package = "biscuiteer")
+#'   bisc1 <- read.biscuit(BEDfile = tcga_mrg, VCFfile = tcga_mvcf,
+#'                         merged = FALSE, genome = "hg38")
+#'   bisc2 <- read.biscuit(BEDfile = tcga_shf, VCFfile = tcga_svcf,
+#'                         merged = FALSE, genome = "hg38")
+#'
+#'   reg <- GRanges(seqnames = rep("chr11",5),
+#'                  strand = rep("*",5),
+#'                  ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
+#'                                   end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
+#'                  )
+#'
+#'   comb <- unionize(bisc1, bisc2)
+#'
+#'   ext <- byExtremality(comb, r = reg)
+#'
 #' @export
 #'
 byExtremality <- function(bsseq,
                           r = NULL,
                           k = 500) {
  
+  if (ncol(bsseq) == 1) {
+    stop(paste0("No variance in a one sample object. Either use a data set ",
+                "with multiple samples or combine bsseq objects with ",
+                "unionize().")
+        )
+  }
+
   if (is.null(r)) {
     message("No regions specified. This may melt your computer.")  
     byRegion <- FALSE
