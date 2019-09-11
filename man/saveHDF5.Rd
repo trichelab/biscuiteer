@@ -21,6 +21,3 @@ saveHDF5(x, dir = "HDF5", ...)
 Local wrapper around HDF5Array::saveHDF5SummarizedExperiment: NOTE: CURRENTLY
 BISCUITEER DOES NOT HAVE HDF5-BACKING FUNCTIONALITY. USE AT YOUR OWN RISE!!!!
 }
-\examples{
-
-}

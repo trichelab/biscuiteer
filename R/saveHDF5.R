@@ -11,8 +11,6 @@
 #'
 #' @importFrom HDF5Array saveHDF5SummarizedExperiment
 #'
-#' @examples
-#'
 saveHDF5 <- function(x,
                      dir = "HDF5",
                      ...) {

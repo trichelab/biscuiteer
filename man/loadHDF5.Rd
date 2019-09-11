@@ -17,9 +17,6 @@ loadHDF5(dir = "HDF5")
 Local wrapper around HDF5Array::loadHDF5SummarizedExperiment. NOTE: CURRENTLY
 BISCUITEER DOES NOT HAVE HDF5-BACKING FUNCTIONALITY. USE AT YOUR OWN RISK!!!!
 }
-\examples{
-
-}
 \seealso{
 HDF5Array::loadHDF5SummarizedExperiment
 }
