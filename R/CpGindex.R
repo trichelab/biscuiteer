@@ -82,6 +82,15 @@
 #'
 #' @examples
 #' 
+#'   tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",
+#'                           package = "biscuiteer")
+#'   tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
+#'                           package = "biscuiteer")
+#'   bisc <- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
+#'                        merged = TRUE, genome = "hg38")
+#'
+#'   cpg <- CpGindex(bisc)
+#'
 #' @export
 #'
 CpGindex <- function(bsseq,
@@ -169,7 +178,7 @@ setMethod("show", "CpGindex",
   if (any(is.na(res)) | any(is.nan(res))) {
     return(.delayedNoNaN(res, z)) # slower but exact 
   } else { 
-    return(res %*% width(z)/sum(width(z))) # much faster
+    return((width(z)/sum(width(z))) %*% res) # much faster
   }
 }
 
@@ -179,7 +188,7 @@ setMethod("show", "CpGindex",
   for (i in colnames(x)) {
     use <- !is.na(x[,i]) & !is.nan(x[,i])
     zz <- z[which(as(use, "logical"))]
-    res[i] <- as.matrix(x[use, i]) %*% (width(zz)/sum(width(zz)))
+    res[i] <- as.matrix(((width(zz)/sum(width(zz))) %*% x[use, i]))
   }
   return(res)
 }
