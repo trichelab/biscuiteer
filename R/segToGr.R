@@ -36,7 +36,7 @@ segToGr <- function(seg,
   firstTwo <- c("score", "name")
   segs <- segs[, c(firstTwo, setdiff(names(segs), firstTwo))]
   if (nrow(segs) > 0) {
-    gr <- sort(makeGRangesFromDataFrame(segs, keep=TRUE))
+    gr <- sort(makeGRangesFromDataFrame(segs, keep.extra.columns=TRUE))
     names(gr) <- gr$name
     return(gr)
   } else { 

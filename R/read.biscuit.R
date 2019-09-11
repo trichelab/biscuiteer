@@ -85,7 +85,7 @@ read.biscuit <- function(BEDfile,
 
   how <- match.arg(how)
   params <- checkBiscuitBED(BEDfile=BEDfile, VCFfile=VCFfile, how=how, chr=chr,
-                            sampleNames=sampleNames, chunk=chunkSize, hdf5=hdf5,
+                            sampleNames=sampleNames, chunkSize=chunkSize, hdf5=hdf5,
                             sparse=sparse, merged=merged)
   message("Reading ", ifelse(params$merged, "merged", "unmerged"), 
           " input from ", params$tbx$path, "...")
@@ -100,7 +100,7 @@ read.biscuit <- function(BEDfile,
       export(which, tmpBed)
       cmd <- paste("tabix -R", tmpBed, params$tbx$path)
     }
-    tbl <- fread(cmd=cmd, sep="\t", sep2=",", fill=TRUE, na.string=".", 
+    tbl <- fread(cmd=cmd, sep="\t", sep2=",", fill=TRUE, na.strings=".", 
                  select=select)
     if (params$hasHeader == FALSE) names(tbl) <- params$colNames[select]
     names(tbl) <- sub("^#", "", names(tbl))

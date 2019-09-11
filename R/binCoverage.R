@@ -58,7 +58,7 @@ binCoverage <- function(bsseq,
   if (is(bins, "AnnotatedDataFrame") & # QDNAseq bins 
       !is.null(attr(bins, "QDNAseq")$build)) {
     message("Converting QDNAseq bins to GRanges for coverage")
-    gr <- makeGRangesFromDataFrame(pData(bins), keep=TRUE)
+    gr <- makeGRangesFromDataFrame(pData(bins), keep.extra.columns=TRUE)
     genome(gr) <- attr(bins, "QDNAseq")$build
   } else if (is(bins, "GenomicRanges")) {
     message("You really should use QDNAseq bins IF you can.")

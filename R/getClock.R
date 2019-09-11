@@ -74,7 +74,7 @@ getClock <- function(model = c("horvath","horvathshrunk",
                                       seqnames.field=grcols[1], 
                                       start.field=grcols[2], 
                                       end.field=grcols[3], 
-                                      keep=TRUE))
+                                      keep.extra.columns=TRUE))
   names(mcols(gr)) <- c("score", "HMMI", "ENSR")
 
   # expand the ranges by adding padding bases around the target loci? 
