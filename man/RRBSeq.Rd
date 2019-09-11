@@ -26,4 +26,9 @@ RRBSeq(bsseq, testCovariate, cutoff = 0.2, bpSpan = 750, ...)
 }
 \examples{
 
+  data(BS.chr21, package="dmrseq")
+  dat <- BS.chr21
+
+  rrbs <- RRBSeq(dat[1:1000, ], "Rep", cutoff = 0.05, BPPARAM=SerialParam())
+
 }

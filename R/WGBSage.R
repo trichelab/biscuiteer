@@ -13,7 +13,8 @@
 #' 
 #' Also, please cite the appropriate papers for the Epigenetic Clock(s) you use:
 #'
-#' For the 'horvath' or 'shrunk' clocks, cite Horvath, Genome Biology 2012.
+#' For the 'horvath' or 'horvathshrunk' clocks, cite Horvath,
+#' Genome Biology 2012.
 #' For the 'hannum' clock, cite Hannum et al, Molecular Cell 2013. 
 #' For the 'skinandblood' clock, cite Horvath et al, Aging 2018. 
 #' 
@@ -25,7 +26,8 @@
 #' the age estimates are stored in result$age (named, in case dropBad == TRUE). 
 #' 
 #' @param bsseq    A bsseq object (must have assays named `M` and `Cov`)
-#' @param model    Which model ("horvath", "shrunk", "hannum", "skinandblood")
+#' @param model    Which model ("horvath", "horvathshrunk", "hannum",
+#'                   "skinandblood")
 #' @param padding  How many bases +/- to pad the target CpG by (DEFAULT: 15)
 #' @param useENSR  Use ENSEMBL regulatory region bounds instead of CpGs
 #'                   (DEFAULT: FALSE)
@@ -49,6 +51,26 @@
 #'
 #' @examples
 #' 
+#'   tcga_mrg <- system.file("extdata",
+#'                           "TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz",
+#'                           package = "biscuiteer")
+#'   tcga_shf <- system.file("extdata",
+#'                           "TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz",
+#'                            package = "biscuiteer")
+#'   tcga_mvcf <- system.file("extdata",
+#'                            "TCGA_BLCA_A13J_header_only.vcf.gz",
+#'                            package = "biscuiteer")
+#'   tcga_svcf <- system.file("extdata",
+#'                            "TCGA_BLCA_A13J_shuffled_header_only.vcf.gz",
+#'                            package = "biscuiteer")
+#'   bisc1 <- read.biscuit(BEDfile = tcga_mrg, VCFfile = tcga_mvcf,
+#'                         merged = FALSE, genome = "hg38")
+#'   bisc2 <- read.biscuit(BEDfile = tcga_shf, VCFfile = tcga_svcf,
+#'                         merged = FALSE, genome = "hg38")
+#'
+#'   comb <- unionize(bisc1, bisc2)
+#'   ages <- WGBSage(comb, "horvath")
+#'
 #' @export
 #'
 WGBSage <- function(bsseq,

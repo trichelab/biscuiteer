@@ -12,6 +12,12 @@
 #'
 #' @examples
 #'
+#'   data(BS.chr21, package="dmrseq")
+#'   dat <- BS.chr21
+#'
+#'   wgbs <- WGBSeq(dat[1:1000, ], "CellType", cutoff = 0.05,
+#'                  BPPARAM=SerialParam())
+#'
 #' @export
 #'
 WGBSeq <- function(bsseq,

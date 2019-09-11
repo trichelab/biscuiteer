@@ -25,4 +25,10 @@ Wrapper for WGBS settings for dmrseq
 }
 \examples{
 
+  data(BS.chr21, package="dmrseq")
+  dat <- BS.chr21
+
+  wgbs <- WGBSeq(dat[1:1000, ], "CellType", cutoff = 0.05,
+                 BPPARAM=SerialParam())
+
 }
