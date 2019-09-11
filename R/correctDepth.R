@@ -4,8 +4,9 @@
 #'
 #' @param x            Binned hg19 coverage with GC content and mappability
 #'                       columns
-#' @param mappability  Mappability threshold [0, 1] below which points are
-#'                       ignored while creating the correction curve
+#' @param mappability  Mappability threshold below which points are ignored
+#'                       while creating the correction curve (value between 0
+#'                       and 1)
 #' @param samplesize   Number of points sampled during LOESS fitting
 #'                       (DEFAULT: 50 000)
 #' @param verbose      Print extra statements? (DEFAULT: TRUE)

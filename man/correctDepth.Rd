@@ -11,8 +11,9 @@ correctDepth(x, mappability = 0.9, samplesize = 50000,
 \item{x}{Binned hg19 coverage with GC content and mappability
 columns}
 
-\item{mappability}{Mappability threshold \link{0, 1} below which points are
-ignored while creating the correction curve}
+\item{mappability}{Mappability threshold below which points are ignored
+while creating the correction curve (value between 0
+and 1)}
 
 \item{samplesize}{Number of points sampled during LOESS fitting
 (DEFAULT: 50 000)}

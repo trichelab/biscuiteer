@@ -49,7 +49,7 @@ See Horvath, Genome Biology, 2012 for more information
 }
 \details{
 Note: the accuracy of the prediction will increase or decrease depending on
-how various \link{hyper}parameters are set by the user. This is NOT a hands-off
+how various hyper-parameters are set by the user. This is NOT a hands-off
 procedure, and the defaults are only a starting point for exploration. It
 will not be uncommon to tune \code{padding}, \code{minCovg}, and \code{minSamp} for each
 WGBS or RRBS experiment (and the latter may be impacted by whether dupes are
