@@ -15,7 +15,7 @@
 #'   data(BS.chr21, package="dmrseq")
 #'   dat <- BS.chr21
 #'
-#'   rrbs <- RRBSeq(dat[1:1000, ], "Rep", cutoff = 0.05, BPPARAM=SerialParam())
+#'   rrbs <- RRBSeq(dat[1:500, ], "Rep", cutoff = 0.05, BPPARAM=SerialParam())
 #'
 #' @export
 #'
