@@ -17,6 +17,7 @@
 #'
 #' @import gtools
 #' @import bsseq
+#' @importFrom methods is
 #'
 #' @aliases getMvals
 #'

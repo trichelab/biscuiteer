@@ -9,6 +9,8 @@
 #'
 #' @return        Corrected tumor and normal read counts
 #'
+#' @importFrom utils data
+#' @importFrom GenomeInfoDb keepSeqlevels
 #' @import GenomicRanges
 #' @import HMMcopy
 #'

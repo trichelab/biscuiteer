@@ -8,6 +8,8 @@
 #' @param name  Name for the plot (DEFAULT: "Segmented")
 #' @param ...   Other arguments to pass on to plot
 #'
+#' @importFrom stats quantile
+#' @importFrom graphics lines legend
 #' @import GenomicRanges
 #' @import HMMcopy
 #'

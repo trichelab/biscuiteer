@@ -24,6 +24,8 @@
 #'
 #' @return             Parameters to be supplied to makeBSseq
 #'
+#' @importFrom methods as is
+#' @importFrom utils read.table
 #' @import VariantAnnotation
 #' @import Rsamtools
 #' @import readr

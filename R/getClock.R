@@ -50,6 +50,9 @@
 #' @return         a List with elements `model`, `gr`, `intercept`,
 #'                   and `cleanup`
 #' 
+#' @importFrom utils data
+#' @import GenomeInfoDb
+#'
 #' @examples
 #'
 #' clock <- getClock(model="horvathshrunk", genome="hg38")
@@ -85,7 +88,7 @@ getClock <- function(model = c("horvath","horvathshrunk",
     hmmdat <- paste0("HMM_CpG_islands.", g)
     data(list=hmmdat)
     HMMIs <- get(hmmdat)
-    HMMIed <- names(subset(gr, !is.na(HMMI)))
+    HMMIed <- names(subset(gr, !is.na(gr$HMMI)))
     ranges(gr)[HMMIed] <- ranges(HMMIs[gr[HMMIed]$HMMI])
     gr$HMMI <- NULL # not really necessary post-expansion
   } 
@@ -95,7 +98,7 @@ getClock <- function(model = c("horvath","horvathshrunk",
     ensrdat <- paste0("ENSR_subset.", g)
     data(list=ensrdat)
     ENSRs <- get(ensrdat)
-    ENSRed <- names(subset(gr, !is.na(ENSR)))
+    ENSRed <- names(subset(gr, !is.na(gr$ENSR)))
     ranges(gr)[ENSRed] <- ranges(ENSRs[gr[ENSRed]$ENSR])
   }
 

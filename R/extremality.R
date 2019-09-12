@@ -13,6 +13,7 @@
 #' @importFrom matrixStats rowMeans2
 #' @importFrom DelayedMatrixStats rowVars
 #' @importFrom DelayedMatrixStats rowMeans2
+#' @importFrom methods is
 #'
 #' @examples
 #'

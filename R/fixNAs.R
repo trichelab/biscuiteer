@@ -9,6 +9,7 @@
 #' @return        x with no NAs (possibly a sparse Matrix)
 #'
 #' @importFrom Matrix Matrix
+#' @importFrom methods as
 #' 
 #' @examples
 #'

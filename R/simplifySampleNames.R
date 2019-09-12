@@ -8,6 +8,7 @@
 #' @return   The input object, but with simplified sample names
 #'
 #' @importFrom qualV LCS
+#' @importFrom methods is
 #'
 #' @examples
 #'

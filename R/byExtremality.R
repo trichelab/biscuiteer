@@ -16,6 +16,8 @@
 #'
 #' @return       A matrix-like object with methylation values sorted by extremality
 #'
+#' @import SummarizedExperiment
+#'
 #' @examples
 #'
 #'   tcga_mrg <- system.file("extdata",

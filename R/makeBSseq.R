@@ -12,6 +12,7 @@
 #'
 #' @import GenomicRanges
 #' @import bsseq
+#' @importFrom methods is as
 #'
 #' @examples
 #'

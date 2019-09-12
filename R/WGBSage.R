@@ -47,7 +47,8 @@
 #'  
 #' @return         A list: call, methylation estimates, coefs, age (estimates)
 #'
-#' @import  impute
+#' @import impute
+#' @importFrom methods as
 #'
 #' @examples
 #' 

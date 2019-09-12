@@ -33,6 +33,7 @@
 #'
 #' @return             A bsseq::BSseq object
 #'
+#' @import SummarizedExperiment
 #' @import data.table
 #' @import readr
 #' @import bsseq
@@ -147,7 +148,7 @@ read.biscuit <- function(BEDfile,
     if (is.null(hdf5dir)) {
       stop("You must provide an `hdf5dir` argument if you set `hdf5` to TRUE.")
     } else {
-      if (dir.exists(hdfdir)) {
+      if (dir.exists(hdf5dir)) {
         stop("The directory you specified already exists!")
       } else { 
         res <- HDF5Array::saveHDF5SummarizedExperiment(res, dir=hdf5dir)

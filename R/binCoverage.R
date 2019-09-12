@@ -17,6 +17,11 @@
 #'
 #' @return         Binned read counts
 #'
+#' @importFrom methods as is new
+#' @importFrom Biobase featureNames
+#' @importFrom utils packageVersion
+#' @import BiocGenerics
+#' @import GenomeInfoDb
 #' @import GenomicRanges
 #' @import Mus.musculus
 #' @import Homo.sapiens

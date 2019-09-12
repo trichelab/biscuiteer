@@ -11,6 +11,9 @@
 #'
 #' @return      A list, List, or *list, with pieces of x by chromosome arm
 #'
+#' @importFrom utils data
+#' @import SummarizedExperiment
+#'
 #' @examples
 #'
 #'   tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",

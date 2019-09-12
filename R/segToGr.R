@@ -10,6 +10,7 @@
 #' 
 #' @return        A GRanges object
 #'
+#' @importFrom utils read.table
 #' @import GenomicRanges
 #'
 #' @seealso grToSeg

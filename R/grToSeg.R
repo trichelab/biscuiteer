@@ -10,6 +10,8 @@
 #' @return          A data.frame with columns:
 #'                    (ID, chrom, loc.start, loc.end, num.mark, seg.mean)
 #'
+#' @importFrom methods is
+#' @importFrom utils write.table
 #' @import GenomicRanges
 #'
 #' @seealso segToGr
