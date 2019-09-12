@@ -45,7 +45,7 @@ WGBSage(bsseq, model = c("horvath", "horvathshrunk", "hannum",
 }
 }
 \description{
-See Horvath, Genome Biology, 2012 for more information
+See Horvath, Genome Biology, 2013 for more information
 }
 \details{
 Note: the accuracy of the prediction will increase or decrease depending on
@@ -60,7 +60,7 @@ transformation functions, which of course will just make the problems worse.
 Also, please cite the appropriate papers for the Epigenetic Clock(s) you use:
 
 For the 'horvath' or 'horvathshrunk' clocks, cite Horvath,
-Genome Biology 2012.
+Genome Biology 2013.
 For the 'hannum' clock, cite Hannum et al, Molecular Cell 2013.
 For the 'skinandblood' clock, cite Horvath et al, Aging 2018.
 

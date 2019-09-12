@@ -1,6 +1,6 @@
 #' Guess ages using Horvath-style 'clock' models
 #'
-#' See Horvath, Genome Biology, 2012 for more information
+#' See Horvath, Genome Biology, 2013 for more information
 #'
 #' Note: the accuracy of the prediction will increase or decrease depending on
 #' how various hyper-parameters are set by the user. This is NOT a hands-off 
@@ -14,7 +14,7 @@
 #' Also, please cite the appropriate papers for the Epigenetic Clock(s) you use:
 #'
 #' For the 'horvath' or 'horvathshrunk' clocks, cite Horvath,
-#' Genome Biology 2012.
+#' Genome Biology 2013.
 #' For the 'hannum' clock, cite Hannum et al, Molecular Cell 2013. 
 #' For the 'skinandblood' clock, cite Horvath et al, Aging 2018. 
 #' 
