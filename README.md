@@ -21,34 +21,42 @@ Wait, no, that's [these guys](https://www.biscuiteers.com/). ```biscuiteer```, o
 ```biscuiteer``` can load headered or header-free BED-like files as produced from ```biscuit vcf2bed``` or ```biscuit mergecg```, but we encourage users to keep their VCF headers (or just the entire VCF, which you will want to do anyways, as biscuit calls SNVs and allows for structural variant detection in a manner similar to typical whole-genome sequencing tools).  Since ```biscuit``` records the version of the software and the calling arguments used to process a set of files in the output VCF, this allows for much better reproducibility:
 
 ```R
-# from SRP080893
-# To load some runs:
+# Load the package
 #
 library(biscuiteer)
 
-# We just need the BED output and the VCF header to proceed... 
-# It is possible to get away without the VCF header, but better to use it. 
+# To read in some data, you need:
+#   A BED file (with or without a header)
+#   A VCF file (only really needs the header)
+#   Whether the file is merged CG data or not
+#   Any other additional function inputs (genome, region to load, etc)
 #
-SvNS <- read.biscuit(BEDfile="SvNS_HSPC_WGBS.merged.hg19.bed.gz",
-                     VCFfile="SvNS_HSPC_WGBS.hg19.vcf.gz",
-                     simplify=TRUE)
+tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",
+                        package = "biscuiteer")
+tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
+                        package = "biscuiteer")
+bisc <- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
+                     merged = TRUE, genome = "hg38")
 
-# for reproducibility:
+# To print metadata information from the loaded file:
 #
-biscuitMetadata(SvNS)
+biscuitMetadata(bisc)
 #
 # CharacterList of length 3
-# [["Reference genome"]] hg19.fa
-# [["Biscuit version"]] 0.3.8.20180515
-# [["Invocation"]] biscuit pileup -o SvNS_HSPC_WGBS.hg19.vcf /home/tim.triche...
+# [["Reference genome"]] hg38.fa
+# [["Biscuit version"]] 0.3.5.20180313
+# [["Invocation"]] biscuit pileup -q 5 /primary/vari/genomicdata/genomes/hg38/h...
 
-# this is all drawn from the VCF header:
+# This is all drawn from the VCF header:
 #
-metadata(SvNS)$vcfHeader
-# 
+metadata(bisc)$vcfHeader
+#
 # class: VCFHeader 
-# samples(6): 052314-2-N.hg19.sorted.markDups.hg19
-#   052314-2-S.hg19.sorted.markDups.hg19 ...
+# samples(1): TCGA_BLCA_A13J_markdup
+# meta(5): fileformat reference source contig program
+# fixed(1): FILTER
+# info(4): NS CX N5 AB
+# geno(9): GT DP ... GL1 GQ
 ```
 
 ### Downstream bits 
@@ -57,51 +65,49 @@ A/B compartment inference, age estimation from WGBS, copy number segmentation, a
 To wit, a shorthand summary of hypo- and hyper-methylation at some regions commonly associated with each:
 
 ```R
-SvNS.CpGindex <- CpGindex(SvNS) 
+bisc.CpGindex <- CpGindex(bisc)
+#
 # Computing hypermethylation indices...
-# Loading HMM_CpG_islands.hg19...
-# Loading H9state23unmeth.hg19...
+# Loading HMM_CpG_islands.hg38...
+# Loading H9state23unmeth.hg38...
 # Computing hypomethylation indices...
-# Loading PMDs.hg19...
-# Loading Zhou_solo_WCGW_inCommonPMDs.hg19...
+# Loading PMDs.hg38...
+# Loading Zhou_solo_WCGW_inCommonPMDs.hg38...
 # Computing indices...
 
-SvNS.CpGindex
-# CpGindex with 6 rows and 3 columns
-#                         hyper              hypo              ratio
-#                     <numeric>         <numeric>          <numeric>
-# 052314-2-N 0.0257280213640668  0.85695245688856 0.0300226939747399
-# 052314-2-S 0.0199967524923102 0.778438421291039 0.0256882907438531
-# 052314-3-N 0.0259634680610258 0.866410364528792 0.0299667099148177
-# 052314-3-S 0.0223123531642581 0.862420672085278 0.0258717745138324
-# 060614-2-N 0.0352164982188626 0.858982911495614 0.0409979031568225
-# 060614-2-S  0.026870818880881 0.858271082834001 0.0313080790187569
+show(bisc.CpGindex)
+#
+# CpGindex with 1 row and 3 columns
+#      hyper.TCGA_BLCA_A13J_markdup hypo.TCGA_BLCA_A13J_markdup
+#      `<`numeric`>`                `<`numeric`>`
+#   1  0.0654991319444445           0.443562305099473
+#      ratio.TCGA_BLCA_A13J_markdup
+#      `<`numeric`>`
+#   1  0.147666136620324
 #   -------
-# This object is just a DataFrame that has an idea of where it came from:
-# Hypermethylation was tallied across 120 regions (see x@hyperMethRegions). 
-# Hypomethylation was tallied across 15315 regions (see x@hypoMethRegions). 
+#   This object is just a DataFrame that has an idea of where it came from:
+#   Hypermethylation was tallied across 121 regions (see bisc.CpGindex@hyperMethRegions). 
+#   Hypomethylation was tallied across 13123 regions (see bisc.CpGindex@hypoMethRegions).
 
-SvNS.CpGindex@hyperMethRegions
-# GRanges object with 120 ranges and 1 metadata column:
-#       seqnames            ranges strand |              score
-#          <Rle>         <IRanges>  <Rle> |          <numeric>
-#     1     chr1 32230201-32230224      * | 0.0399999991059303
-#     2     chr1 43638401-43638449      * | 0.0399999991059303
-#     3     chr1 44884001-44884005      * | 0.0399999991059303
-#     4     chr1 46860401-46860406      * | 0.0599999986588955
-#     5     chr1 51435801-51436075      * | 0.0499999998137355
-#   ...      ...               ...    ... .                ...
-#   116    chr20   8112392-8112400      * | 0.0299999993294477
-#   117    chr20 17207801-17208191      * | 0.0599999986588955
-#   118    chr22 20004801-20004802      * | 0.0350000001490116
-#   119    chr22 37252601-37252731      * | 0.0599999986588955
-#   120    chr22 43781850-43781952      * | 0.0449999999254942
-#   -------
-#   seqinfo: 21 sequences from hg19 genome
-
+bisc.CpGindex@hyperMethRegions
+#
+# GRanges object with 121 ranges and 0 metadata columns:
+#   seqnames            ranges strand
+#  `<`Rle`>`     `<`IRanges`>`  `<`Rle`>`
+# 1     chr1 31764600-31764623      *
+# 2     chr1 43172730-43172778      *
+# 3     chr1 44418329-44418333      *
+# 4     chr1 46394729-46394734      *
+# 5     chr1 50970129-50970403      *
+# ...    ...               ...    ...
+# 117  chr20   8131745-8131753      *
+# 118  chr20 17227156-17227546      *
+# 119  chr22 20017278-20017279      *
+# 120  chr22 36856559-36856689      *
+# 121  chr22 43385844-43385946      *
+# -------
+# seqinfo: 21 sequences from hg38 genome
 ```
-
-
 ### Updating documentation
 
 `$ make doc`. Requires the [roxygen2](https://github.com/klutometis/roxygen) package.
