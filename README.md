@@ -79,10 +79,10 @@ show(bisc.CpGindex)
 #
 # CpGindex with 1 row and 3 columns
 #      hyper.TCGA_BLCA_A13J_markdup hypo.TCGA_BLCA_A13J_markdup
-#      `<`numeric`>`                `<`numeric`>`
+#      <numeric>                    <numeric>
 #   1  0.0654991319444445           0.443562305099473
 #      ratio.TCGA_BLCA_A13J_markdup
-#      `<`numeric`>`
+#      <numeric>
 #   1  0.147666136620324
 #   -------
 #   This object is just a DataFrame that has an idea of where it came from:
@@ -93,7 +93,7 @@ bisc.CpGindex@hyperMethRegions
 #
 # GRanges object with 121 ranges and 0 metadata columns:
 #   seqnames            ranges strand
-#  `<`Rle`>`     `<`IRanges`>`  `<`Rle`>`
+#      <Rle>         <IRanges>  <Rle>
 # 1     chr1 31764600-31764623      *
 # 2     chr1 43172730-43172778      *
 # 3     chr1 44418329-44418333      *
