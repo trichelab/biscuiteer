@@ -33,8 +33,8 @@
 #'
 #' @return             A bsseq::BSseq object
 #'
+#' @importFrom data.table fread
 #' @import SummarizedExperiment
-#' @import data.table
 #' @import readr
 #' @import bsseq
 #'

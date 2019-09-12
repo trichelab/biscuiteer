@@ -9,10 +9,6 @@
 #'
 #' @return     The extremality of each row (if more than one) of the object
 #'
-#' @importFrom matrixStats rowVars
-#' @importFrom matrixStats rowMeans2
-#' @importFrom DelayedMatrixStats rowVars
-#' @importFrom DelayedMatrixStats rowMeans2
 #' @importFrom methods is
 #'
 #' @examples

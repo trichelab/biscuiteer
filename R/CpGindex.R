@@ -79,7 +79,6 @@
 #' @importFrom methods callNextMethod slot as new
 #' @importFrom utils data
 #' @import GenomeInfoDb
-#' @import DelayedMatrixStats
 #' @import GenomicRanges
 #' @import S4Vectors
 #'
