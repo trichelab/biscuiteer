@@ -1,6 +1,7 @@
 #' Process many bigWig'ed CN segmentations
 #'
-#' Wrapper function to grToSeg to make processing large numbers of bigWigs easier
+#' Wrapper function to grToSeg to make processing large numbers of bigWigs
+#' easier
 #'
 #' @param bwList    bigWig files to read in
 #' @param suffix    Suffix of segmentation files (DEFAULT: ".CN.hg19.bw")

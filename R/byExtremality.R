@@ -14,7 +14,8 @@
 #' @param r      Regions to consider - NULL covers all loci (DEFAULT: NULL)
 #' @param k      How many rows/regions to return (DEFAULT: 500)
 #'
-#' @return       A matrix-like object with methylation values sorted by extremality
+#' @return       A matrix-like object with methylation values sorted by
+#'               extremality
 #'
 #' @import SummarizedExperiment
 #'
@@ -68,7 +69,8 @@ byExtremality <- function(bsseq,
   }
 
   if (nrow(bsseq) < k) {  
-    message("Requested k (", k, ") exceeds the row count in bsseq Adjusting k.") 
+    message("Requested k (", k, ") exceeds the row count in bsseq ",
+            "Adjusting k.") 
     k <- min(nrow(bsseq), k)
   }
 

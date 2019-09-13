@@ -26,7 +26,8 @@ age estimates, etc.)
 Useful links:
 \itemize{
 \item \url{https://github.com/trichelab/biscuiteer}
-\item Report bugs at \url{https://github.com/trichelab/biscuiteer/issues}
+\item Report bugs at
+\url{https://github.com/trichelab/biscuiteer/issues}
 }
 }
 \author{

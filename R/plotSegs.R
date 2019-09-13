@@ -8,6 +8,8 @@
 #' @param name  Name for the plot (DEFAULT: "Segmented")
 #' @param ...   Other arguments to pass on to plot
 #'
+#' @return      Plot of WGBS copy results
+#'
 #' @importFrom stats quantile
 #' @importFrom graphics lines legend
 #' @import GenomicRanges

@@ -1,7 +1,7 @@
 #' Load HDF5-backed SummarizedExperiment
 #'
 #' Local wrapper around HDF5Array::loadHDF5SummarizedExperiment. NOTE: CURRENTLY
-#' BISCUITEER DOES NOT HAVE HDF5-BACKING FUNCTIONALITY. USE AT YOUR OWN RISK!!!!  
+#' BISCUITEER DOES NOT HAVE HDF5-BACKING FUNCTIONALITY. USE AT YOUR OWN RISK!!!!
 #'
 #' @param dir  Path to the assays.h5 (and se.rds) files (DEFAULT: "HDF5")
 #'

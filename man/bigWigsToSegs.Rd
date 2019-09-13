@@ -18,7 +18,8 @@ bigWigsToSegs(bwList, suffix = ".CN.hg19.bw", filename = NULL)
 }
 }
 \description{
-Wrapper function to grToSeg to make processing large numbers of bigWigs easier
+Wrapper function to grToSeg to make processing large numbers of bigWigs
+easier
 }
 \examples{
 

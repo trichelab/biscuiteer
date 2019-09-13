@@ -91,8 +91,10 @@ WGBSage <- function(bsseq,
   g <- unique(genome(bsseq))
   if (is.null(g)) g <- genome 
   if (!g %in% c("hg19","GRCh37","hg38","GRCh38")) {
-    message("genome(bsseq) is set to ",unique(genome(bsseq)),", which is unsupported.")
-    stop("Provide a `genome` argument, or set genome(bsseq) manually, to proceed.")
+    message("genome(bsseq) is set to ",unique(genome(bsseq)),
+            ", which is unsupported.")
+    stop("Provide a `genome` argument, ",
+         "or set genome(bsseq) manually, to proceed.")
   }
 
   # get the requested model (a List with regions, intercept, and a cleanup fn

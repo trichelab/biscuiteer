@@ -120,7 +120,7 @@ CpGindex <- function(bsseq,
   # summarize hypomethylation (at WCGWs) by region
   message("Computing hypomethylation indices...") 
   if (is.null(PMDs)) PMDs <- .fetch(bsseq, "PMDs", suffix)
-  if (is.null(WCGW)) WCGW <- .fetch(bsseq, "Zhou_solo_WCGW_inCommonPMDs", suffix)
+  if (is.null(WCGW)) WCGW <- .fetch(bsseq, "Zhou_solo_WCGW_inCommonPMDs",suffix)
   hypoMeth <- .subsettedWithin(bsseq, y=WCGW, z=PMDs) 
 
   # summarize both via ratios

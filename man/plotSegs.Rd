@@ -17,6 +17,10 @@ plotSegs(cn, segs = NULL, chr = "chr22", name = "Segmented", ...)
 
 \item{...}{Other arguments to pass on to plot}
 }
+\value{
+\preformatted{ Plot of WGBS copy results
+}
+}
 \description{
 Modified from HMMcopy
 }

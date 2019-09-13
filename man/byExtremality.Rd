@@ -14,7 +14,8 @@ byExtremality(bsseq, r = NULL, k = 500)
 \item{k}{How many rows/regions to return (DEFAULT: 500)}
 }
 \value{
-\preformatted{  A matrix-like object with methylation values sorted by extremality
+\preformatted{  A matrix-like object with methylation values sorted by
+          extremality
 }
 }
 \description{

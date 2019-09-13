@@ -13,9 +13,9 @@ coefs <- list(
 reRowName <- function(x) { rownames(x) <- x[,1]; return(x[,-1]) }
 for (i in names(coefs)) colnames(coefs[[i]]) <- i
 clocks <- reRowName(
-  merge(with(coefs, merge(horvath,horvathshrunk,by="row.names",all=T)),
-        with(coefs, merge(hannum, skinandblood, by="row.names",all=T)),
-        by="Row.names", all=T)
+  merge(with(coefs, merge(horvath,horvathshrunk,by="row.names",all=TRUE)),
+        with(coefs, merge(hannum, skinandblood, by="row.names",all=TRUE)),
+        by="Row.names", all=TRUE)
 )
 clocks["(Intercept)", "hannum"] <- 0 # none provided in Molecular Cell paper
 

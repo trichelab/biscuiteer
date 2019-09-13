@@ -31,10 +31,12 @@ biscuitMetadata <- function(bsseq = NULL,
                             VCF = NULL) { 
 
   if (is.null(metadata(bsseq)$vcfHeader) & is.null(VCF)) {
-    stop("metadata(bsseq)$vcfHeader is NULL; VCF is NULL: where can it be found?")
+    stop("metadata(bsseq)$vcfHeader is NULL; ",
+         "VCF is NULL: where can it be found?")
   } 
   if (!is.null(metadata(bsseq)$vcfHeader) & !is.null(VCF)) {
-    message("You have provided BOTH a BSseq object `bsseq` AND a VCF file `VCF`.") 
+    message("You have provided BOTH a BSseq object ",
+            "`bsseq` AND a VCF file `VCF`.") 
     message("If metadata(bsseq)$vcfHeader exists, it will take precedence.")
   } 
   if (is.null(bsseq) | is.null(metadata(bsseq)$vcfHeader) & !is.null(VCF)) {

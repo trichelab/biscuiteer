@@ -55,7 +55,8 @@ checkBiscuitBED <- function(BEDfile,
 
   # Check if required inputs are missing
   # Print more useful messages if they are
-  if (rlang::is_missing(BEDfile)) stop("Tabix'ed BED file from biscuit is required.\n")
+  if (rlang::is_missing(BEDfile))
+    stop("Tabix'ed BED file from biscuit is required.\n")
   if (rlang::is_missing(VCFfile)) {
     err_message <- paste("Tabix'ed VCF file from biscuit is required.",
                          "Header information is used to set up column names.\n")
@@ -63,7 +64,8 @@ checkBiscuitBED <- function(BEDfile,
   }
   if (rlang::is_missing(merged)) {
     err_message <- paste("merged flag is required.",
-                         "merged = TRUE if 'biscuit mergecg' was run after 'biscuit vcf2bed'.",
+                         "merged = TRUE if 'biscuit mergecg' was",
+                         "run after 'biscuit vcf2bed'.",
                          "Otherwise use merged = FALSE.\n")
     stop(err_message)
   }
@@ -111,7 +113,8 @@ checkBiscuitBED <- function(BEDfile,
   params$hasHeader <- (length(headerTabix(tbx)$header) > 0)
   if (params$hasHeader) {
     # BED file has a header line ---> Not standard on a biscuit BED file
-    # TODO: Can probably remove this as a biscuit BED file should never have this information
+    # TODO: Can probably remove this as a biscuit BED
+    #       file should never have this information
     message(BEDfile, " has a header line")
 
     params$colNames <- strsplit(sub("^#","",headerTabix(tbx)$header),"\t")[[1]]
@@ -119,39 +122,47 @@ checkBiscuitBED <- function(BEDfile,
                            comment.char="#", nrows=3)
     colnames(preamble) <- params$colNames
     
-    message("Assuming ", ifelse(merged, "merged", "unmerged"), " data. Checking now...", appendLF=FALSE)
+    message("Assuming ", ifelse(merged, "merged", "unmerged"),
+            " data. Checking now...", appendLF=FALSE)
     if (!merged & any(grepl("context", colnames(preamble)))) {
-      stop("merged flag is FALSE, but appears to be a merged BED file. Set merged = TRUE.")
+      stop("merged flag is FALSE, but appears to be a merged BED file. ",
+           "Set merged = TRUE.")
     }
     if (merged & !any(grepl("context", colnames(preamble)))) {
-      stop("merged flag is TRUE, but does not appear to be a merged BED file. Set merged = FALSE.")
+      stop("merged flag is TRUE, but does not appear to be a merged BED file. ",
+           "Set merged = FALSE.")
     }
     message(" ...", ifelse(merged, "merged", "unmerged"), " file seems okay.")
 
     params$betaCols <- grep("beta", colnames(preamble), value=TRUE) 
     params$covgCols <- grep("covg", colnames(preamble), value=TRUE) 
-    if (merged) params$contextCols <- grep("context", colnames(preamble), value=TRUE) 
+    if (merged)
+      params$contextCols <- grep("context", colnames(preamble), value=TRUE) 
     sNames <- condenseSampleNames(tbx, stride=ifelse(merged, 3, 2))
     if (is.null(sampleNames)) sampleNames <- sNames 
     nSamples <- length(sNames)
   } else {
     message(paste0(BEDfile, " does not have a header. ",
-                   "Using VCF file header information to help set column names."))
+                   "Using VCF file header information ",
+                   "to help set column names."))
 
     preamble <- read.table(tbx$path, sep="\t", na.strings=".", nrows=3)
     cols <- c("chr","start","end")
     colsPerSample <- ifelse(merged, 3, 2)
     nSamples <- (ncol(preamble) - 3) / colsPerSample
 
-    message("Assuming ", ifelse(merged, "merged", "unmerged"), " data. Checking now...", appendLF=FALSE)
+    message("Assuming ", ifelse(merged, "merged", "unmerged"),
+            " data. Checking now...", appendLF=FALSE)
     if (((ncol(preamble) - 3) %% colsPerSample) != 0) {
       stop(paste0("Number of columns per sample does not seem to line up. ",
                   "Double check your merge flag is correct."))
     }
     if (nSamples != length(sampleNames)) {
-        stop(paste0("nSamples (", nSamples, ") does not match the number of sampleNames (", length(sampleNames),")"))
+        stop(paste0("nSamples (", nSamples, ") does not match the ",
+                    "number of sampleNames (", length(sampleNames),")"))
     }
-    message(paste0(" ...The file might be alright. Double check if you're worried."))
+    message(paste0(" ...The file might be alright. ",
+                   "Double check if you're worried."))
 
     if (is.null(sampleNames)) sampleNames <- paste0("sample", seq_len(nSamples))
     colSuffixes <- c(".beta",".covg")
@@ -214,7 +225,7 @@ checkBiscuitBED <- function(BEDfile,
   params$colSpec[["cols"]][[params$colNames[1]]] <- col_character()
   params$colSpec[["cols"]][[params$colNames[2]]] <- col_integer()
   params$colSpec[["cols"]][[params$colNames[3]]] <- col_integer()
-  for ( i in 1:length(rownames(params$pData)) ) { 
+  for ( i in seq_along(rownames(params$pData)) ) {
     params$colSpec[["cols"]][[params$betaCols[i]]] <- col_double()
     params$colSpec[["cols"]][[params$covgCols[i]]] <- col_integer()
   }
@@ -224,7 +235,7 @@ checkBiscuitBED <- function(BEDfile,
   params$colClasses[params$colNames[1]] <- "character"
   params$colClasses[params$colNames[2]] <- "integer"
   params$colClasses[params$colNames[3]] <- "integer"
-  for ( i in 1:length(rownames(params$pData)) ) { 
+  for ( i in seq_along(rownames(params$pData)) ) {
     params$colClasses[params$betaCols[i]] <- "double"
     params$colClasses[params$covgCols[i]] <- "integer"
     params$colClasses[params$contextCols[i]]  <- "NULL"
