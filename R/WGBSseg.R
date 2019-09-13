@@ -8,6 +8,7 @@
 #'
 #' @return          A GRanges (hg19 seqinfo)
 #'
+#' @importFrom stats median
 #' @import fastseg
 #' @import Homo.sapiens
 #'
@@ -81,7 +82,7 @@ WGBSseg <- function(cn, minAbs=0.3, minWidth=20000, ...) {
     res$state[which(res$seg.mean <= -1 * minAbs)] <- 2
     res$state[which(res$seg.mean <= -1.2)] <- 1
     mcols(res) <- mcols(res)[, c("state","median")]
-    res <- subset(res, state != 3)
+    res <- subset(res, res$state != 3)
     gap <- subset(gaps(res), strand=="*")
     gap$state <- 3
     gap$median <- 0
