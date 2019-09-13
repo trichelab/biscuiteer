@@ -7,11 +7,11 @@ Description: A test harness for bsseq loading of Biscuit output, summarization
 Version: 0.9.93
 Date: 2019-08-22
 Author: Tim Triche, Jr. [aut, cre], Wanding Zhou [aut], Ben Johnson [aut], Jacob Morrison [aut], Lyong Heo [aut]
-Maintainer: "Tim Triche, Jr." <tim.triche@vai.org>
+Maintainer: "Tim Triche, Jr." <tim.triche@gmail.com>
 URL: https://github.com/trichelab/biscuiteer
 BugReports: https://github.com/trichelab/biscuiteer/issues
 License: GPL-3
-Depends: R (>= 3.0.0), 
+Depends: R (>= 3.6.0), 
          bsseq
 Imports: readr,
          qualV,
@@ -43,6 +43,7 @@ Imports: readr,
          gtools
 Suggests: DSS, 
           covr,
+          knitr,
           rlang,
           scmeth,
           pkgdown, 
@@ -53,3 +54,4 @@ Suggests: DSS,
 Encoding: UTF-8
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr
