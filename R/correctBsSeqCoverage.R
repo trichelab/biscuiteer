@@ -42,7 +42,7 @@ correctBsSeqCoverage <- function(tumor,
   stopifnot(length(tumor) == length(normal))
 
   bsgc <- subsetByOverlaps(bsgc, tumor)
-  stopifnot(length(tumor) == length(bcgc))
+  stopifnot(length(tumor) == length(bsgc))
   maps <- subsetByOverlaps(maps, tumor)
   stopifnot(length(maps) == length(bsgc))
   tumor$gc <- normal$gc <- bsgc$score
