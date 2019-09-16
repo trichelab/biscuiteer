@@ -19,6 +19,20 @@
 #'
 #' @examples
 #'
+#'   tum_bed <- system.file("extdata", "MCF7_Cunha_chr11p15_shuffled.bed.gz",
+#'                          package="biscuiteer")
+#'   nor_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+#'                          package="biscuiteer")
+#'   tum_vcf <- system.file("extdata", "MCF7_Cunha_shuffled_header_only.vcf.gz",
+#'                          package="biscuiteer")
+#'   nor_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+#'                          package="biscuiteer")
+#'
+#'   tumor <- read.biscuit(BEDfile=tum_bed, VCFfile=tum_vcf, merged=FALSE)
+#'   normal <- read.biscuit(BEDfile=nor_bed, VCFfile=nor_vcf, merged=FALSE)
+#'
+#'   corr <- correctBsSeqCoverage(tumor=tumor, normal=normal)
+#'
 #' @export
 #'
 correctBsSeqCoverage <- function(tumor,
@@ -56,6 +70,7 @@ correctBsSeqCoverage <- function(tumor,
   message("Normalizing tumor against normal sample...")
   tumor_copy$copy <- tumor_copy$copy - correctDepth(normal)$copy
   tumor_copy$score <- tumor_copy$copy
+  seqlevels(tumor_copy) <- seqlevels(bsgc) # Fill in missing seqlevels
   tumor_copy <- keepSeqlevels(tumor_copy, 
                               paste0("chr", c(1:22, "X")), 
                               pruning.mode="coarse")

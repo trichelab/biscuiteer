@@ -25,19 +25,21 @@ Copy number segmentation of GC- and mapping-corrected WGBS coverage
 }
 \examples{
 
-  library(fastseg)
-  library(HMMcopy) 
-  library(rtracklayer)
-  files <- list.files(patt="P01-022-.*covg.hg19.bw") 
-  names(files) <- sapply(strsplit(files, "(\\\\.|\\\\-)"), `[`, 3)
-  covgs <- sapply(files, import)
+  library(Homo.sapiens)
 
-  RMS1 <- correctBsSeqCoverage(covgs$tumor1, covgs$normal)
-  RMS1seg <- WGBSseg(RMS1)
-  plotSegs(RMS1, RMS1seg, "chr10")
+  tum_bed <- system.file("extdata", "MCF7_Cunha_chr11p15_shuffled.bed.gz",
+                         package="biscuiteer")
+  nor_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                         package="biscuiteer")
+  tum_vcf <- system.file("extdata", "MCF7_Cunha_shuffled_header_only.vcf.gz",
+                         package="biscuiteer")
+  nor_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                         package="biscuiteer")
 
-  RMS2 <- correctBsSeqCoverage(covgs$tumor2, covgs$normal)
-  RMS2seg <- WGBSseg(RMS2) 
-  plotSegs(RMS2, RMS2seg, "chr10")
+  tumor <- read.biscuit(BEDfile=tum_bed, VCFfile=tum_vcf, merged=FALSE)
+  normal <- read.biscuit(BEDfile=nor_bed, VCFfile=nor_vcf, merged=FALSE)
+
+  corr <- correctBsSeqCoverage(tumor=tumor, normal=normal)
+  segs <- WGBSseg(cn=corr)
 
 }

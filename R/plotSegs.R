@@ -17,6 +17,24 @@
 #'
 #' @examples
 #'
+#'   library(Homo.sapiens)
+#'
+#'   tum_bed <- system.file("extdata", "MCF7_Cunha_chr11p15_shuffled.bed.gz",
+#'                          package="biscuiteer")
+#'   nor_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+#'                          package="biscuiteer")
+#'   tum_vcf <- system.file("extdata", "MCF7_Cunha_shuffled_header_only.vcf.gz",
+#'                          package="biscuiteer")
+#'   nor_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+#'                          package="biscuiteer")
+#'
+#'   tumor <- read.biscuit(BEDfile=tum_bed, VCFfile=tum_vcf, merged=FALSE)
+#'   normal <- read.biscuit(BEDfile=nor_bed, VCFfile=nor_vcf, merged=FALSE)
+#'
+#'   corr <- correctBsSeqCoverage(tumor=tumor, normal=normal)
+#'   segs <- WGBSseg(cn=corr)
+#'   plotSegs(corr, segs, "chr11")
+#'
 #' @export
 #'
 plotSegs <- function(cn,

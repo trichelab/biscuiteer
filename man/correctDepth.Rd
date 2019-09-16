@@ -29,6 +29,28 @@ Also used by correctBsSeqCoverage
 }
 \examples{
 
+  bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                     package="biscuiteer")
+  vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                     package="biscuiteer")
+  bisc <- read.biscuit(BEDfile=bed, VCFfile=vcf, merged=FALSE)
+
+  data(bsgc.hg19)
+  bsgc <- bsgc.hg19
+  data(maps.hg19)
+  maps <- maps.hg19
+
+  bisc <- binCoverage(bisc, bsgc)
+  bsgc <- subsetByOverlaps(bsgc, bisc)
+  maps <- subsetByOverlaps(maps, bisc)
+
+  bisc$gc <- bsgc$score
+  bisc$map <- maps$score
+  names(mcols(bisc)) <- c("reads","gc","map")
+
+  bisc_copy <- correctDepth(bisc)
+
+
 }
 \seealso{
 correctBsSeqCoverage
