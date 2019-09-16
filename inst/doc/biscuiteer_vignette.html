@@ -369,29 +369,29 @@ reproducibility.</p>
 <pre><code>## 
 </code></pre>
 
-<pre><code class="r">tcga_bed &lt;- system.file(&quot;extdata&quot;, &quot;TCGA_BLCA_A13J_chr11p15_merged.bed.gz&quot;,
-                        package = &quot;biscuiteer&quot;)
-tcga_vcf &lt;- system.file(&quot;extdata&quot;, &quot;TCGA_BLCA_A13J_header_only.vcf.gz&quot;,
-                        package = &quot;biscuiteer&quot;)
-bisc &lt;- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
-                     merged = TRUE, genome = &quot;hg38&quot;)
+<pre><code class="r">orig_bed &lt;- system.file(&quot;extdata&quot;, &quot;MCF7_Cunha_chr11p15.bed.gz&quot;,
+                        package=&quot;biscuiteer&quot;)
+orig_vcf &lt;- system.file(&quot;extdata&quot;, &quot;MCF7_Cunha_header_only.vcf.gz&quot;,
+                        package=&quot;biscuiteer&quot;)
+bisc &lt;- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                     merged = FALSE)
 </code></pre>
 
-<pre><code>## Checking /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_merged.bed.gz for import...
+<pre><code>## Checking /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz for import...
 </code></pre>
 
-<pre><code>## Extracting sample names from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_header_only.vcf.gz...
+<pre><code>## Extracting sample names from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_header_only.vcf.gz...
 </code></pre>
 
-<pre><code>## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_merged.bed.gz does not have a header. Using VCF file header information to help set column names.
+<pre><code>## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz does not have a header. Using VCF file header information to help set column names.
 </code></pre>
 
-<pre><code>## Assuming merged data. Checking now... ...The file might be alright. Double check if you&#39;re worried.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_merged.bed.gz has 211270 indexed loci.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_merged.bed.gz looks valid for import.
-## Reading merged input from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_merged.bed.gz...
+<pre><code>## Assuming unmerged data. Checking now... ...The file might be alright. Double check if you&#39;re worried.
+## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz has 254147 indexed loci.
+## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz looks valid for import.
+## Reading unmerged input from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz...
 ## Excluding CpG sites with uniformly zero coverage...
-## Loaded /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_merged.bed.gz. Creating bsseq object...
+## Loaded /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz. Creating bsseq object...
 </code></pre>
 
 <p>Metadata from the <code>biscuit</code> output can be viewed via:</p>
@@ -400,9 +400,9 @@ bisc &lt;- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
 </code></pre>
 
 <pre><code>## CharacterList of length 3
-## [[&quot;Reference genome&quot;]] hg38.fa
-## [[&quot;Biscuit version&quot;]] 0.3.5.20180313
-## [[&quot;Invocation&quot;]] biscuit pileup -q 5 /primary/vari/genomicdata/genomes/h...
+## [[&quot;Reference genome&quot;]] hg19.fa
+## [[&quot;Biscuit version&quot;]] 0.1.3.20160324
+## [[&quot;Invocation&quot;]] biscuit pileup -r /primary/vari/genomicdata/genomes/hg1...
 </code></pre>
 
 <p>If further information about the VCF header is desired,</p>
@@ -411,11 +411,11 @@ bisc &lt;- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
 </code></pre>
 
 <pre><code>## class: VCFHeader 
-## samples(1): TCGA_BLCA_A13J_markdup
+## samples(1): MCF7_Cunha
 ## meta(5): fileformat reference source contig program
 ## fixed(1): FILTER
-## info(4): NS CX N5 AB
-## geno(9): GT DP ... GL1 GQ
+## info(3): NS CX N5
+## geno(7): GT DP ... GL GQ
 </code></pre>
 
 <h2>Combining Results</h2>
@@ -424,52 +424,50 @@ bisc &lt;- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
 analyze in a single bsseq object, you can combine the files using <code>unionize</code>,
 which is a wrapper around the bsseq function, <code>combine</code>.</p>
 
-<pre><code class="r">tcga_mrg &lt;- system.file(&quot;extdata&quot;,
-                        &quot;TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz&quot;,
-                        package = &quot;biscuiteer&quot;)
-tcga_shf &lt;- system.file(&quot;extdata&quot;,
-                        &quot;TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz&quot;,
-                         package = &quot;biscuiteer&quot;)
-tcga_mvcf &lt;- system.file(&quot;extdata&quot;,
-                         &quot;TCGA_BLCA_A13J_header_only.vcf.gz&quot;,
-                         package = &quot;biscuiteer&quot;)
-tcga_svcf &lt;- system.file(&quot;extdata&quot;,
-                         &quot;TCGA_BLCA_A13J_shuffled_header_only.vcf.gz&quot;,
-                         package = &quot;biscuiteer&quot;)
-bisc1 &lt;- read.biscuit(BEDfile = tcga_mrg, VCFfile = tcga_mvcf,
-                      merged = FALSE, genome = &quot;hg38&quot;)
+<pre><code class="r">shuf_bed &lt;- system.file(&quot;extdata&quot;, &quot;MCF7_Cunha_chr11p15_shuffled.bed.gz&quot;,
+                        package=&quot;biscuiteer&quot;)
+orig_bed &lt;- system.file(&quot;extdata&quot;, &quot;MCF7_Cunha_chr11p15.bed.gz&quot;,
+                        package=&quot;biscuiteer&quot;)
+shuf_vcf &lt;- system.file(&quot;extdata&quot;,
+                        &quot;MCF7_Cunha_shuffled_header_only.vcf.gz&quot;,
+                        package=&quot;biscuiteer&quot;)
+orig_vcf &lt;- system.file(&quot;extdata&quot;,
+                        &quot;MCF7_Cunha_header_only.vcf.gz&quot;,
+                        package=&quot;biscuiteer&quot;)
+bisc1 &lt;- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+                      merged = FALSE)
 </code></pre>
 
-<pre><code>## Checking /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz for import...
+<pre><code>## Checking /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz for import...
 </code></pre>
 
-<pre><code>## Extracting sample names from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_header_only.vcf.gz...
+<pre><code>## Extracting sample names from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_shuffled_header_only.vcf.gz...
 </code></pre>
 
-<pre><code>## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz does not have a header. Using VCF file header information to help set column names.
+<pre><code>## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz does not have a header. Using VCF file header information to help set column names.
 </code></pre>
 
 <pre><code>## Assuming unmerged data. Checking now... ...The file might be alright. Double check if you&#39;re worried.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz has 211350 indexed loci.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz looks valid for import.
-## Reading unmerged input from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz...
+## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz has 254147 indexed loci.
+## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz looks valid for import.
+## Reading unmerged input from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz...
 ## Excluding CpG sites with uniformly zero coverage...
-## Loaded /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz. Creating bsseq object...
+## Loaded /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz. Creating bsseq object...
 </code></pre>
 
-<pre><code class="r">bisc2 &lt;- read.biscuit(BEDfile = tcga_shf, VCFfile = tcga_svcf,
-                      merged = FALSE, genome = &quot;hg38&quot;)
+<pre><code class="r">bisc2 &lt;- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                      merged = FALSE)
 </code></pre>
 
-<pre><code>## Checking /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz for import...
-## Extracting sample names from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_shuffled_header_only.vcf.gz...
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz does not have a header. Using VCF file header information to help set column names.
+<pre><code>## Checking /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz for import...
+## Extracting sample names from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_header_only.vcf.gz...
+## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz does not have a header. Using VCF file header information to help set column names.
 ## Assuming unmerged data. Checking now... ...The file might be alright. Double check if you&#39;re worried.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz has 211350 indexed loci.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz looks valid for import.
-## Reading unmerged input from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz...
+## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz has 254147 indexed loci.
+## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz looks valid for import.
+## Reading unmerged input from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz...
 ## Excluding CpG sites with uniformly zero coverage...
-## Loaded /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz. Creating bsseq object...
+## Loaded /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz. Creating bsseq object...
 </code></pre>
 
 <pre><code class="r">comb &lt;- unionize(bisc1, bisc2)
@@ -490,31 +488,6 @@ raw measurements into lightly moderated, logit-transformed methylated-fraction
 estimates, which can the be used as inputs to
 <a href="https://bioconductor.org/packages/release/bioc/html/compartmap.html">compartmap</a></p>
 
-<pre><code class="r">tcga_bed &lt;- system.file(&quot;extdata&quot;, &quot;TCGA_BLCA_A13J_chr11p15_merged.bed.gz&quot;,
-                        package = &quot;biscuiteer&quot;)
-tcga_vcf &lt;- system.file(&quot;extdata&quot;, &quot;TCGA_BLCA_A13J_header_only.vcf.gz&quot;,
-                        package = &quot;biscuiteer&quot;)
-bisc &lt;- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
-                     merged = TRUE, genome = &quot;hg38&quot;)
-</code></pre>
-
-<pre><code>## Checking /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_merged.bed.gz for import...
-</code></pre>
-
-<pre><code>## Extracting sample names from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_header_only.vcf.gz...
-</code></pre>
-
-<pre><code>## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_merged.bed.gz does not have a header. Using VCF file header information to help set column names.
-</code></pre>
-
-<pre><code>## Assuming merged data. Checking now... ...The file might be alright. Double check if you&#39;re worried.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_merged.bed.gz has 211270 indexed loci.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_merged.bed.gz looks valid for import.
-## Reading merged input from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_merged.bed.gz...
-## Excluding CpG sites with uniformly zero coverage...
-## Loaded /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_merged.bed.gz. Creating bsseq object...
-</code></pre>
-
 <pre><code class="r">reg &lt;- GRanges(seqnames = rep(&quot;chr11&quot;,5),
                strand = rep(&quot;*&quot;,5),
                ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
@@ -525,12 +498,12 @@ frac &lt;- getLogitFracMeth(bisc, minSamp = 1, r = reg)
 frac
 </code></pre>
 
-<pre><code>##                         TCGA_BLCA_A13J_markdup
-## chr11:0-2800000                      0.5518970
-## chr11:2800000-11700000               0.7735474
-## chr11:11700000-13800000              0.9581771
-## chr11:13800000-16900000              0.6452412
-## chr11:16900000-22000000              0.6409875
+<pre><code>##                         MCF7_Cunha
+## chr11:0-2800000          1.3406818
+## chr11:2800000-11700000   0.5758749
+## chr11:11700000-13800000  1.1629889
+## chr11:13800000-16900000  0.5818740
+## chr11:16900000-22000000  0.4429849
 </code></pre>
 
 <h2>Age Estimation</h2>
@@ -564,60 +537,13 @@ below) should only be used as a starting point for exploration by the user.</p>
 </ul></li>
 </ul>
 
-<pre><code class="r">tcga_mrg &lt;- system.file(&quot;extdata&quot;,
-                        &quot;TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz&quot;,
-                        package = &quot;biscuiteer&quot;)
-tcga_shf &lt;- system.file(&quot;extdata&quot;,
-                        &quot;TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz&quot;,
-                         package = &quot;biscuiteer&quot;)
-tcga_mvcf &lt;- system.file(&quot;extdata&quot;,
-                         &quot;TCGA_BLCA_A13J_header_only.vcf.gz&quot;,
-                         package = &quot;biscuiteer&quot;)
-tcga_svcf &lt;- system.file(&quot;extdata&quot;,
-                         &quot;TCGA_BLCA_A13J_shuffled_header_only.vcf.gz&quot;,
-                         package = &quot;biscuiteer&quot;)
-bisc1 &lt;- read.biscuit(BEDfile = tcga_mrg, VCFfile = tcga_mvcf,
-                      merged = FALSE, genome = &quot;hg38&quot;)
-</code></pre>
-
-<pre><code>## Checking /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz for import...
-</code></pre>
-
-<pre><code>## Extracting sample names from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_header_only.vcf.gz...
-</code></pre>
-
-<pre><code>## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz does not have a header. Using VCF file header information to help set column names.
-</code></pre>
-
-<pre><code>## Assuming unmerged data. Checking now... ...The file might be alright. Double check if you&#39;re worried.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz has 211350 indexed loci.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz looks valid for import.
-## Reading unmerged input from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz...
-## Excluding CpG sites with uniformly zero coverage...
-## Loaded /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz. Creating bsseq object...
-</code></pre>
-
-<pre><code class="r">bisc2 &lt;- read.biscuit(BEDfile = tcga_shf, VCFfile = tcga_svcf,
-                      merged = FALSE, genome = &quot;hg38&quot;)
-</code></pre>
-
-<pre><code>## Checking /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz for import...
-## Extracting sample names from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_shuffled_header_only.vcf.gz...
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz does not have a header. Using VCF file header information to help set column names.
-## Assuming unmerged data. Checking now... ...The file might be alright. Double check if you&#39;re worried.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz has 211350 indexed loci.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz looks valid for import.
-## Reading unmerged input from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz...
-## Excluding CpG sites with uniformly zero coverage...
-## Loaded /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz. Creating bsseq object...
-</code></pre>
-
-<pre><code class="r">comb &lt;- unionize(bisc1, bisc2)
-ages &lt;- WGBSage(comb, &quot;horvath&quot;)
+<pre><code class="r">ages &lt;- WGBSage(comb, &quot;horvath&quot;)
 </code></pre>
 
 <pre><code>## Assessing coverage across age-associated regions...
-## All regions in all samples appear to be sufficiently covered.
+</code></pre>
+
+<pre><code>## All regions in all samples appear to be sufficiently covered.
 </code></pre>
 
 <pre><code class="r">ages
@@ -636,18 +562,18 @@ ages &lt;- WGBSage(comb, &quot;horvath&quot;)
 ## [1] 0.6955073
 ## 
 ## $meth
-##                         TCGA_BLCA_A13J_markdup TCGA_BLCA_A13J_shuffled
-## chr11:6656898-6656927                        0               0.1000000
-## chr11:12009082-12009111                      0               0.4607843
+##                         MCF7_Cunha_shuffled MCF7_Cunha
+## chr11:6678129-6678158             0.2500000  0.8000000
+## chr11:12030629-12030658           0.2477324  0.8333333
 ## 
 ## $coefs
-##   chr11:6656898-6656927 chr11:12009082-12009111 
+##   chr11:6678129-6678158 chr11:12030629-12030658 
 ##             0.000792206            -0.138857398 
 ## 
 ## $age
-##                             [,1]
-## TCGA_BLCA_A13J_markdup  35.60565
-## TCGA_BLCA_A13J_shuffled 34.26367
+##                         [,1]
+## MCF7_Cunha_shuffled 34.88742
+## MCF7_Cunha          33.18896
 </code></pre>
 
 <h2>Hypermethylation of PRCs and Hypomethylation of PMDs</h2>
@@ -661,19 +587,19 @@ hypomethylation of PMDs, the <code>CpGindex</code> function in <code>biscuiteer<
 <pre><code>## Computing hypermethylation indices...
 </code></pre>
 
-<pre><code>## Loading HMM_CpG_islands.hg38...
+<pre><code>## Loading HMM_CpG_islands.hg19...
 </code></pre>
 
-<pre><code>## Loading H9state23unmeth.hg38...
+<pre><code>## Loading H9state23unmeth.hg19...
 </code></pre>
 
 <pre><code>## Computing hypomethylation indices...
 </code></pre>
 
-<pre><code>## Loading PMDs.hg38...
+<pre><code>## Loading PMDs.hg19...
 </code></pre>
 
-<pre><code>## Loading Zhou_solo_WCGW_inCommonPMDs.hg38...
+<pre><code>## Loading Zhou_solo_WCGW_inCommonPMDs.hg19...
 </code></pre>
 
 <pre><code>## Computing indices...
@@ -683,37 +609,34 @@ hypomethylation of PMDs, the <code>CpGindex</code> function in <code>biscuiteer<
 </code></pre>
 
 <pre><code>## CpGindex with 1 row and 3 columns
-##   hyper.TCGA_BLCA_A13J_markdup hypo.TCGA_BLCA_A13J_markdup
-##                      &lt;numeric&gt;                   &lt;numeric&gt;
-## 1           0.0654991319444445           0.443562305099473
-##   ratio.TCGA_BLCA_A13J_markdup
-##                      &lt;numeric&gt;
-## 1            0.147666136620324
+##     hyper.MCF7_Cunha   hypo.MCF7_Cunha  ratio.MCF7_Cunha
+##            &lt;numeric&gt;         &lt;numeric&gt;         &lt;numeric&gt;
+## 1 0.0690734126984127 0.193890810229873 0.356249028081943
 ##   -------
 ## This object is just a DataFrame that has an idea of where it came from:
-## Hypermethylation was tallied across 121 regions (see bisc.CpGindex@hyperMethRegions). 
-## Hypomethylation was tallied across 13123 regions (see bisc.CpGindex@hypoMethRegions).
+## Hypermethylation was tallied across 120 regions (see bisc.CpGindex@hyperMethRegions). 
+## Hypomethylation was tallied across 15315 regions (see bisc.CpGindex@hypoMethRegions).
 </code></pre>
 
 <pre><code class="r">bisc.CpGindex@hyperMethRegions
 </code></pre>
 
-<pre><code>## GRanges object with 121 ranges and 0 metadata columns:
-##       seqnames            ranges strand
-##          &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt;
-##     1     chr1 31764600-31764623      *
-##     2     chr1 43172730-43172778      *
-##     3     chr1 44418329-44418333      *
-##     4     chr1 46394729-46394734      *
-##     5     chr1 50970129-50970403      *
-##   ...      ...               ...    ...
-##   117    chr20   8131745-8131753      *
-##   118    chr20 17227156-17227546      *
-##   119    chr22 20017278-20017279      *
-##   120    chr22 36856559-36856689      *
-##   121    chr22 43385844-43385946      *
+<pre><code>## GRanges object with 120 ranges and 1 metadata column:
+##       seqnames            ranges strand |              score
+##          &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; |          &lt;numeric&gt;
+##     1     chr1 32230201-32230224      * | 0.0399999991059303
+##     2     chr1 43638401-43638449      * | 0.0399999991059303
+##     3     chr1 44884001-44884005      * | 0.0399999991059303
+##     4     chr1 46860401-46860406      * | 0.0599999986588955
+##     5     chr1 51435801-51436075      * | 0.0499999998137355
+##   ...      ...               ...    ... .                ...
+##   116    chr20   8112392-8112400      * | 0.0299999993294477
+##   117    chr20 17207801-17208191      * | 0.0599999986588955
+##   118    chr22 20004801-20004802      * | 0.0350000001490116
+##   119    chr22 37252601-37252731      * | 0.0599999986588955
+##   120    chr22 43781850-43781952      * | 0.0449999999254942
 ##   -------
-##   seqinfo: 21 sequences from hg38 genome
+##   seqinfo: 21 sequences from hg19 genome
 </code></pre>
 
 </body>
