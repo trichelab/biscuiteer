@@ -1,4 +1,4 @@
-## biscuiteer 0.99.0
+## biscuiteer 0.9.93
 
 * Preparing for initial Bioconductor release
 
