@@ -24,22 +24,20 @@ The code is adapted from the precheck loop of dmrseq::dmrseq
 }
 \examples{
 
-  tcga_mrg <- system.file("extdata",
-                          "TCGA_BLCA_A13J_chr11p15_unmerged.bed.gz",
-                          package = "biscuiteer")
-  tcga_shf <- system.file("extdata",
-                          "TCGA_BLCA_A13J_chr11p15_shuffled_unmerged.bed.gz",
-                           package = "biscuiteer")
-  tcga_mvcf <- system.file("extdata",
-                           "TCGA_BLCA_A13J_header_only.vcf.gz",
-                           package = "biscuiteer")
-  tcga_svcf <- system.file("extdata",
-                           "TCGA_BLCA_A13J_shuffled_header_only.vcf.gz",
-                           package = "biscuiteer")
-  bisc1 <- read.biscuit(BEDfile = tcga_mrg, VCFfile = tcga_mvcf,
-                        merged = FALSE, genome = "hg38")
-  bisc2 <- read.biscuit(BEDfile = tcga_shf, VCFfile = tcga_svcf,
-                        merged = FALSE, genome = "hg38")
+  shuf_bed <- system.file("extdata", "MCF7_Cunha_chr11p15_shuffled.bed.gz",
+                          package="biscuiteer")
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  shuf_vcf <- system.file("extdata",
+                          "MCF7_Cunha_shuffled_header_only.vcf.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata",
+                          "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+                        merged = FALSE)
+  bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                        merged = FALSE)
 
   comb <- unionize(bisc1, bisc2)
 

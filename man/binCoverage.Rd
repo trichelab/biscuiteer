@@ -45,12 +45,12 @@ to define your bins.
                                   end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
                  )
 
-  tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",
-                          package = "biscuiteer")
-  tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
-                          package = "biscuiteer")
-  bisc <- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
-                       merged = TRUE, genome = "hg38")
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                       merged = FALSE)
 
   bc <- binCoverage(bsseq = bisc, bins = bins, which = reg, QDNAseq = FALSE)
 

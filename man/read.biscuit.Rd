@@ -73,12 +73,12 @@ NOTE: Requires header from VCF file to detect sample names
 
 \examples{
 
-  tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",
-                          package = "biscuiteer")
-  tcga_vcf <- system.file("extdata", "TCGA_BLCA_A13J_header_only.vcf.gz",
-                          package = "biscuiteer")
-  bisc <- read.biscuit(BEDfile = tcga_bed, VCFfile = tcga_vcf,
-                       merged = TRUE, genome = "hg38")
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                       merged = FALSE)
 
 }
 \seealso{

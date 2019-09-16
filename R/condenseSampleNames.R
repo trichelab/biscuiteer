@@ -16,10 +16,10 @@
 #' @examples
 #'
 #'   library(Rsamtools)
-#'   tcga_bed <- system.file("extdata", "TCGA_BLCA_A13J_chr11p15_merged.bed.gz",
-#'                           package = "biscuiteer")
-#'   if (length(headerTabix(tcga_bed)$header) > 0) {
-#'     condenseSampleNames(tcga_bed, 2)
+#'   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+#'                           package="biscuiteer")
+#'   if (length(headerTabix(orig_bed)$header) > 0) {
+#'     condenseSampleNames(orig_bed, 2)
 #'   }
 #'
 #' @export
