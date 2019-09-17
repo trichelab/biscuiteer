@@ -185,28 +185,6 @@ NULL
 #'
 NULL
 
-#' openSeas.hg19
-#'
-#' Dataset description
-#'
-#' @name openSeas.hg19
-#' @docType data
-#' @keywords data
-#' @usage data(openSeas.hg19, package="biscuiteer")
-#'
-NULL
-
-#' openSeas.hg38
-#'
-#' Dataset description
-#'
-#' @name openSeas.hg38
-#' @docType data
-#' @keywords data
-#' @usage data(openSeas.hg38, package="biscuiteer")
-#'
-NULL
-
 #' seqinfo.hg19
 #'
 #' Dataset description
