@@ -38,7 +38,7 @@ NULL
 
 #' @rdname biscuiteer-methods
 #' @export
-setMethod("samples", "BSseq", function(object) samples(.mdvh(x)))
+setMethod("samples", "BSseq", function(object) samples(.mdvh(object)))
 
 #' @rdname biscuiteer-methods
 #' @export
