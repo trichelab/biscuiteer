@@ -39,6 +39,7 @@ A development version is available on GitHub and can be installed via:
 ```{r, eval=FALSE}
 if (!requireNamespace("BiocManager", quietly=TRUE))
     install.packages("BiocManager")
+BiocManager::install("trichelab/biscuiteerData")
 BiocManager::install("trichelab/biscuiteer")
 ```
 
