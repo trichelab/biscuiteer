@@ -38,5 +38,5 @@ Jacob Morrison \email{Jacob.Morrison@vai.org},
 Lyong Heo \email{Lyong.Heo@vai.org}
 }
 \keyword{Biscuit}
-\keyword{WGBS}
-\keyword{bigWigs}
+\keyword{DNAMethylation}
+\keyword{DataImport}

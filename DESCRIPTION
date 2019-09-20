@@ -50,6 +50,7 @@ Suggests: DSS,
           testthat,
           QDNAseq.hg19,
           QDNAseq.mm10
+biocViews: DataImport, MethylSeq, DNAMethylation, EpigeneticsWorkflow
 Encoding: UTF-8
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)

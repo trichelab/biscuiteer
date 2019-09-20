@@ -29,7 +29,7 @@
 #'   bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
 #'                        merged = FALSE)
 #'
-#' @keywords Biscuit WGBS bigWigs
+#' @keywords Biscuit DataImport DNAMethylation
 #'
 "_PACKAGE"
 .onAttach <- function (lib,
