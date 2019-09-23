@@ -161,7 +161,7 @@ ages
 To generate a shorthand summary of the hypermethylation of PRCs and
 hypomethylation of PMDs, the `CpGindex` function in `biscuiteer` can be used.
 
-```{r}
+```{r, eval=FALSE}
 bisc.CpGindex <- CpGindex(bisc)
 show(bisc.CpGindex)
 bisc.CpGindex@hyperMethRegions

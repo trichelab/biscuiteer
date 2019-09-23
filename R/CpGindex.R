@@ -84,6 +84,7 @@
 #'
 #' @examples
 #' 
+#' \dontrun{
 #'   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
 #'                           package="biscuiteer")
 #'   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
@@ -92,6 +93,7 @@
 #'                        merged = FALSE)
 #'
 #'   cpg <- CpGindex(bisc)
+#' }
 #'
 #' @export
 #'
