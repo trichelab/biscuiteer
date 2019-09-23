@@ -8,6 +8,6 @@
 data(ENSR_subset.hg19, package="biscuiteer")
 }
 \description{
-Dataset description
+Subset of ENSEMBL regulatory build regions for hg19 genome
 }
 \keyword{data}

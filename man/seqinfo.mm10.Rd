@@ -8,6 +8,6 @@
 data(seqinfo.mm10, package="biscuiteer")
 }
 \description{
-Dataset description
+Seqinfo for mm10 genome
 }
 \keyword{data}

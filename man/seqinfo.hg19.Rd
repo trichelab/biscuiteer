@@ -8,6 +8,6 @@
 data(seqinfo.hg19, package="biscuiteer")
 }
 \description{
-Dataset description
+Seqinfo for hg19 genome
 }
 \keyword{data}

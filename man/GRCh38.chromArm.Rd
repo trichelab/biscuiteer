@@ -8,6 +8,6 @@
 data(GRCh38.chromArm, package="biscuiteer")
 }
 \description{
-Dataset description
+Chromosome arm locations for GRCh38 genome
 }
 \keyword{data}

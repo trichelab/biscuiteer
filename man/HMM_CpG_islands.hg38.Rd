@@ -8,6 +8,6 @@
 data(HMM_CpG_islands.hg38, package="biscuiteer")
 }
 \description{
-Dataset description
+Hidden Markov Model-derived CpG islands from hg38 genome
 }
 \keyword{data}

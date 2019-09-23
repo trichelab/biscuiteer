@@ -8,6 +8,7 @@
 data(H9state23unmeth.hg19, package="biscuiteer")
 }
 \description{
-Dataset description
+Hypermethylated targets in bivalent histone sites from H9 embryonic stem
+cells which were unmethylated across normal cells for hg19 genome
 }
 \keyword{data}

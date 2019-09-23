@@ -8,6 +8,6 @@
 data(clocks, package="biscuiteer")
 }
 \description{
-Dataset description
+Epigenetic clock data
 }
 \keyword{data}

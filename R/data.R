@@ -1,6 +1,6 @@
 #' ENSR_subset data from hg19 genome
 #'
-#' Dataset description
+#' Subset of ENSEMBL regulatory build regions for hg19 genome
 #'
 #' @name ENSR_subset.hg19
 #' @docType data
@@ -11,7 +11,7 @@ NULL
 
 #' ENSR_subset data from hg38 genome
 #'
-#' Dataset description
+#' Subset of ENSEMBL regulatory build regions for hg19 genome
 #'
 #' @name ENSR_subset.hg38
 #' @docType data
@@ -22,7 +22,7 @@ NULL
 
 #' hg19.chromArm
 #'
-#' Dataset description
+#' Chromosome arm locations for hg19 genome
 #'
 #' @name hg19.chromArm
 #' @docType data
@@ -33,7 +33,7 @@ NULL
 
 #' hg38.chromArm
 #'
-#' Dataset description
+#' Chromosome arm locations for hg38 genome
 #'
 #' @name hg38.chromArm
 #' @docType data
@@ -44,7 +44,7 @@ NULL
 
 #' GRCh37.chromArm
 #'
-#' Dataset description
+#' Chromosome arm locations for GRCh37 genome
 #'
 #' @name GRCh37.chromArm
 #' @docType data
@@ -55,7 +55,7 @@ NULL
 
 #' GRCh38.chromArm
 #'
-#' Dataset description
+#' Chromosome arm locations for GRCh38 genome
 #'
 #' @name GRCh38.chromArm
 #' @docType data
@@ -66,7 +66,8 @@ NULL
 
 #' H9state23unmeth.hg19
 #'
-#' Dataset description
+#' Hypermethylated targets in bivalent histone sites from H9 embryonic stem
+#' cells which were unmethylated across normal cells for hg19 genome
 #'
 #' @name H9state23unmeth.hg19
 #' @docType data
@@ -77,7 +78,8 @@ NULL
 
 #' H9state23unmeth.hg38
 #'
-#' Dataset description
+#' Hypermethylated targets in bivalent histone sites from H9 embryonic stem
+#' cells which were unmethylated across normal cells for hg38 genome
 #'
 #' @name H9state23unmeth.hg38
 #' @docType data
@@ -88,7 +90,7 @@ NULL
 
 #' HMM_CpG_islands.hg19
 #'
-#' Dataset description
+#' Hidden Markov Model-derived CpG islands from hg19 genome
 #'
 #' @name HMM_CpG_islands.hg19
 #' @docType data
@@ -99,7 +101,7 @@ NULL
 
 #' HMM_CpG_islands.hg38
 #'
-#' Dataset description
+#' Hidden Markov Model-derived CpG islands from hg38 genome
 #'
 #' @name HMM_CpG_islands.hg38
 #' @docType data
@@ -110,7 +112,7 @@ NULL
 
 #' clocks
 #'
-#' Dataset description
+#' Epigenetic clock data
 #'
 #' @name clocks
 #' @docType data
@@ -121,7 +123,7 @@ NULL
 
 #' seqinfo.hg19
 #'
-#' Dataset description
+#' Seqinfo for hg19 genome
 #'
 #' @name seqinfo.hg19
 #' @docType data
@@ -132,7 +134,7 @@ NULL
 
 #' seqinfo.hg38
 #'
-#' Dataset description
+#' Seqinfo for hg38 genome
 #'
 #' @name seqinfo.hg38
 #' @docType data
@@ -143,7 +145,7 @@ NULL
 
 #' seqinfo.mm10
 #'
-#' Dataset description
+#' Seqinfo for mm10 genome
 #'
 #' @name seqinfo.mm10
 #' @docType data
