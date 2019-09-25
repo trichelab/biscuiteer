@@ -93,7 +93,6 @@ this when they implicitly call the \code{show} method on it.
 }
 \examples{
 
-\dontrun{
   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
                           package="biscuiteer")
   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
@@ -102,6 +101,5 @@ this when they implicitly call the \code{show} method on it.
                        merged = FALSE)
 
   cpg <- CpGindex(bisc)
-}
 
 }
