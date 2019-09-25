@@ -78,13 +78,13 @@
 #' 
 #' @importFrom methods callNextMethod slot as new
 #' @importFrom utils data
+#' @import biscuiteerData
 #' @import GenomeInfoDb
 #' @import GenomicRanges
 #' @import S4Vectors
 #'
 #' @examples
 #' 
-#' \dontrun{
 #'   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
 #'                           package="biscuiteer")
 #'   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
@@ -93,7 +93,6 @@
 #'                        merged = FALSE)
 #'
 #'   cpg <- CpGindex(bisc)
-#' }
 #'
 #' @export
 #'
@@ -120,9 +119,11 @@ CpGindex <- function(bsseq,
   hyperMeth <- .subsettedWithin(bsseq, y=CGIs, z=PRCs) 
 
   # summarize hypomethylation (at WCGWs) by region
-  message("Computing hypomethylation indices...") 
-  if (is.null(PMDs)) PMDs <- .fetch(bsseq, "PMDs", suffix)
-  if (is.null(WCGW)) WCGW <- .fetch(bsseq, "Zhou_solo_WCGW_inCommonPMDs",suffix)
+  message("Computing hypomethylation indices...")
+  if (is.null(PMDs)) PMDs <- .fetchBiscuiteerData(bsseq, "PMDs", suffix)
+  if (is.null(WCGW)) WCGW <- .fetchBiscuiteerData(bsseq,
+                                                  "Zhou_solo_WCGW_inCommonPMDs",
+                                                  suffix)
   hypoMeth <- .subsettedWithin(bsseq, y=WCGW, z=PMDs) 
 
   # summarize both via ratios
@@ -172,7 +173,16 @@ setMethod("show", "CpGindex",
   xx <- get(dat)
   seqlevelsStyle(xx) <- seqlevelsStyle(x)
   return(xx)
-} 
+}
+
+# Helper function
+.fetchBiscuiteerData <- function(x, prefix, suffix) {
+    dat <- paste(prefix, suffix, "rda", sep=".")
+    message("Loading ", dat, " from biscuiteerData...")
+    xx <- biscuiteerDataGet(dat)
+    seqlevelsStyle(xx) <- seqlevelsStyle(x)
+    return(xx)
+}
 
 # Helper function
 .subsettedWithin <- function(x, y, z) { 

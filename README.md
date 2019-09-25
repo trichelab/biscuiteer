@@ -61,30 +61,30 @@ metadata(bisc)$vcfHeader
 
 ### Downstream bits 
 
-A/B compartment inference, age estimation from WGBS, copy number segmentation, and so forth (examples to appear).    
+A/B compartment inference, age estimation from WGBS,  and so forth (examples to appear).    
 To wit, a shorthand summary of hypo- and hyper-methylation at some regions commonly associated with each:
 
 ```R
 bisc.CpGindex <- CpGindex(bisc)
 #
 # Computing hypermethylation indices...
-# Loading HMM_CpG_islands.hg38...
-# Loading H9state23unmeth.hg38...
+# Loading HMM_CpG_islands.hg19...
+# Loading H9state23unmeth.hg19...
 # Computing hypomethylation indices...
-# Loading PMDs.hg38...
-# Loading Zhou_solo_WCGW_inCommonPMDs.hg38...
+# Loading PMDs.hg19.rda from biscuiteerData...
+# Loading Zhou_solo_WCGW_inCommonPMDs.hg19.rda from biscuiteerData...
 # Computing indices...
 
 show(bisc.CpGindex)
 #
 # CpGindex with 1 row and 3 columns
-#         hyper.MCF7_Cunha   hypo.MCF7_Cunha  ratio.MCF7_Cunha
-#                <numeric>         <numeric>         <numeric>
-#   1   0.0690734126984127 0.193890810229873 0.356249028081943
+#         hyper.MCF7_Cunha   hypo.MCF7_Cunha ratio.MCF7_Cunha
+#                <numeric>         <numeric>        <numeric>
+#   1   0.0690734126984127 0.199261516805161 0.34664702851757
 #   -------
 #   This object is just a DataFrame that has an idea of where it came from:
 #   Hypermethylation was tallied across 120 regions (see bisc.CpGindex@hyperMethRegions). 
-#   Hypomethylation was tallied across 15315 regions (see bisc.CpGindex@hypoMethRegions). 
+#   Hypomethylation was tallied across 13127 regions (see bisc.CpGindex@hypoMethRegions). 
 
 bisc.CpGindex@hyperMethRegions
 #

@@ -251,7 +251,10 @@ reproducibility.</p>
 <pre><code class="r">library(biscuiteer)
 </code></pre>
 
-<pre><code>## Loading required package: bsseq
+<pre><code>## Loading required package: biscuiteerData
+</code></pre>
+
+<pre><code>## Loading required package: ExperimentHub
 </code></pre>
 
 <pre><code>## Loading required package: BiocGenerics
@@ -285,6 +288,21 @@ reproducibility.</p>
 ##     pmin.int, Position, rank, rbind, Reduce, rownames, sapply,
 ##     setdiff, sort, table, tapply, union, unique, unsplit, which,
 ##     which.max, which.min
+</code></pre>
+
+<pre><code>## Loading required package: AnnotationHub
+</code></pre>
+
+<pre><code>## Loading required package: BiocFileCache
+</code></pre>
+
+<pre><code>## Loading required package: dbplyr
+</code></pre>
+
+<pre><code>## Loading biscuiteerData.
+</code></pre>
+
+<pre><code>## Loading required package: bsseq
 </code></pre>
 
 <pre><code>## Loading required package: GenomicRanges
@@ -322,6 +340,20 @@ reproducibility.</p>
 ##     Vignettes contain introductory material; view with
 ##     &#39;browseVignettes()&#39;. To cite Bioconductor, see
 ##     &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.
+</code></pre>
+
+<pre><code>## 
+## Attaching package: &#39;Biobase&#39;
+</code></pre>
+
+<pre><code>## The following object is masked from &#39;package:ExperimentHub&#39;:
+## 
+##     cache
+</code></pre>
+
+<pre><code>## The following object is masked from &#39;package:AnnotationHub&#39;:
+## 
+##     cache
 </code></pre>
 
 <pre><code>## Loading required package: DelayedArray
@@ -583,8 +615,61 @@ below) should only be used as a starting point for exploration by the user.</p>
 hypomethylation of PMDs, the <code>CpGindex</code> function in <code>biscuiteer</code> can be used.</p>
 
 <pre><code class="r">bisc.CpGindex &lt;- CpGindex(bisc)
-show(bisc.CpGindex)
-bisc.CpGindex@hyperMethRegions
+</code></pre>
+
+<pre><code>## Computing hypermethylation indices...
+</code></pre>
+
+<pre><code>## Loading HMM_CpG_islands.hg19...
+</code></pre>
+
+<pre><code>## Loading H9state23unmeth.hg19...
+</code></pre>
+
+<pre><code>## Computing hypomethylation indices...
+</code></pre>
+
+<pre><code>## Loading PMDs.hg19.rda from biscuiteerData...
+</code></pre>
+
+<pre><code>## Loading Zhou_solo_WCGW_inCommonPMDs.hg19.rda from biscuiteerData...
+</code></pre>
+
+<pre><code>## Computing indices...
+</code></pre>
+
+<pre><code class="r">show(bisc.CpGindex)
+</code></pre>
+
+<pre><code>## CpGindex with 1 row and 3 columns
+##     hyper.MCF7_Cunha   hypo.MCF7_Cunha ratio.MCF7_Cunha
+##            &lt;numeric&gt;         &lt;numeric&gt;        &lt;numeric&gt;
+## 1 0.0690734126984127 0.199261516805161 0.34664702851757
+##   -------
+## This object is just a DataFrame that has an idea of where it came from:
+## Hypermethylation was tallied across 120 regions (see bisc.CpGindex@hyperMethRegions). 
+## Hypomethylation was tallied across 13127 regions (see bisc.CpGindex@hypoMethRegions).
+</code></pre>
+
+<pre><code class="r">bisc.CpGindex@hyperMethRegions
+</code></pre>
+
+<pre><code>## GRanges object with 120 ranges and 1 metadata column:
+##       seqnames            ranges strand |              score
+##          &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; |          &lt;numeric&gt;
+##     1     chr1 32230201-32230224      * | 0.0399999991059303
+##     2     chr1 43638401-43638449      * | 0.0399999991059303
+##     3     chr1 44884001-44884005      * | 0.0399999991059303
+##     4     chr1 46860401-46860406      * | 0.0599999986588955
+##     5     chr1 51435801-51436075      * | 0.0499999998137355
+##   ...      ...               ...    ... .                ...
+##   116    chr20   8112392-8112400      * | 0.0299999993294477
+##   117    chr20 17207801-17208191      * | 0.0599999986588955
+##   118    chr22 20004801-20004802      * | 0.0350000001490116
+##   119    chr22 37252601-37252731      * | 0.0599999986588955
+##   120    chr22 43781850-43781952      * | 0.0449999999254942
+##   -------
+##   seqinfo: 21 sequences from hg19 genome
 </code></pre>
 
 </body>
