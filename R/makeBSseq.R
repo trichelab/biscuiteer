@@ -17,6 +17,7 @@
 #' @examples
 #'
 #'   library(data.table)
+#'   library(R.utils)
 #'
 #'   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
 #'                           package="biscuiteer")
@@ -26,9 +27,12 @@
 #'                             merged = FALSE, how = "data.table")
 #'
 #'   select <- grep("\\.context", params$colNames, invert=TRUE)
-#'   cmd <- paste("gunzip -c", params$tbx$path) # for mac compatibility
-#'   tbl <- fread(cmd=cmd, sep="\t", sep2=",", fill=TRUE, na.string=".", 
-#'                select=select)
+#'   tbl <- fread(gunzip(params$tbx$path, remove = FALSE), sep="\t", sep2=",",
+#'                fill=TRUE, na.strings=".", select=select)
+#'   unzippedName <- sub("\\.gz$", "", params$tbx$path)
+#'   if (file.exists(unzippedName)) {
+#'     file.remove(unzippedName)
+#'   }
 #'   if (params$hasHeader == FALSE) names(tbl) <- params$colNames[select]
 #'   names(tbl) <- sub("^#", "", names(tbl))
 #'   

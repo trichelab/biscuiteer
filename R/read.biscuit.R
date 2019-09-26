@@ -34,6 +34,7 @@
 #' @return             A bsseq::BSseq object
 #'
 #' @importFrom data.table fread
+#' @importFrom R.utils gunzip
 #' @import SummarizedExperiment
 #' @import readr
 #' @import bsseq
@@ -97,14 +98,19 @@ read.biscuit <- function(BEDfile,
     # {{{
     select <- grep("\\.context", params$colNames, invert=TRUE)
     if (is.null(which)) {
-      cmd <- paste("gunzip -c", params$tbx$path) # for mac compatibility
+      tbl <- fread(gunzip(params$tbx$path, remove = FALSE), sep="\t", sep2=",",
+                   fill=TRUE, na.strings=".", select=select)
+      unzippedName <- sub("\\.gz$", "", params$tbx$path)
+      if (file.exists(unzippedName)) {
+        file.remove(unzippedName)
+      }
     } else { 
       tmpBed <- tempfile(fileext=".bed")
       export(which, tmpBed)
       cmd <- paste("tabix -R", tmpBed, params$tbx$path)
+      tbl <- fread(cmd=cmd, sep="\t", sep2=",",
+                   fill=TRUE, na.strings=".", select=select)
     }
-    tbl <- fread(cmd=cmd, sep="\t", sep2=",", fill=TRUE, na.strings=".", 
-                 select=select)
     if (params$hasHeader == FALSE) names(tbl) <- params$colNames[select]
     names(tbl) <- sub("^#", "", names(tbl))
     # }}}
