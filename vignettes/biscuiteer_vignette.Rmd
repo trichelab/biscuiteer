@@ -1,0 +1,168 @@
+---
+title: "Biscuiteer User Guide"
+date: "`r BiocStyle::doc_date()`"
+package: "`r BiocStyle::pkg_ver('biscuiteer')`"
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    toc_float: true
+    fig_width: 8
+    fig_height: 6
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Biscuiteer User Guide}
+  %\VignetteEncoding[utf8]{inputenc}
+---
+
+# Biscuiteer
+
+`biscuiteer` is package to process output from
+[biscuit](https://github.com/zwdzwd/biscuit) into
+[bsseq](https://bioconductor.org/packages/bsseq) objects. It includes a number
+of features, such as VCF header parsing, shrunken M-value calculations (which
+can be used for compartment inference), and age inference are included. However,
+the task of locus- and region-level differential methylation inference is
+delegated to other packages (such as `dmrseq`).
+
+# Quick Start
+
+## Installing
+
+From Bioconductor,
+```{r, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("biscuiteer")
+```
+
+A development version is available on GitHub and can be installed via:
+```{r, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("trichelab/biscuiteerData")
+BiocManager::install("trichelab/biscuiteer")
+```
+
+## Loading Data
+
+`biscuiteer` can load either headered of header-free BED files produced from
+`biscuit vcf2bed` or `biscuit mergecg`. In either case, a VCF file is needed
+when loading `biscuit` output. For practical purposes, only the VCF header is
+for `biscuiteer`. However, it is encouraged that the user keep the entire VCF,
+as `biscuit` can be used to call SNVs and allows for structural variant
+detection in a similar manner to typical whole-genome sequencing tools.
+Furthermore, `biscuit` records the version of the software and the calling
+arguments used during processing the output VCF, which allows for better
+reproducibility.
+
+NOTE: Both the input BED and VCF files must be tabix'ed before being input to
+`biscuiteer`. This can be done by running `bgzip biscuit_output.xxx` followed by
+`tabix -p xxx biscuit_output.xxx.gz`, where `xxx` is either `bed` or `vcf`.
+
+Data can be loaded using the `read.biscuit` function in `biscuiteer`:
+```{r}
+library(biscuiteer)
+
+orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                        package="biscuiteer")
+orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                        package="biscuiteer")
+bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                     merged = FALSE)
+```
+
+Metadata from the `biscuit` output can be viewed via:
+```{r}
+biscuitMetadata(bisc)
+```
+
+If further information about the VCF header is desired,
+```{r}
+metadata(bisc)$vcfHeader
+```
+
+## Combining Results
+
+In the instance where you have two separate BED files that you would like to
+analyze in a single bsseq object, you can combine the files using `unionize`,
+which is a wrapper around the bsseq function, `combine`.
+```{r}
+shuf_bed <- system.file("extdata", "MCF7_Cunha_chr11p15_shuffled.bed.gz",
+                        package="biscuiteer")
+orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                        package="biscuiteer")
+shuf_vcf <- system.file("extdata",
+                        "MCF7_Cunha_shuffled_header_only.vcf.gz",
+                        package="biscuiteer")
+orig_vcf <- system.file("extdata",
+                        "MCF7_Cunha_header_only.vcf.gz",
+                        package="biscuiteer")
+bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+                      merged = FALSE)
+bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                      merged = FALSE)
+
+comb <- unionize(bisc1, bisc2)
+```
+
+# Analysis Functionality
+
+A handful of analysis paths are available in `biscuiteer`, including A/B
+comparment inference, age estimation from WGBS data, hypermethylation of
+Polycomb Repressor Complex (PRC) binding sites, and hypomethylation of
+CpG-poor "partially methylated domains" (PMDs).
+
+## Inputs for A/B Compartment Inference
+
+When performing A/B compartment inference, the goal is to have something that
+has roughly gaussian error. `getLogitFracMeth` uses Dirichlet smoothing to turn
+raw measurements into lightly moderated, logit-transformed methylated-fraction
+estimates, which can the be used as inputs to
+[compartmap](https://bioconductor.org/packages/release/bioc/html/compartmap.html)
+
+```{r}
+reg <- GRanges(seqnames = rep("chr11",5),
+               strand = rep("*",5),
+               ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
+                                end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
+              )
+
+frac <- getLogitFracMeth(bisc, minSamp = 1, r = reg)
+frac
+```
+
+
+## Age Estimation
+
+`biscuiteer` has the functionalitity to guess the age of the sample(s) provided
+using the Horvath-style "clock" models (see
+[Horvath, 2013](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2013-14-10-r115)
+for more information).
+
+NOTE: The prediction accuracy of this function is entirely dependent on the
+parameters set by the user. As such, the defaults (as shown in the example
+below) should only be used as a starting point for exploration by the user.
+
+NOTE: Please cite the appropriate papers for the epigenetic "clock" chosen:
+* For `horvath` or `horvathshrunk`
+    * Horvath, Genome Biology, 2013
+* For `hannum`
+    * Hannum et al., Molecular Cell, 2013
+* For `skinandblood`
+    * Horvath et al., Aging, 2018
+
+```{r}
+ages <- WGBSage(comb, "horvath")
+ages
+```
+
+## Hypermethylation of PRCs and Hypomethylation of PMDs
+
+To generate a shorthand summary of the hypermethylation of PRCs and
+hypomethylation of PMDs, the `CpGindex` function in `biscuiteer` can be used.
+
+```{r}
+bisc.CpGindex <- CpGindex(bisc)
+show(bisc.CpGindex)
+bisc.CpGindex@hyperMethRegions
+```

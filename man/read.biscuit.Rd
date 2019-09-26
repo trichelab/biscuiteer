@@ -3,48 +3,86 @@
 \name{read.biscuit}
 \alias{read.biscuit}
 \alias{load.biscuit}
-\title{a bsseq loader for Biscuit output (BED-like format, 2 or 3 cols/sample)}
+\title{Read biscuit output into bsseq object}
 \usage{
-read.biscuit(BEDfile, VCFfile = NULL, sampleNames = NULL,
+read.biscuit(BEDfile, VCFfile, merged, sampleNames = NULL,
   simplify = FALSE, genome = "hg19", how = c("data.table", "readr"),
-  hdf5 = FALSE, sparse = TRUE, merged = NULL, chunkSize = 1e+06,
-  chr = NULL)
+  hdf5 = FALSE, hdf5dir = NULL, sparse = FALSE, chunkSize = 1e+06,
+  chr = NULL, which = NULL, verbose = FALSE)
+
+load.biscuit(BEDfile, VCFfile, merged, sampleNames = NULL,
+  simplify = FALSE, genome = "hg19", how = c("data.table", "readr"),
+  hdf5 = FALSE, hdf5dir = NULL, sparse = FALSE, chunkSize = 1e+06,
+  chr = NULL, which = NULL, verbose = FALSE)
 }
 \arguments{
-\item{BEDfile}{the file (compressed or not, doesn't matter) to load}
+\item{BEDfile}{A BED-like file - must be compressed and tabix'ed}
 
-\item{VCFfile}{the file (compressed and tabixed, with header) to load}
+\item{VCFfile}{A VCF file - must be compressed and tabix'ed. Only the
+header information is needed.}
 
-\item{sampleNames}{if NULL, create; if VCF, read; if data.frame, make pData}
+\item{merged}{Is this merged CpG data?}
 
-\item{simplify}{simplify sample names by dropping .foo.bar.hg19 or similar}
+\item{sampleNames}{Names of samples - NULL: create names, vector: assign
+names, data.frame: make pData (DEFAULT: NULL)}
 
-\item{genome}{what genome assembly were the runs aligned against? (hg19)}
+\item{simplify}{Simplify sample names by dropping .foo.bar.hg19? (or
+similar) (DEFAULT: FALSE)}
 
-\item{how}{how to load the data? "data.table" (default) or "readr"}
+\item{genome}{Genome assembly the runs were aligned against
+(DEFAULT: "hg19")}
 
-\item{hdf5}{make the object HDF5-backed? (FALSE; use in-core storage)}
+\item{how}{How to load data - either data.table or readr
+(DEFAULT: "data.table")}
 
-\item{sparse}{are there a lot of zero-coverage sites? (TRUE, usually)}
+\item{hdf5}{Make the object HDF5-backed - CURRENTLY NOT AVAILABLE
+(DEFAULT: FALSE)}
 
-\item{merged}{are CpG sites merged? (default NULL; figure out from BED)}
+\item{hdf5dir}{Directory to store HDF5 files if 'hdf5' = TRUE
+(DEFAULT: NULL)}
 
-\item{chunkSize}{number of rows before readr reading becomes chunked (1e6)}
+\item{sparse}{Use sparse Matrix objects for the data? (DEFAULT: FALSE)}
 
-\item{chr}{load a specific chromosome (to rbind() later)? (NULL)}
+\item{chunkSize}{Number of rows before readr reading becomes chunked
+(DEFAULT: 1e6)}
+
+\item{chr}{Load a specific chromosome? (DEFAULT: NULL)}
+
+\item{which}{A GRanges of regions to load - NULL loads them all
+(DEFAULT: NULL)}
+
+\item{verbose}{Print extra statements? (DEFAULT: FALSE)}
 }
 \value{
-\preformatted{       a bsseq::BSseq object, possibly Matrix- or HDF5-backed
+\preformatted{        A bsseq::BSseq object
 }
 }
 \description{
-e.g. P01-028-T06.joint.ch.hg19.bed.gz has 3 samples, and 9 columns total,
-while P01-028-T06.joint.cg.merged.hg19.bed.gz has 3 samples and 12 columns.
-Note: the defaults assume alignment against hg19 (use genome=xyz to override)
-Note 2: if a BED has no header, a VCF header can be used to autodetect names.
+Takes BED-like format with 2 or 3 columns per sample. Unmerged CpG files
+have 2 columns (beta values and coverage), whereas merged CpG files have
+3 columns (beta values, coverage, and context).
+}
+\details{
+NOTE: Assumes alignment against hg19 (use genome argument to override).
+NOTE: Requires header from VCF file to detect sample names
+}
+\section{Functions}{
+\itemize{
+\item \code{load.biscuit}: Alias for read.biscuit
+}}
+
+\examples{
+
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                       merged = FALSE)
+
 }
 \seealso{
-BSseq
+bsseq
 
 checkBiscuitBED
 }

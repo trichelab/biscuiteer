@@ -2,20 +2,27 @@
 % Please edit documentation in R/fixNAs.R
 \name{fixNAs}
 \alias{fixNAs}
-\title{play nice with BSseq's expectations about the M matrix}
+\title{Replace NAs with another value}
 \usage{
 fixNAs(x, y = 0, sparse = FALSE)
 }
 \arguments{
-\item{x}{the matrix-like object containing NAs (holes) to fix}
+\item{x}{The matrix-like object containing NAs to fix}
 
-\item{y}{the value with which to fill the holes (default is 0)}
+\item{y}{The value to replace the NAs with (DEFAULT: 0)}
 
-\item{sparse}{make the result Matrix-backed? (FALSE)}
+\item{sparse}{Make the result a Matrix object? (DEFAULT: FALSE)}
 }
 \value{
-x, but with holes filled, and as a (possibly sparse) matrix
+\preformatted{   x with no NAs (possibly a sparse Matrix)
+}
 }
 \description{
-play nice with BSseq's expectations about the M matrix
+Useful for coercing matrices into how bsseq is expecting the M matrix to be.
+}
+\examples{
+
+  nom <- c(rep(c(1,4,NA,9,NA,NA,7,NA), 5))
+  no_nas <- fixNAs(nom)
+
 }

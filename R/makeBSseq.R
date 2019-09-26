@@ -1,30 +1,88 @@
-#' make an in-core BSseq object from a biscuit BED
+#' Make an in-memory bsseq object from a biscuit BED
 #'
-#' @param tbl         a tibble (from read_tsv) or a data.table (from fread())
-#' @param params      parameters (from checkBiscuitBED)
-#' @param simplify    simplify sample names by dropping .foo.bar.hg19 & similar
+#' Beware that any reasonably large BED files may not fit into memory!
 #'
-#' @return an in-core BSseq object
-#' 
+#' @param tbl       A tibble (from read_tsv) or a data.table (from fread)
+#' @param params    Parameters from checkBiscuitBED
+#' @param simplify  Simplify sample names by dropping .foo.bar.hg19? (or
+#'                    similar) (DEFAULT: FALSE)
+#' @param verbose   Print extra statements? (DEFAULT: FALSE)
+#'
+#' @return          An in-memory bsseq object
+#'
 #' @import GenomicRanges
-#' @import bsseq 
+#' @import bsseq
+#' @importFrom methods is as
 #'
-#' @seealso makeBSseq_HDF5
+#' @examples
 #'
-#' @export 
-makeBSseq <- function(tbl, params, simplify=FALSE) {
+#'   library(data.table)
+#'
+#'   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+#'                           package="biscuiteer")
+#'   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+#'                           package="biscuiteer")
+#'   params <- checkBiscuitBED(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                             merged = FALSE, how = "data.table")
+#'
+#'   select <- grep("\\.context", params$colNames, invert=TRUE)
+#'   cmd <- paste("gunzip -c", params$tbx$path) # for mac compatibility
+#'   tbl <- fread(cmd=cmd, sep="\t", sep2=",", fill=TRUE, na.string=".", 
+#'                select=select)
+#'   if (params$hasHeader == FALSE) names(tbl) <- params$colNames[select]
+#'   names(tbl) <- sub("^#", "", names(tbl))
+#'   
+#'   tbl <- tbl[rowSums(is.na(tbl)) == 0, ]
+#'   bsseq <- makeBSseq(tbl = tbl, params = params)
+#'
+#' @export
+#'
+makeBSseq <- function(tbl,
+                      params,
+                      simplify = FALSE,
+                      verbose = FALSE) {
 
   gr <- resize(makeGRangesFromDataFrame(tbl[, 1:3]), 1) 
+
+  # helper fn  
+  matMe <- function(x, gr, verbose = FALSE) {
+    if (!is(x, "matrix")) {
+      if (verbose) message("Turning a vector into a matrix...")
+      x <- as.matrix(x)
+    }
+    return(x)
+  }
+
+  # helper fn  
+  fixNames <- function(x, gr, what=c("M","Cov"), verbose=FALSE) {
+    if (is.null(rownames(x))) {
+      if (verbose) message("Adding rownames...")
+      rownames(x) <- as.character(gr)
+    }
+    colnames(x) <- base::sub("beta", match.arg(what), colnames(x))
+    return(x)
+  }
+
+  # deal with data.table weirdness 
   if (params$how == "data.table") { 
     betas <- match(params$betaCols, names(tbl))
     covgs <- match(params$covgCols, names(tbl))
-    M <- fixNAs(round(tbl[, ..betas] * tbl[, ..covgs]), y=0, params$sparse)
-    Cov <- fixNAs(tbl[, ..covgs], y=0, params$sparse)
+    M <- matMe(fixNAs(round(tbl[,..betas]*tbl[,..covgs]),y=0,params$sparse), gr)
+    Cov <- matMe(fixNAs(tbl[, ..covgs], y=0, params$sparse), gr)
   } else { 
-    M <- with(params, fixNAs(round(tbl[,betaCols]*tbl[,covgCols]), y=0, sparse))
-    Cov <- with(params, fixNAs(tbl[, covgCols], y=0, sparse)) 
+    M <- with(params, 
+              matMe(x=fixNAs(round(tbl[,betaCols]*tbl[,covgCols]), y=0, sparse),
+                    gr=gr, verbose=verbose))
+    Cov <- with(params, 
+                matMe(x=fixNAs(tbl[, covgCols], y=0, sparse), 
+                      gr=gr, verbose=verbose))
   }
-  res <- BSseq(gr=gr, M=M, Cov=Cov, pData=params$pData, rmZeroCov=TRUE) 
+  Cov <- fixNames(Cov, gr, what="Cov", verbose=verbose)
+  M <- fixNames(M, gr, what="M", verbose=verbose)
+  colnames(Cov) <- colnames(M) <- params$pData$sampleNames
+  if (verbose) message("Creating bsseq object...") 
+  res <- BSseq(gr=gr, M=M, Cov=Cov, pData=params$pData,
+               rmZeroCov=TRUE, sampleNames=params$pData$sampleNames) 
   if (simplify) res <- simplifySampleNames(res)
   return(res)
 

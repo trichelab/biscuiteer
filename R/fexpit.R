@@ -1,13 +1,28 @@
-#' Helper function: expanded expit
+#' Calculate expanded expit function
 #'
-#' @param x       a vector of values between -Inf and +Inf
-#' @param sqz     the amount by which to 'squeeze', default is .000001
+#' Helper function for calculating expanded expit
 #'
-#' @return        a vector of values between 0 and 1 inclusive
+#' @param x    A vector of values between -Inf and +Inf
+#' @param sqz  The amount by which to 'squeeze' (DEFAULT: 0.000001)
 #'
-#' @import        gtools
+#' @return     A vector of values between 0 and 1 inclusive
 #'
-#' @export 
-fexpit <- function(x, sqz) {
-  (((((inv.logit(x) * 2) - 1) / (1 - sqz)) + 1) / 2)
+#' @importFrom gtools inv.logit
+#'
+#' @examples
+#'
+#'   num <- rnorm(100, mean = 0, sd = 100)
+#'   exp <- fexpit(num)
+#'
+#' @export
+#'
+fexpit <- function(x,
+                   sqz = 0.000001) {
+  tmp <- (gtools::inv.logit(x) * 2) - 1
+  tmp <- (tmp / (1 - sqz)) + 1
+  tmp <- tmp / 2
+  return(tmp)
+
+# Original code
+# ((((inv.logit(x) * 2) - 1) / (1 - sqz)) + 1) / 2
 }

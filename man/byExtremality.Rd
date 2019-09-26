@@ -2,31 +2,59 @@
 % Please edit documentation in R/byExtremality.R
 \name{byExtremality}
 \alias{byExtremality}
-\title{choose loci or features by extremality (fraction of Bernoulli variance)}
+\title{Choose loci or features by extremality}
 \usage{
-byExtremality(x, r = NULL, k = 500)
+byExtremality(bsseq, r = NULL, k = 500)
 }
 \arguments{
-\item{x}{a bsseq object}
+\item{bsseq}{A bsseq object}
 
-\item{r}{regions to consider (default is NULL, all loci... !)}
+\item{r}{Regions to consider - NULL covers all loci (DEFAULT: NULL)}
 
-\item{k}{how many rows/regions to return (500)}
+\item{k}{How many rows/regions to return (DEFAULT: 500)}
 }
 \value{
-a matrix-like object with methylation values, by extremality
+\preformatted{  A matrix-like object with methylation values sorted by
+          extremality
+}
 }
 \description{
-For DNA methylation, particularly summarized across regions,
-we can do better (a lot better) than MAD.  Since we know that
+This function finds the k most extremal features (features above a certain
+fraction of the Bernoulli variance) in 'bsseq' and returns their values.
 }
 \details{
+For DNA methylation, particularly when summarized across regions, we can do
+better (a lot better) than MAD. Since we know:
 max(SD(X_j)) if X_j ~ Beta(a, b) < max(SD(X_j)) if X_j ~ Bernoulli(a/(a+b))
-
-for X having a known mean and SD, hence solvable for a + b by MoM, define
-
+for X with a known mean and standard deviation (SD), then we can solve for
+(a+b) by MoM. We can then define the extremality by:
 extremality = sd(X_j) / bernoulliSD(mean(X_j))
+}
+\examples{
 
-This function finds the k most extremal features in x & returns their values.
-For count-based proportions,
+  shuf_bed <- system.file("extdata", "MCF7_Cunha_chr11p15_shuffled.bed.gz",
+                          package="biscuiteer")
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  shuf_vcf <- system.file("extdata",
+                          "MCF7_Cunha_shuffled_header_only.vcf.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata",
+                          "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+                        merged = FALSE)
+  bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                        merged = FALSE)
+
+  reg <- GRanges(seqnames = rep("chr11",5),
+                 strand = rep("*",5),
+                 ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
+                                  end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
+                 )
+
+  comb <- unionize(bisc1, bisc2)
+
+  ext <- byExtremality(comb, r = reg)
+
 }

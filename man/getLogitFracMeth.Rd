@@ -3,29 +3,55 @@
 \name{getLogitFracMeth}
 \alias{getLogitFracMeth}
 \alias{getMvals}
-\title{helper function for compartment inference (shrink-by-smoothing logit frac5mC)}
+\title{Helper function for compartment inference}
 \usage{
 getLogitFracMeth(x, minCov = 3, minSamp = 2, k = 0.1, r = NULL)
+
+getMvals(x, minCov = 3, minSamp = 2, k = 0.1, r = NULL)
 }
 \arguments{
-\item{x}{a BSseq object with methylated and total reads}
+\item{x}{A bsseq object with methylated and total reads}
 
-\item{minCov}{minimum read coverage for landmarking samples (3)}
+\item{minCov}{Minimum read coverage for landmarking samples (DEFAULT: 3)}
 
-\item{minSamp}{minimum landmark samples with >= minCov (2)}
+\item{minSamp}{Minimum landmark samples with at least minCov (DEFAULT: 2)}
 
-\item{k}{pseudoreads for smoothing (0.1)}
+\item{k}{Pseudoreads for smoothing (DEFAULT: 0.1)}
 
-\item{r}{regions to collapse over (default is NULL, do it by CpG)}
+\item{r}{Regions to collapse over - if NULL, do it by CpG
+(DEFAULT: NULL)}
 }
 \value{
-\preformatted{       smoothed logit(M/Cov) matrix with coordinates as row names
+\preformatted{    Smoothed logit(M / Cov) matrix with coordinates as row names
 }
 }
 \description{
-We want something with nominally Gaussian error for compartment inference, so
-this function grabs suitable (default >= 3 reads in >=2 sample) measurements
-and turns them into lightly moderated, logit-transformed methylated-fraction
-estimates (also known, unfortunately, as M-values) for compartment calling,
-by performing Dirichlet smoothing (adding \code{k} reads to M and U support).
+Want an object with nominally Gaussian error for compartment inference, so
+this function uses 'suitable' (defaults to to 3 or more reads in 2 or more
+samples) measurements. Using Dirichlet smoothing (adding 'k' reads to M
+and U), these measurements are then turned into lightly moderated,
+logit-transformed methylated-fraction estimates for compartment calling.
+}
+\section{Functions}{
+\itemize{
+\item \code{getMvals}: Alias for getLogitFracMeth
+}}
+
+\examples{
+
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                       merged = FALSE)
+
+  reg <- GRanges(seqnames = rep("chr11",5),
+                 strand = rep("*",5),
+                 ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
+                                  end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
+                 )
+
+  frac <- getLogitFracMeth(bisc, minSamp = 1, r = reg)
+
 }

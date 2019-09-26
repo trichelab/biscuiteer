@@ -2,21 +2,46 @@
 % Please edit documentation in R/atRegions.R
 \name{atRegions}
 \alias{atRegions}
-\title{summarize a bsseq dataset over defined regions (for e.g. cBioPortal)}
+\title{Summarize a bsseq dataset over defined regions}
 \usage{
 atRegions(bsseq, regions, mappings = NULL, nm = "POETICname", ...)
 }
 \arguments{
-\item{bsseq}{a bsseq object}
+\item{bsseq}{A bsseq object}
 
-\item{regions}{a GRanges or GRangesList of regions}
+\item{regions}{A GRanges or GRangesList of regions}
 
-\item{mappings}{a mapping table, with rownames(mappings) == colnames(bsseq)}
+\item{mappings}{A mapping table with rownames(mappings) == colnames(bsseq)
+(DEFAULT: NULL)}
 
-\item{nm}{column of the mapping table to map to (default "POETICname")}
+\item{nm}{Column of the mapping table to map to
+(DEFAULT: "POETICname")}
 
-\item{...}{other arguments to pass on to summarizeBsSeqOver}
+\item{...}{Other arguments to pass to summarizeBsSeqOver}
+}
+\value{
+\preformatted{     Summarized information about the bsseq object for the given
+               DNA regions
+}
 }
 \description{
-summarize a bsseq dataset over defined regions (for e.g. cBioPortal)
+Calls summarizeBsSeqOver to summarize a bsseq object over provided DNA
+regions. Useful for exploring genomic data using cBioPortal.
+}
+\examples{
+
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                       merged = FALSE)
+
+  reg <- GRanges(seqnames = rep("chr11",5),
+                 strand = rep("*",5),
+                 ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
+                                  end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
+                 )
+  regions <- atRegions(bsseq = bisc, regions = reg)
+
 }

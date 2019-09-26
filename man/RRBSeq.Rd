@@ -2,25 +2,33 @@
 % Please edit documentation in R/RRBSeq.R
 \name{RRBSeq}
 \alias{RRBSeq}
-\title{\link{e}RRBS settings appropriate to dmrseq}
+\title{(e)RRBS settings for dmrseq}
 \usage{
-RRBSeq(bs, testCovariate, cutoff = 0.2, bpSpan = 750, ...)
+RRBSeq(bsseq, testCovariate, cutoff = 0.2, bpSpan = 750, ...)
 }
 \arguments{
-\item{bs}{a bsseq object}
+\item{bsseq}{A bsseq object}
 
-\item{testCovariate}{the pData column to test on}
+\item{testCovariate}{The pData column to test on}
 
-\item{cutoff}{the minimum CpG-wise difference to use (0.2)}
+\item{cutoff}{The minimum CpG-wise difference to use (DEFAULT: 0.2)}
 
-\item{bpSpan}{span of smoother AND max gap in DMR CpGs (750)}
+\item{bpSpan}{Span of smoother AND max gap in DMR CpGs (DEFAULT: 750)}
 
-\item{...}{other arguments to pass along to dmrseq}
+\item{...}{Other arguments to pass along to dmrseq}
 }
 \value{
-\preformatted{           a GRanges object (same as from dmrseq)
+\preformatted{          A GRanges object (same as from dmrseq)
 }
 }
 \description{
-\link{e}RRBS settings appropriate to dmrseq
+(e)RRBS settings for dmrseq
+}
+\examples{
+
+  data(BS.chr21, package="dmrseq")
+  dat <- BS.chr21
+
+  rrbs <- RRBSeq(dat[1:500, ], "Rep", cutoff = 0.05, BPPARAM=SerialParam())
+
 }

@@ -1,15 +1,26 @@
-#' play nice with BSseq's expectations about the M matrix 
-#' 
-#' @param x       the matrix-like object containing NAs (holes) to fix
-#' @param y       the value with which to fill the holes (default is 0)
-#' @param sparse  make the result Matrix-backed? (FALSE)
+#' Replace NAs with another value
 #'
-#' @return x, but with holes filled, and as a (possibly sparse) matrix
+#' Useful for coercing matrices into how bsseq is expecting the M matrix to be.
+#'
+#' @param x       The matrix-like object containing NAs to fix
+#' @param y       The value to replace the NAs with (DEFAULT: 0)
+#' @param sparse  Make the result a Matrix object? (DEFAULT: FALSE)
+#'
+#' @return        x with no NAs (possibly a sparse Matrix)
 #'
 #' @importFrom Matrix Matrix
+#' @importFrom methods as
 #' 
+#' @examples
+#'
+#'   nom <- c(rep(c(1,4,NA,9,NA,NA,7,NA), 5))
+#'   no_nas <- fixNAs(nom)
+#'
 #' @export
-fixNAs <- function(x, y=0, sparse=FALSE) { 
+#'
+fixNAs <- function(x,
+                   y = 0,
+                   sparse = FALSE) { 
   x <- as(x, ifelse(sparse, "Matrix", "matrix"))
   x[is.na(x)] <- y
   return(x)

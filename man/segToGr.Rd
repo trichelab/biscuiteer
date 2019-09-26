@@ -2,23 +2,38 @@
 % Please edit documentation in R/segToGr.R
 \name{segToGr}
 \alias{segToGr}
-\title{reverse a grToSeg... import a segmentation file}
+\title{Import a segmentation file into GRanges object}
 \usage{
 segToGr(seg, genome = "hg19", name = "ID", score = "seg.mean")
 }
 \arguments{
-\item{seg}{the .seg filename}
+\item{seg}{The .seg filename}
 
-\item{genome}{genome against which segments were annotated ("hg19")}
+\item{genome}{Genome against which segments were annotated (DEFAULT: "hg19")}
 
-\item{name}{.seg file column to use as $name metadata ("ID")}
+\item{name}{.seg file column to use as $name metadata (DEFAULT: "ID")}
 
-\item{score}{.seg file column to use as $score metadata ("seg.mean")}
+\item{score}{.seg file column to use as $score metadata
+(DEFAULT: "seg.mean")}
 }
 \value{
-\preformatted{     a GRanges
+\preformatted{   A GRanges object
 }
 }
 \description{
-reverse a grToSeg... import a segmentation file
+Reverse of grToSeg
+}
+\examples{
+
+  clock <- getClock(model="horvathshrunk", genome="hg38")
+  gr <- clock$gr
+
+  df <- grToSeg(gr = gr, file = "test_grToSeg.seg")
+  segs <- segToGr("test_grToSeg.seg", genome="hg38")
+
+  if (file.exists("test_grToSeg.seg")) file.remove("test_grToSeg.seg")
+
+}
+\seealso{
+grToSeg
 }

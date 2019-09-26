@@ -2,22 +2,42 @@
 % Please edit documentation in R/byChromArm.R
 \name{byChromArm}
 \alias{byChromArm}
-\title{an idiotically simple parallelization step}
+\title{A simple parallization step}
 \usage{
 byChromArm(x, arms = NULL)
 }
 \arguments{
-\item{x}{anything with a GRanges in it: BSseq, SummarizedExperiment, etc.}
+\item{x}{Any object with a GRanges in it: bsseq, SummarizedExperiment...}
 
-\item{arms}{(optional) another GRanges, but just specifying chromosome arms.}
+\item{arms}{Another GRanges, but specifying chromosome arms (DEFAULT: NULL)}
 }
 \value{
-\preformatted{ a list, List, or *List, with pieces of x by chromosome arm.
+\preformatted{ A list, List, or *list, with pieces of x by chromosome arm
 }
 }
 \description{
-This function just splits an object by chromosome arm, which tends to make
-parallelization MUCH easier, as cross-arm dependencies are unusual, and the
-larger chromosomes can thus be split across processes or machines without
-worrying much about data starvation for processes on smaller chromosomes.
+This function splits an object by chromosome arm, which tends to make
+parallelization much easier, as cross-arm dependencies are unusual.
+Therefore, the larger chromosomes can be split across processes or machines
+without worrying much about data starvation for processes on smaller
+chromosomes.
+}
+\examples{
+
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                       merged = FALSE)
+
+  reg <- GRanges(seqnames = rep("chr11",5),
+                 strand = rep("*",5),
+                 ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
+                                  end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
+                 )
+  names(reg) <- as.character(reg)
+
+  arms <- byChromArm(bisc, arms = reg)
+
 }

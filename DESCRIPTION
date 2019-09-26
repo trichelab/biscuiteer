@@ -1,19 +1,19 @@
 Package: biscuiteer
 Type: Package
-Title: a bunch of convenience functions for Biscuit
+Title: Convenience Functions for Biscuit
 Description: A test harness for bsseq loading of Biscuit output, summarization
              of WGBS data over defined regions and in mappable samples, with or
              without imputation, dropping of mostly-NA rows, age estimates, etc.
-Version: 0.9.75
-Date: 2018-09-24
-Author: Tim Triche, Jr. [aut, cre], Wanding Zhou [aut], Lyong Heo [ctb]
-Maintainer: Tim Triche, Jr. <tim.triche@vai.org>
+Version: 0.99.0
+Date: 2019-08-22
+Author: Tim Triche, Jr. [aut, cre], Wanding Zhou [aut], Ben Johnson [aut], Jacob Morrison [aut], Lyong Heo [aut]
+Maintainer: "Tim Triche, Jr." <tim.triche@gmail.com>
 URL: https://github.com/trichelab/biscuiteer
 BugReports: https://github.com/trichelab/biscuiteer/issues
-License: Gnu GPL
-Depends: R (>= 3.0.0), 
+License: GPL-3
+Depends: R (>= 3.6.0), 
+         biscuiteerData,
          bsseq
-Encoding: UTF-8
 Imports: readr,
          qualV,
          Matrix, 
@@ -21,22 +21,34 @@ Imports: readr,
          HDF5Array,
          S4Vectors, 
          Rsamtools,
-         Biostrings, 
          data.table,
+         Biobase,
          GenomicRanges,
+         BiocGenerics,
          VariantAnnotation,
          DelayedMatrixStats,
+         SummarizedExperiment,
+         GenomeInfoDb,
+         Mus.musculus,
          Homo.sapiens,
          matrixStats,
-         fastseg,
-         HMMcopy,
+         QDNAseq,
          dmrseq,
+         methods,
+         utils,
          gtools
 Suggests: DSS, 
           covr,
+          knitr,
+          rlang,
           scmeth,
           pkgdown, 
           roxygen2,
-          testthat
-RoxygenNote: 6.1.0
+          testthat,
+          QDNAseq.hg19,
+          QDNAseq.mm10
+biocViews: DataImport, MethylSeq, DNAMethylation
+Encoding: UTF-8
+RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr

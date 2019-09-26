@@ -1,17 +1,41 @@
-#' an idiotically simple parallelization step
+#' A simple parallization step
 #'
-#' This function just splits an object by chromosome arm, which tends to make
-#' parallelization MUCH easier, as cross-arm dependencies are unusual, and the 
-#' larger chromosomes can thus be split across processes or machines without 
-#' worrying much about data starvation for processes on smaller chromosomes.
-#' 
-#' @param x     anything with a GRanges in it: BSseq, SummarizedExperiment, etc.
-#' @param arms  (optional) another GRanges, but just specifying chromosome arms.
+#' This function splits an object by chromosome arm, which tends to make
+#' parallelization much easier, as cross-arm dependencies are unusual.
+#' Therefore, the larger chromosomes can be split across processes or machines
+#' without worrying much about data starvation for processes on smaller
+#' chromosomes.
 #'
-#' @return      a list, List, or *List, with pieces of x by chromosome arm.
-#' 
+#' @param x     Any object with a GRanges in it: bsseq, SummarizedExperiment...
+#' @param arms  Another GRanges, but specifying chromosome arms (DEFAULT: NULL)
+#'
+#' @return      A list, List, or *list, with pieces of x by chromosome arm
+#'
+#' @importFrom utils data
+#' @import SummarizedExperiment
+#'
+#' @examples
+#'
+#'   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+#'                           package="biscuiteer")
+#'   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+#'                           package="biscuiteer")
+#'   bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                        merged = FALSE)
+#'
+#'   reg <- GRanges(seqnames = rep("chr11",5),
+#'                  strand = rep("*",5),
+#'                  ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
+#'                                   end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
+#'                  )
+#'   names(reg) <- as.character(reg)
+#'
+#'   arms <- byChromArm(bisc, arms = reg)
+#'
 #' @export
-byChromArm <- function(x, arms=NULL) { 
+#'
+byChromArm <- function(x,
+                       arms = NULL) { 
 
   if (is.null(arms) && 
       (!any(grepl("(GRCh(37|38)|hg(19|38))", unique(genome(x)))))) {

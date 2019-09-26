@@ -1,6 +1,39 @@
-# Here's a good place to put your top-level package documentation
-
-.onAttach <- function (lib, pkgname="biscuiteer") {
+#' @title Convenience Functions for Biscuit
+#'
+#' @description A test harness for bsseq loading of Biscuit output,
+#'              summarization of WGBS data over defined regions and in mappable
+#'              samples (with or without imputation, dropping mostly-NA rows,
+#'              age estimates, etc.)
+#'
+#' @author Timothy J Triche Jr \email{Tim.Triche@vai.org},
+#'         Wanding Zhou \email{Wanding.Zhou@vai.org},
+#'         Ben Johnson \email{Ben.Johnson@vai.org},
+#'         Jacob Morrison \email{Jacob.Morrison@vai.org},
+#'         Lyong Heo \email{Lyong.Heo@vai.org}
+#'
+#' @seealso Useful links:
+#'          \itemize{
+#'            \item \url{https://github.com/trichelab/biscuiteer}
+#'            \item Report bugs at
+#'                  \url{https://github.com/trichelab/biscuiteer/issues}
+#'          }
+#'
+#' @aliases biscuiteer
+#'
+#' @examples
+#'
+#'   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+#'                           package="biscuiteer")
+#'   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+#'                           package="biscuiteer")
+#'   bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                        merged = FALSE)
+#'
+#' @keywords Biscuit DataImport DNAMethylation
+#'
+"_PACKAGE"
+.onAttach <- function (lib,
+                       pkgname = "biscuiteer") {
     ## Put stuff here you want to run when your package is loaded
     invisible()
 }

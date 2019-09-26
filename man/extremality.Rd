@@ -2,30 +2,29 @@
 % Please edit documentation in R/extremality.R
 \name{extremality}
 \alias{extremality}
-\title{compute the fraction of a Bernoulli variance achieved by a proportion}
+\title{Compute fraction of a Bernoulli variance}
 \usage{
 extremality(x, raw = FALSE)
 }
 \arguments{
-\item{x}{an rectangular object with proportions in it}
+\item{x}{A rectangular object with proportions in it}
 
-\item{raw}{skip the correction pass? (FALSE)}
+\item{raw}{Skip the correction pass? (DEFAULT: FALSE)}
 }
 \value{
-\preformatted{the extremality of each row (if more than one) of the object 
+\preformatted{The extremality of each row (if more than one) of the object
 }
 }
 \description{
-Note: this works (efficiently) on matrices and DelayedMatrix objects.
-Also note: since it is posssible for "raw" extremality to be > 1,
-the function does a second pass to correct for this.
+Works efficiently on matrices and DelayedMatrix objects. Note that it is
+possible for "raw" extremality to be greater than 1, so this function does
+a second pass to correct for this.
 }
-\details{
-extremal <- c(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-milder <- c(0.8, 0.2, 0.1, 0.3, 0.7, 0.1, 0.4, 0.1, 0.1, 0.2)
+\examples{
 
-extremality(extremal, raw=TRUE)
-extremality(extremal, raw=FALSE)
+  x <- rnorm(100, mean=0.5, sd=0.15)
+  x <- matrix(x, nrow=50, ncol=50)
 
-FIXME: this breaks when handed a single-row DelayedArray.
+  ext <- extremality(x, raw=TRUE)
+
 }

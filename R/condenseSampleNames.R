@@ -1,19 +1,32 @@
-#' simplify sampleNames for a bsseq object
-#' 
-#' utility function for extracting samplenames from Tabix'ed sample columns
-#' assumes VCF-style naming, such as with Sample_1.foo, Sample_1.bar, 
-#' or Sample1_foo,Sample1_bar, or really anything along these lines
+#' Simplify sample names for a bsseq object
 #'
-#' @param     tbx       a TabixFile instance to parse
-#' @param     stride    how many columns per sample 
-#' @param     trailing  trailing character to trim ("\\.$")
+#' Utility function for extracting sample names from tabix'ed sample columns,
+#' assuming a VCF-naming scheme (such as Sample_1.foo, Sample_1.bar or
+#' Sample1_foo, Sample1_bar).
 #'
-#' @return    a character vector of sample names (longest common substrings)
+#' @param tbx       A TabixFile instance to parse
+#' @param stride    How many columns per sample
+#' @param trailing  Trailing character to trim (DEFAULT: "\\.$")
 #'
-#' @import    qualV
+#' @return          A character vector of sample names (longest common
+#'                    substrings)
+#'
+#' @importFrom qualV LCS
+#'
+#' @examples
+#'
+#'   library(Rsamtools)
+#'   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+#'                           package="biscuiteer")
+#'   if (length(headerTabix(orig_bed)$header) > 0) {
+#'     condenseSampleNames(orig_bed, 2)
+#'   }
 #'
 #' @export
-condenseSampleNames <- function(tbx, stride, trailing="\\.$") {
+#'
+condenseSampleNames <- function(tbx,
+                                stride,
+                                trailing = "\\.$") {
   cols <- strsplit(base::sub("^#", "", headerTabix(tbx)$header), "\t")[[1]]
   indexcols <- headerTabix(tbx)$indexColumns
   samplecols <- cols[setdiff(seq_along(cols), indexcols)]
@@ -23,6 +36,10 @@ condenseSampleNames <- function(tbx, stride, trailing="\\.$") {
   base::gsub(trailing, "", unname(SNs))
 }
 
+# Helper function for finding the longest common subsequence
+#
+# Takes two character vectors - a and b - and returns their longest common
+#   subsequence
 .LCSubstr <- function(a, b) {
   paste(qualV::LCS(strsplit(a,"")[[1]], strsplit(b,"")[[1]])$LCS, collapse="")
 }

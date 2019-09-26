@@ -2,23 +2,33 @@
 % Please edit documentation in R/WGBSeq.R
 \name{WGBSeq}
 \alias{WGBSeq}
-\title{wrapper for WGBS settings appropriate to dmrseq}
+\title{Wrapper for WGBS settings for dmrseq}
 \usage{
-WGBSeq(bs, testCovariate, bpSpan = 1000, ...)
+WGBSeq(bsseq, testCovariate, bpSpan = 1000, ...)
 }
 \arguments{
-\item{bs}{a bsseq object}
+\item{bsseq}{A bsseq object}
 
-\item{testCovariate}{the pData column to test on}
+\item{testCovariate}{The pData column to test on}
 
-\item{bpSpan}{span of smoother AND 2x max gap in DMR CpGs (1000)}
+\item{bpSpan}{Span of smoother AND 2x max gap in DMR CpGs
+(DEFAULT: 1000)}
 
-\item{...}{other arguments to pass along to dmrseq}
+\item{...}{Other arguments to pass along to dmrseq}
 }
 \value{
-\preformatted{           a GRanges object (same as from dmrseq)
+\preformatted{          A GRanges object (same as from dmrseq)
 }
 }
 \description{
-wrapper for WGBS settings appropriate to dmrseq
+Wrapper for WGBS settings for dmrseq
+}
+\examples{
+
+  data(BS.chr21, package="dmrseq")
+  dat <- BS.chr21
+
+  wgbs <- WGBSeq(dat[1:500, ], "CellType", cutoff = 0.05,
+                 BPPARAM=SerialParam())
+
 }

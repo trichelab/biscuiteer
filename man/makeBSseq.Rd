@@ -2,23 +2,46 @@
 % Please edit documentation in R/makeBSseq.R
 \name{makeBSseq}
 \alias{makeBSseq}
-\title{make an in-core BSseq object from a biscuit BED}
+\title{Make an in-memory bsseq object from a biscuit BED}
 \usage{
-makeBSseq(tbl, params, simplify = FALSE)
+makeBSseq(tbl, params, simplify = FALSE, verbose = FALSE)
 }
 \arguments{
-\item{tbl}{a tibble (from read_tsv) or a data.table (from fread())}
+\item{tbl}{A tibble (from read_tsv) or a data.table (from fread)}
 
-\item{params}{parameters (from checkBiscuitBED)}
+\item{params}{Parameters from checkBiscuitBED}
 
-\item{simplify}{simplify sample names by dropping .foo.bar.hg19 & similar}
+\item{simplify}{Simplify sample names by dropping .foo.bar.hg19? (or
+similar) (DEFAULT: FALSE)}
+
+\item{verbose}{Print extra statements? (DEFAULT: FALSE)}
 }
 \value{
-an in-core BSseq object
+\preformatted{     An in-memory bsseq object
+}
 }
 \description{
-make an in-core BSseq object from a biscuit BED
+Beware that any reasonably large BED files may not fit into memory!
 }
-\seealso{
-makeBSseq_HDF5
+\examples{
+
+  library(data.table)
+
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  params <- checkBiscuitBED(BEDfile = orig_bed, VCFfile = orig_vcf,
+                            merged = FALSE, how = "data.table")
+
+  select <- grep("\\\\.context", params$colNames, invert=TRUE)
+  cmd <- paste("gunzip -c", params$tbx$path) # for mac compatibility
+  tbl <- fread(cmd=cmd, sep="\\t", sep2=",", fill=TRUE, na.string=".", 
+               select=select)
+  if (params$hasHeader == FALSE) names(tbl) <- params$colNames[select]
+  names(tbl) <- sub("^#", "", names(tbl))
+  
+  tbl <- tbl[rowSums(is.na(tbl)) == 0, ]
+  bsseq <- makeBSseq(tbl = tbl, params = params)
+
 }

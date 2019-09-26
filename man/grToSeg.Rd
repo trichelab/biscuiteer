@@ -2,21 +2,34 @@
 % Please edit documentation in R/grToSeg.R
 \name{grToSeg}
 \alias{grToSeg}
-\title{dump GRanges to .seg files}
+\title{Dump GRanges to segmented data data.frame}
 \usage{
 grToSeg(gr, filename = NULL, minAbs = NULL)
 }
 \arguments{
-\item{gr}{A GRanges or GRangesList to dump as .seg}
+\item{gr}{A GRanges or GRangesList to dump to .seg file}
 
-\item{filename}{Where to save the result (unsaved if NULL, the default)}
+\item{filename}{Where to save the result - unsaved if NULL (DEFAULT: NULL)}
 
-\item{minAbs}{Optional minimum absolute gain/loss cutoff (default is NULL)}
+\item{minAbs}{Minimum absolute gain/loss cutoff (DEFAULT: NULL)}
 }
 \value{
-\preformatted{     A data.frame(ID,chrom,loc.start,loc.end,num.mark,seg.mean)
+\preformatted{     A data.frame with columns:
+               (ID, chrom, loc.start, loc.end, num.mark, seg.mean)
 }
 }
 \description{
-dump GRanges to .seg files
+Output data.frame can be written to a .seg file if supplied with filename
+input argument
+}
+\examples{
+
+  clock <- getClock(model="horvathshrunk", genome="hg38")
+  gr <- clock$gr
+
+  df <- grToSeg(gr = gr)
+
+}
+\seealso{
+segToGr
 }

@@ -2,22 +2,41 @@
 % Please edit documentation in R/summarizeBsSeqOver.R
 \name{summarizeBsSeqOver}
 \alias{summarizeBsSeqOver}
-\title{Pretty much what it says on the tin.}
+\title{Summarize methylation over provided regions}
 \usage{
 summarizeBsSeqOver(bsseq, segs, dropNA = FALSE, impute = FALSE)
 }
 \arguments{
-\item{bsseq}{the BSseq object to summarize}
+\item{bsseq}{The bsseq object to summarize}
 
-\item{segs}{regions to summarize over (a GRanges; no GRangesLists yet)}
+\item{segs}{Regions to summarize over (GRanges object, no GRangesList yet)}
 
-\item{dropNA}{whether to drop rows with > half of samples NaN (FALSE)}
+\item{dropNA}{Whether to drop rows if more than half of samples are NA
+(DEFAULT: FALSE)}
 
-\item{impute}{whether to impute NAs/NaNs (FALSE)}
+\item{impute}{Whether to impute NAs/NaNs (DEFAULT: FALSE)}
 }
 \value{
-matrix    a matrix of regional methylation fractions
+\preformatted{   A matrix of regional methylation fractions
+}
 }
 \description{
-Summarize methylation over regions. Mostly a wrapper for getMeth.
+Used for bsseq objects. Mostly a local wrapp for getMeth.
+}
+\examples{
+
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                       merged = FALSE)
+
+  reg <- GRanges(seqnames = rep("chr11",5),
+                 strand = rep("*",5),
+                 ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
+                                  end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
+                )
+  summary <- summarizeBsSeqOver(bsseq = bisc, segs = reg, dropNA = TRUE)
+
 }

@@ -2,42 +2,59 @@
 % Please edit documentation in R/checkBiscuitBED.R
 \name{checkBiscuitBED}
 \alias{checkBiscuitBED}
-\title{inspect Biscuit BED and/or VCF output to make sure all is as it should be}
+\title{Inspect Biscuit VCF and BED files}
 \usage{
-checkBiscuitBED(BEDfile, VCFfile = NULL, sampleNames = NULL,
-  chunkSize = 5e+07, merged = NULL, hdf5 = FALSE, sparse = TRUE,
+checkBiscuitBED(BEDfile, VCFfile, merged, sampleNames = NULL,
+  chunkSize = 5e+07, hdf5 = FALSE, sparse = TRUE,
   how = c("data.table", "readr"), chr = NULL)
 }
 \arguments{
-\item{BEDfile}{a BED-like file (compressed and tabixed, maybe w/header)}
+\item{BEDfile}{A BED-like file - must be compressed and tabix'ed}
 
-\item{VCFfile}{a VCF file (compressed and tabixed; only needs the header)}
+\item{VCFfile}{A VCF file - must be compressed and tabix'ed. Only the
+header information is needed.}
 
-\item{sampleNames}{if NULL create; if vector assign; if data.frame make pData}
+\item{merged}{Is this merged CpG data?}
 
-\item{chunkSize}{for files > \code{yieldSize} lines long, chunk the file (5e7)}
+\item{sampleNames}{Names of samples - NULL: create names, vector: assign
+names, data.frame: make pData (DEFAULT: NULL)}
 
-\item{merged}{boolean; is this merged CpG data? (NULL; guess if merged)}
+\item{chunkSize}{For files longer than \code{yieldSize} number of lines long,
+chunk the file (DEFAULT: 5e7)}
 
-\item{hdf5}{boolean; use HDF5 arrays for backing of the data? (FALSE)}
+\item{hdf5}{Use HDF5 arrays for backing the data? (DEFAULT: FALSE)}
 
-\item{sparse}{boolean; use sparse Matrix objects for the data? (TRUE)}
+\item{sparse}{Use sparse Matrix objects for the data? (DEFAULT: TRUE)}
 
-\item{how}{how to load the data? "data.table" (default) or "readr"}
+\item{how}{How to load the data - "data.table" or "readr"?
+(DEFAULT: data.table)}
 
-\item{chr}{load a specific chromosome (to rbind() later)? (NULL)}
+\item{chr}{Load a specific chromosome to rbind() later?
+(DEFAULT: NULL)}
 }
 \value{
-\preformatted{       parameters for makeBSseq or makeBSseq_hdf5
+\preformatted{        Parameters to be supplied to makeBSseq
 }
 }
 \description{
-A BED checker for Biscuit cg/ch output (BED-like format, 2 or 3 cols/sample).
-By default, files with over 50 million loci will be processed iteratively,
-since data.table tends to run into problems with .gzipped joint CpH files.
-This function absolutely assumes that BED files are tabixed. No exceptions!
+A BED checker for Biscuit CpG/CpH output (BED-like format with 2 or 3
+columns per sample). By default, files with more than 50 million loci will
+be processed iteratively, since data.table tends to run into problems with
+gzipped joint CpH files.
+}
+\details{
+Input BED and VCF files must be tabix'ed. No exceptions!
+}
+\examples{
+
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  params <- checkBiscuitBED(BEDfile = orig_bed, VCFfile = orig_vcf,
+                            merged = FALSE)
+
 }
 \seealso{
-\preformatted{      load.biscuit
-}
+read.biscuit
 }

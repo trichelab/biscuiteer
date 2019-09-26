@@ -1,81 +1,38 @@
-#' Smoosh BSseq objects together without losing information.
-#' 
-#' take a bunch of bsseq objects, take the union of their granges(), 
-#' pad out un-covered sites with 0M/0Cov (i.e., ./. in a sparse Matrix),
-#' and return the now-even-sparser bsseq holding all of them. All 
-#' conditions governing cbind(bsseq1, bsseq2) also apply to unionize(). 
+#' Combine bsseq objects together without losing information
 #'
-#' @param bs1       a bsseq object (return unaltered if length(list(...)) == 0)
-#' @param ...       one or more bsseq objects to combine with the first one 
-#' @param parallel  split the bsseq objects by chrom and parallelize? (FALSE) 
-#' @param onlyChrs  retain a specific subset of chromosomes? (NULL; keep all)
-#' 
-#' @return        a larger and more sparse bsseq object
+#' Wrapper for the combine(bsseq1, ...) method in bsseq
 #'
-#' @import parallel 
-#' @importFrom Matrix Matrix
-#' @importClassesFrom Matrix Matrix 
-#' @importMethodsFrom Matrix cbind2 rbind2
-#' @import methods 
-#' @import bsseq
-#' 
+#' Takes provided bsseq objects, the union of their GRanges, fills out the
+#' sites not in the union with 0M/0Cov, and returns the even-sparser bsseq
+#' holding all of them.
+#'
+#' @param bs1  A bsseq object
+#' @param ...  One or more bsseq objects to combine with bs1
+#'
+#' @return     A larger and more sparse bsseq object
+#'
+#' @examples
+#'
+#'   shuf_bed <- system.file("extdata", "MCF7_Cunha_chr11p15_shuffled.bed.gz",
+#'                           package="biscuiteer")
+#'   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+#'                           package="biscuiteer")
+#'   shuf_vcf <- system.file("extdata",
+#'                           "MCF7_Cunha_shuffled_header_only.vcf.gz",
+#'                           package="biscuiteer")
+#'   orig_vcf <- system.file("extdata",
+#'                           "MCF7_Cunha_header_only.vcf.gz",
+#'                           package="biscuiteer")
+#'   bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+#'                         merged = FALSE)
+#'   bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                         merged = FALSE)
+#'
+#'   comb <- unionize(bisc1, bisc2)
+#'
 #' @export
-unionize <- function(bs1, ..., parallel=FALSE, onlyChrs=NULL) { 
-
-  stopifnot(is(bs1, "BSseq"))
-  if (length(list(...)) == 0) {
-    # return 
-    return(bs1)
-  } else if (length(list(...)) == 1) {
-    # reprocess
-    bs2 <- list(...)[[1]]
-  } else { 
-    # recurse
-    bs2 <- Reduce(unionize, list(...))
-  }
-
-  # keep only shared and/or requested chromosomes 
-  keptSeqlevels <- intersect(seqlevels(bs1), seqlevels(bs2))
-  if (!is.null(onlyChrs)) keptSeqlevels <- intersect(keptSeqlevels, onlyChrs)
-  bs1 <- keepSeqlevels(bs1, keptSeqlevels, pruning.mode="coarse")
-  bs2 <- keepSeqlevels(bs2, keptSeqlevels, pruning.mode="coarse")
-
-  # worker function 
-  unionizeChrom <- function(sub1, sub2) {
-    chrom <- unique(unique(seqnames(sub1)), unique(seqnames(sub2)))
-    if (length(chrom) > 1) stop("unionizeChrom should never see 2+ chroms")
-    message("Unionizing ", chrom, "...")
-    unionize(sub1, sub2, parallel=FALSE)
-  }
-
-  chroms <- unique(unique(seqnames(bs1)), unique(seqnames(bs2)))
-  if (length(chroms) > 1) {
-    if (parallel) {
-      sort(do.call(rbind, 
-                   mcmapply(unionizeChrom, 
-                            split(bs1, seqnames(bs1)),
-                            split(bs2, seqnames(bs2)))))
-    } else { 
-      sort(do.call(rbind, 
-                   mapply(unionizeChrom, 
-                          split(bs1, seqnames(bs1)),
-                          split(bs2, seqnames(bs2)))))
-    }
-  } else { 
-    
-    bigpd <- rbind(colData(bs1), colData(bs2))
-    biggrl <- GRangesList(
-      bs1=suppressWarnings(GenomicRanges::setdiff(granges(bs1), granges(bs2))),
-      bss=suppressWarnings(GenomicRanges::intersect(granges(bs1),granges(bs2))),
-      bs2=suppressWarnings(GenomicRanges::setdiff(granges(bs2), granges(bs1)))
-    )
-    message("  merging methylated read matrices...") 
-    M <- unionizeBSseq(bs1, bs2, biggrl, what="M", parallel=parallel)
-    message("  merging read coverage matrices...") 
-    Cov <- unionizeBSseq(bs1, bs2, biggrl, what="Cov", parallel=parallel)
-    
-    # sort is required due to the trick in unionizeBSseq
-    sort(BSseq(M, Cov, pData=bigpd, gr=unlist(biggrl)))
-  }
-
+#'
+unionize <- function(bs1,
+                     ...) {
+  return(combine(bs1,...))
 }

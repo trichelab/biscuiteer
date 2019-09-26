@@ -2,26 +2,44 @@
 % Please edit documentation in R/unionize.R
 \name{unionize}
 \alias{unionize}
-\title{Smoosh BSseq objects together without losing information.}
+\title{Combine bsseq objects together without losing information}
 \usage{
-unionize(bs1, ..., parallel = FALSE, onlyChrs = NULL)
+unionize(bs1, ...)
 }
 \arguments{
-\item{bs1}{a bsseq object (return unaltered if length(list(...)) == 0)}
+\item{bs1}{A bsseq object}
 
-\item{...}{one or more bsseq objects to combine with the first one}
-
-\item{parallel}{split the bsseq objects by chrom and parallelize? (FALSE)}
-
-\item{onlyChrs}{retain a specific subset of chromosomes? (NULL; keep all)}
+\item{...}{One or more bsseq objects to combine with bs1}
 }
 \value{
-\preformatted{   a larger and more sparse bsseq object
+\preformatted{A larger and more sparse bsseq object
 }
 }
 \description{
-take a bunch of bsseq objects, take the union of their granges(),
-pad out un-covered sites with 0M/0Cov (i.e., ./. in a sparse Matrix),
-and return the now-even-sparser bsseq holding all of them. All
-conditions governing cbind(bsseq1, bsseq2) also apply to unionize().
+Wrapper for the combine(bsseq1, ...) method in bsseq
+}
+\details{
+Takes provided bsseq objects, the union of their GRanges, fills out the
+sites not in the union with 0M/0Cov, and returns the even-sparser bsseq
+holding all of them.
+}
+\examples{
+
+  shuf_bed <- system.file("extdata", "MCF7_Cunha_chr11p15_shuffled.bed.gz",
+                          package="biscuiteer")
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  shuf_vcf <- system.file("extdata",
+                          "MCF7_Cunha_shuffled_header_only.vcf.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata",
+                          "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+                        merged = FALSE)
+  bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                        merged = FALSE)
+
+  comb <- unionize(bisc1, bisc2)
+
 }

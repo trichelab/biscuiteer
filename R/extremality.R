@@ -1,29 +1,33 @@
-#' compute the fraction of a Bernoulli variance achieved by a proportion
+#' Compute fraction of a Bernoulli variance
 #'
-#' Note: this works (efficiently) on matrices and DelayedMatrix objects.
-#' Also note: since it is posssible for "raw" extremality to be > 1, 
-#'            the function does a second pass to correct for this. 
-#' 
-#' extremal <- c(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-#'   milder <- c(0.8, 0.2, 0.1, 0.3, 0.7, 0.1, 0.4, 0.1, 0.1, 0.2)
-#' 
-#' extremality(extremal, raw=TRUE) 
-#' extremality(extremal, raw=FALSE) 
+#' Works efficiently on matrices and DelayedMatrix objects. Note that it is
+#' possible for "raw" extremality to be greater than 1, so this function does
+#' a second pass to correct for this.
 #'
-#' FIXME: this breaks when handed a single-row DelayedArray.
-#' 
-#' @param x    an rectangular object with proportions in it 
-#' @param raw  skip the correction pass? (FALSE) 
-#' 
-#' @return     the extremality of each row (if more than one) of the object 
-#' 
-#' @importFrom matrixStats rowVars
-#' @importFrom matrixStats rowMeans2
-#' @importFrom DelayedMatrixStats rowVars
-#' @importFrom DelayedMatrixStats rowMeans2
-#' 
-#' @export 
-extremality <- function(x, raw=FALSE) { 
+#' @param x    A rectangular object with proportions in it
+#' @param raw  Skip the correction pass? (DEFAULT: FALSE)
+#'
+#' @return     The extremality of each row (if more than one) of the object
+#'
+#' @importFrom methods is
+#'
+#' @examples
+#'
+#'   x <- rnorm(100, mean=0.5, sd=0.15)
+#'   x <- matrix(x, nrow=50, ncol=50)
+#'
+#'   ext <- extremality(x, raw=TRUE)
+#'
+#' @export
+#'
+extremality <- function(x,
+                        raw = FALSE) { 
+# FIXME: this breaks when handed a single-row DelayedArray.
+# extremal <- c(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+# milder   <- c(0.8, 0.2, 0.1, 0.3, 0.7, 0.1, 0.4, 0.1, 0.1, 0.2)
+# 
+# extremality(extremal, raw=TRUE) 
+# extremality(extremal, raw=FALSE) 
 
   bernoulliVar <- function(meanx) meanx * (1 - meanx) 
   

@@ -2,25 +2,56 @@
 % Please edit documentation in R/binCoverage.R
 \name{binCoverage}
 \alias{binCoverage}
-\title{bin read coverage to simplify and improve CNA calling}
+\title{Bin CpG or CpH coverage to simplify and improve CNA "sketching"}
 \usage{
-binCoverage(covg, bins = NULL, tilewidth = 1000, which = NULL)
+binCoverage(bsseq, bins, which = NULL, QDNAseq = TRUE, readLen = 100)
 }
 \arguments{
-\item{covg}{the coverage track (a GRanges) or a bigWig filename}
+\item{bsseq}{A bsseq object - supplied to getCoverage()}
 
-\item{bins}{the bins to summarize over (use tileGenome to generate)}
+\item{bins}{Bins to summarize over - from tileGenome or QDNAseq.xxYY}
 
-\item{tilewidth}{if is.null(bins), what width should be used? (1000bp)}
+\item{which}{Limit to specific regions? - functions as an import()
+(DEFAULT: NULL)}
 
-\item{which}{if covg is a filename, what regions should be imported?}
+\item{QDNAseq}{Return a QDNAseqReadCounts? - if FALSE, returns a GRanges
+(DEFAULT: TRUE)}
+
+\item{readLen}{Correction factor for coverage - read length in bp
+(DEFAULT: 100)}
 }
 \value{
-\preformatted{     binned read counts
+\preformatted{    Binned read counts
 }
 }
 \description{
-helper function for binning .covg.hg19.bw bigWigs (see below for note)
-nb. it is best to extract these from Biscuit BAMs via genomeCoverageBed
-FIXME: figure out how to estimate the most likely GCbias ~ DNAme linkage
+Example usage for E-M
+}
+\details{
+NOTE: As of early Sept 2019, QDNAseq did not have hg38 capabilities. If you
+desire to use the hg38 genome, biscuiteer suggests you use a GRanges object
+to define your bins.
+}
+\examples{
+
+  bins <- GRanges(seqnames = rep("chr11",10),
+                  strand = rep("*",10),
+                  ranges = IRanges(start=100000*0:9, width=100000)
+                 )
+
+  reg <- GRanges(seqnames = rep("chr11",5),
+                 strand = rep("*",5),
+                 ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
+                                  end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
+                 )
+
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+                          package="biscuiteer")
+  bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                       merged = FALSE)
+
+  bc <- binCoverage(bsseq = bisc, bins = bins, which = reg, QDNAseq = FALSE)
+
 }

@@ -2,22 +2,34 @@
 % Please edit documentation in R/condenseSampleNames.R
 \name{condenseSampleNames}
 \alias{condenseSampleNames}
-\title{simplify sampleNames for a bsseq object}
+\title{Simplify sample names for a bsseq object}
 \usage{
 condenseSampleNames(tbx, stride, trailing = "\\\\.$")
 }
 \arguments{
-\item{tbx}{a TabixFile instance to parse}
+\item{tbx}{A TabixFile instance to parse}
 
-\item{stride}{how many columns per sample}
+\item{stride}{How many columns per sample}
 
-\item{trailing}{trailing character to trim ("\.$")}
+\item{trailing}{Trailing character to trim (DEFAULT: "\.$")}
 }
 \value{
-a character vector of sample names (longest common substrings)
+\preformatted{     A character vector of sample names (longest common
+               substrings)
+}
 }
 \description{
-utility function for extracting samplenames from Tabix'ed sample columns
-assumes VCF-style naming, such as with Sample_1.foo, Sample_1.bar,
-or Sample1_foo,Sample1_bar, or really anything along these lines
+Utility function for extracting sample names from tabix'ed sample columns,
+assuming a VCF-naming scheme (such as Sample_1.foo, Sample_1.bar or
+Sample1_foo, Sample1_bar).
+}
+\examples{
+
+  library(Rsamtools)
+  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+                          package="biscuiteer")
+  if (length(headerTabix(orig_bed)$header) > 0) {
+    condenseSampleNames(orig_bed, 2)
+  }
+
 }

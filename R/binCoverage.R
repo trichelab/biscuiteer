@@ -1,37 +1,107 @@
-#' bin read coverage to simplify and improve CNA calling 
-#' 
-#' helper function for binning .covg.hg19.bw bigWigs (see below for note)
-#' nb. it is best to extract these from Biscuit BAMs via genomeCoverageBed
-#' FIXME: figure out how to estimate the most likely GCbias ~ DNAme linkage
+#' Bin CpG or CpH coverage to simplify and improve CNA "sketching"
 #'
-#' @param covg      the coverage track (a GRanges) or a bigWig filename 
-#' @param bins      the bins to summarize over (use tileGenome to generate)
-#' @param tilewidth if is.null(bins), what width should be used? (1000bp)
-#' @param which     if covg is a filename, what regions should be imported?
+#' Example usage for E-M
 #'
-#' @return          binned read counts
+#' NOTE: As of early Sept 2019, QDNAseq did not have hg38 capabilities. If you
+#' desire to use the hg38 genome, biscuiteer suggests you use a GRanges object
+#' to define your bins.
 #'
+#' @param bsseq    A bsseq object - supplied to getCoverage()
+#' @param bins     Bins to summarize over - from tileGenome or QDNAseq.xxYY
+#' @param which    Limit to specific regions? - functions as an import()
+#'                   (DEFAULT: NULL)
+#' @param QDNAseq  Return a QDNAseqReadCounts? - if FALSE, returns a GRanges
+#'                   (DEFAULT: TRUE)
+#' @param readLen  Correction factor for coverage - read length in bp
+#'                   (DEFAULT: 100)
+#'
+#' @return         Binned read counts
+#'
+#' @importFrom methods as is new
+#' @importFrom Biobase featureNames
+#' @importFrom utils packageVersion
+#' @import BiocGenerics
+#' @import GenomeInfoDb
 #' @import GenomicRanges
+#' @import Mus.musculus
 #' @import Homo.sapiens
-#' @import rtracklayer
-#' 
+#' @import QDNAseq
+#'
+#' @examples
+#'
+#'   bins <- GRanges(seqnames = rep("chr11",10),
+#'                   strand = rep("*",10),
+#'                   ranges = IRanges(start=100000*0:9, width=100000)
+#'                  )
+#'
+#'   reg <- GRanges(seqnames = rep("chr11",5),
+#'                  strand = rep("*",5),
+#'                  ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
+#'                                   end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
+#'                  )
+#'
+#'   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
+#'                           package="biscuiteer")
+#'   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
+#'                           package="biscuiteer")
+#'   bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                        merged = FALSE)
+#'
+#'   bc <- binCoverage(bsseq = bisc, bins = bins, which = reg, QDNAseq = FALSE)
+#'
 #' @export
-binCoverage <- function(covg, bins=NULL, tilewidth=1000, which=NULL) {
+#'
+binCoverage <- function(bsseq,
+                        bins,
+                        which = NULL,
+                        QDNAseq = TRUE,
+                        readLen = 100) {
+  # FIXME: turn this into a generic for bsseq objects, for bigWigs, for [...]
+  # FIXME: figure out how to estimate the most likely GCbias ~ DNAme linkage
 
-  if (is(covg, "character")) covg <- import(covg)
-  if (is.null(bins)) {
-    bins <- tileGenome(seqlengths(Homo.sapiens), 
-                       tilewidth=tilewidth, 
-                       cut.last=TRUE)
+  # turn QDNAseq bins into an annotated GRanges object 
+  if (is(bins, "AnnotatedDataFrame") & # QDNAseq bins 
+      !is.null(attr(bins, "QDNAseq")$build)) {
+    message("Converting QDNAseq bins to GRanges for coverage")
+    gr <- makeGRangesFromDataFrame(pData(bins), keep.extra.columns=TRUE)
+    genome(gr) <- attr(bins, "QDNAseq")$build
+  } else if (is(bins, "GenomicRanges")) {
+    message("You really should use QDNAseq bins IF you can.")
+    message("Output will be a GRanges object.")
+    gr <- bins
+  } else { 
+    stop("Don't know what to do with bins of class ", class(bins), "!")
   }
-  bins$score <- 0 
-  olaps <- findOverlaps(covg, bins, type="within")
-  summed <- tapply(covg$score[queryHits(olaps)], subjectHits(olaps), sum)
-  bins$score[as.integer(names(summed))] <- summed 
-  attr(bins, "binned") <- TRUE
-
-  if (!is.null(which)) bins <- subsetByOverlaps(bins, which)
-	
-  return(bins)
-
+  origStyle <- seqlevelsStyle(gr)
+  if (!is.null(which)) {
+    seqlevelsStyle(gr) <- seqlevelsStyle(which)
+    gr <- subsetByOverlaps(gr, which)
+  }
+  seqlevelsStyle(gr) <- seqlevelsStyle(bsseq)
+  names(gr) <- as(granges(gr), "character")
+  summed <- getCoverage(bsseq, gr, what="perRegionTotal", withDimnames=TRUE)
+  summed <- round(summed/readLen) # mostly so plot titles don't look insane
+  gc(,TRUE) # cautious
+  gr$score <- summed
+  attr(gr, "binned") <- TRUE
+  if (QDNAseq & is(bins, "AnnotatedDataFrame")) {
+    seqlevelsStyle(gr) <- origStyle 
+    names(gr) <- as(granges(gr), "character")
+    phenodata <- data.frame(name=colnames(gr$score), 
+                            row.names=colnames(gr$score),
+                            stringsAsFactors=FALSE)
+    phenodata$total.reads <- colSums(score(gr), na.rm=TRUE)
+    if (!exists("use")) use <- seq_len(length(gr))
+    phenodata$used.reads <- colSums(score(subset(gr, use)), na.rm=TRUE)
+    object <- new("QDNAseqReadCounts", 
+                  bins=subset(bins, featureNames(bins) %in% names(gr)),
+                  counts=gr$score, phenodata=phenodata)
+    object$expected.variance <- QDNAseq:::expectedVariance(object)
+    annotation(object) <- paste("generated by biscuiteer", 
+                                packageVersion("biscuiteer"))
+    return(object) 
+  } else { 
+    if (!exists("use")) use <- seq_len(length(gr))
+    return(subset(gr, rowSums(is.na(gr$score)) < ncol(bsseq) & use))
+  }
 }
