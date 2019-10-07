@@ -4,7 +4,7 @@ Title: Convenience Functions for Biscuit
 Description: A test harness for bsseq loading of Biscuit output, summarization
              of WGBS data over defined regions and in mappable samples, with or
              without imputation, dropping of mostly-NA rows, age estimates, etc.
-Version: 0.99.1
+Version: 0.99.2
 Date: 2019-08-22
 Author: Tim Triche, Jr. [aut, cre], Wanding Zhou [aut], Ben Johnson [aut], Jacob Morrison [aut], Lyong Heo [aut]
 Maintainer: "Tim Triche, Jr." <tim.triche@gmail.com>
@@ -28,15 +28,21 @@ Imports: readr,
          VariantAnnotation,
          DelayedMatrixStats,
          SummarizedExperiment,
+         RaggedExperiment,
          GenomeInfoDb,
          Mus.musculus,
          Homo.sapiens,
          matrixStats,
+         ComplexHeatmap,
+         circlize,
          QDNAseq,
          dmrseq,
          methods,
+         stats,
+         grid,
          utils,
          R.utils,
+         readxl,
          gtools
 Suggests: DSS, 
           covr,
