@@ -1,0 +1,7 @@
+seqnames    start   end name    partner QUAL
+chr15   72104255    72104255    break1o break1h 79
+chr17   35741663    35741663    break1h break1o 79
+chr17   35741661    35741661    break2o break2h 86
+chr15   72104247    72104247    break2h break2o 86
+chr15   72104257    72104257    break3o break3h 83
+chr17   35741661    35741661    break3h break3o 83
