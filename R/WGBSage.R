@@ -65,10 +65,10 @@
 #'   orig_vcf <- system.file("extdata",
 #'                           "MCF7_Cunha_header_only.vcf.gz",
 #'                           package="biscuiteer")
-#'   bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
-#'                         merged = FALSE)
-#'   bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-#'                         merged = FALSE)
+#'   bisc1 <- readBiscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+#'                        merged = FALSE)
+#'   bisc2 <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                        merged = FALSE)
 #'
 #'   comb <- unionize(bisc1, bisc2)
 #'   ages <- WGBSage(comb, "horvath")
@@ -89,12 +89,12 @@ WGBSage <- function(bsseq,
                     ...) { 
 
   # Check argument types
-  stopifnot(is.integer(padding))
+  stopifnot(is.numeric(padding))
   stopifnot(is.logical(useENSR))
   stopifnot(is.logical(useHMMI))
-  stopifnot(is.integer(minCovg))
+  stopifnot(is.numeric(minCovg))
   stopifnot(is.logical(impute))
-  stopifnot(is.integer(minSamp))
+  stopifnot(is.numeric(minSamp))
   stopifnot(is.logical(dropBad))
 
   # sort out assemblies

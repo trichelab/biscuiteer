@@ -97,8 +97,8 @@ this when they implicitly call the \code{show} method on it.
                           package="biscuiteer")
   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
                           package="biscuiteer")
-  bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-                       merged = FALSE)
+  bisc <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                      merged = FALSE)
 
   cpg <- CpGindex(bisc)
 

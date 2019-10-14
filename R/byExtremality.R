@@ -14,8 +14,7 @@
 #' @param r      Regions to consider - NULL covers all loci (DEFAULT: NULL)
 #' @param k      How many rows/regions to return (DEFAULT: 500)
 #'
-#' @return       A matrix-like object with methylation values sorted by
-#'               extremality
+#' @return       A GRanges object with methylation values sorted by extremality
 #'
 #' @import SummarizedExperiment
 #'
@@ -31,10 +30,10 @@
 #'   orig_vcf <- system.file("extdata",
 #'                           "MCF7_Cunha_header_only.vcf.gz",
 #'                           package="biscuiteer")
-#'   bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
-#'                         merged = FALSE)
-#'   bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-#'                         merged = FALSE)
+#'   bisc1 <- readBiscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+#'                        merged = FALSE)
+#'   bisc2 <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                        merged = FALSE)
 #'
 #'   reg <- GRanges(seqnames = rep("chr11",5),
 #'                  strand = rep("*",5),
@@ -53,10 +52,9 @@ byExtremality <- function(bsseq,
                           k = 500) {
  
   if (ncol(bsseq) == 1) {
-    stop(paste0("No variance in a one sample object. Either use a data set ",
-                "with multiple samples or combine bsseq objects with ",
-                "unionize().")
-        )
+    stop("No variance in a one sample object. Either use a data set ",
+         "with multiple samples or combine bsseq objects with ",
+         "unionize().")
   }
 
   if (is.null(r)) {
@@ -90,7 +88,35 @@ byExtremality <- function(bsseq,
   extr <- extremality(m)
   chosen <- rev(order(extr, na.last=FALSE))[seq_len(k)]
   res <- m[chosen, ]
-  attr(res, "extremality") <- extr[chosen]
-  return(res)
+  res <- cbind(res, extremality = extr[chosen])
 
+  return(.makeGRangesFromMatrix(res))
+
+}
+
+# Matrix must have rownames from as.character(granges)
+.makeGRangesFromMatrix <- function(matrix) {
+  if (is.null(rownames(matrix))) {
+    stop("Input matrix must have rownames corresponding to",
+         "as.character(granges), where granges is a GRanges object")
+  }
+  # Start with the names of the GRanges from as.character(granges)
+  df <- data.frame(grNames = rownames(matrix))
+  # Split off the chromosome portion from ranges portion
+  df <- data.frame(df, data.frame(do.call('rbind',
+                                          strsplit(as.character(df$grNames),':',
+                                                   fixed=TRUE))))
+  # Make names easier to work with
+  names(df) <- c("grNames","chr","range")
+  # Split up the start and end parts from the ranges portion
+  df <- data.frame(df, data.frame(do.call('rbind',
+                                          strsplit(as.character(df$range),'-',
+                                                   fixed=TRUE))))
+  # Rename data.frame to straighforward names
+  names(df) <- c("grNames","chr","range","start","end")
+  df <- df[, c("chr","start","end")]
+
+  df <- data.frame(df, matrix)
+
+  return(makeGRangesFromDataFrame(df,keep.extra.columns=TRUE))
 }

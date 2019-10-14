@@ -44,8 +44,8 @@
 #'                           package="biscuiteer")
 #'   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
 #'                           package="biscuiteer")
-#'   bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-#'                        merged = FALSE)
+#'   bisc <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                       merged = FALSE)
 #'
 #'   bc <- binCoverage(bsseq = bisc, bins = bins, which = reg, QDNAseq = FALSE)
 #'
@@ -61,7 +61,7 @@ binCoverage <- function(bsseq,
 
   # Check input types
   stopifnot(is.logical(QDNAseq))
-  stopifnot(is.integer(readLen))
+  stopifnot(is.numeric(readLen))
 
   # turn QDNAseq bins into an annotated GRanges object 
   if (is(bins, "AnnotatedDataFrame") & # QDNAseq bins 

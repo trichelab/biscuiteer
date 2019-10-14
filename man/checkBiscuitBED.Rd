@@ -22,9 +22,16 @@ names, data.frame: make pData (DEFAULT: NULL)}
 \item{chunkSize}{For files longer than \code{yieldSize} number of lines long,
 chunk the file (DEFAULT: 5e7)}
 
-\item{hdf5}{Use HDF5 arrays for backing the data? (DEFAULT: FALSE)}
+\item{hdf5}{Use HDF5 arrays for backing the data? Using HDF5-backed
+arrays stores the data in a HDF5 file on disk, rather
+than loading entire object into memory. This allows
+for analyses to be done on memory-limited systems at
+the small cost of slightly reduced return times.
+(DEFAULT: FALSE)}
 
-\item{sparse}{Use sparse Matrix objects for the data? (DEFAULT: TRUE)}
+\item{sparse}{Use sparse Matrix objects for the data? If TRUE, use a
+Matrix object for sparse matrices (matrices with many
+zeroes in them) (DEFAULT: TRUE)}
 
 \item{how}{How to load the data - "data.table" or "readr"?
 (DEFAULT: data.table)}
@@ -56,5 +63,5 @@ Input BED and VCF files must be tabix'ed. No exceptions!
 
 }
 \seealso{
-read.biscuit
+readBiscuit
 }

@@ -14,8 +14,7 @@ byExtremality(bsseq, r = NULL, k = 500)
 \item{k}{How many rows/regions to return (DEFAULT: 500)}
 }
 \value{
-\preformatted{  A matrix-like object with methylation values sorted by
-          extremality
+\preformatted{  A GRanges object with methylation values sorted by extremality
 }
 }
 \description{
@@ -42,10 +41,10 @@ extremality = sd(X_j) / bernoulliSD(mean(X_j))
   orig_vcf <- system.file("extdata",
                           "MCF7_Cunha_header_only.vcf.gz",
                           package="biscuiteer")
-  bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
-                        merged = FALSE)
-  bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-                        merged = FALSE)
+  bisc1 <- readBiscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+                       merged = FALSE)
+  bisc2 <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                       merged = FALSE)
 
   reg <- GRanges(seqnames = rep("chr11",5),
                  strand = rep("*",5),
