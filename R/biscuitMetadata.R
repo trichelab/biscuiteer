@@ -52,6 +52,4 @@ biscuitMetadata <- function(bsseq = NULL,
 
 #' @describeIn biscuitMetadata Alias for biscuitMetadata
 #'
-#' @export
-#'
 getBiscuitMetadata <- biscuitMetadata

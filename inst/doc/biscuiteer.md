@@ -1,7 +1,7 @@
 ---
 title: "Biscuiteer User Guide"
-date: "25 September 2019"
-package: "biscuiteer 0.99.0"
+date: "14 October 2019"
+package: "biscuiteer 0.99.1"
 output:
   BiocStyle::html_document:
     highlight: pygments
@@ -323,15 +323,10 @@ which is a wrapper around the bsseq function, `combine`.
 ```r
 shuf_bed <- system.file("extdata", "MCF7_Cunha_chr11p15_shuffled.bed.gz",
                         package="biscuiteer")
-orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
-                        package="biscuiteer")
 shuf_vcf <- system.file("extdata",
                         "MCF7_Cunha_shuffled_header_only.vcf.gz",
                         package="biscuiteer")
-orig_vcf <- system.file("extdata",
-                        "MCF7_Cunha_header_only.vcf.gz",
-                        package="biscuiteer")
-bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+bisc2 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
                       merged = FALSE)
 ```
 
@@ -357,24 +352,7 @@ bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
 ```
 
 ```r
-bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-                      merged = FALSE)
-```
-
-```
-## Checking /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz for import...
-## Extracting sample names from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_header_only.vcf.gz...
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz does not have a header. Using VCF file header information to help set column names.
-## Assuming unmerged data. Checking now... ...The file might be alright. Double check if you're worried.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz has 254147 indexed loci.
-## /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz looks valid for import.
-## Reading unmerged input from /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz...
-## Excluding CpG sites with uniformly zero coverage...
-## Loaded /secondary/projects/shen/tools/morrison/anaconda3/envs/r_env_3.6/lib/R/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz. Creating bsseq object...
-```
-
-```r
-comb <- unionize(bisc1, bisc2)
+comb <- unionize(bisc, bisc2)
 ```
 
 # Analysis Functionality
@@ -405,12 +383,16 @@ frac
 ```
 
 ```
-##                         MCF7_Cunha
-## chr11:0-2800000          1.3406818
-## chr11:2800000-11700000   0.5758749
-## chr11:11700000-13800000  1.1629889
-## chr11:13800000-16900000  0.5818740
-## chr11:16900000-22000000  0.4429849
+## GRanges object with 5 ranges and 1 metadata column:
+##       seqnames            ranges strand |        MCF7_Cunha
+##          <Rle>         <IRanges>  <Rle> |         <numeric>
+##   [1]    chr11         0-2800000      * |  1.34068175424637
+##   [2]    chr11  2800000-11700000      * | 0.575874918312675
+##   [3]    chr11 11700000-13800000      * |   1.1629889150866
+##   [4]    chr11 13800000-16900000      * | 0.581873982746806
+##   [5]    chr11 16900000-22000000      * | 0.442984923927319
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
 ```
 
 
@@ -464,9 +446,9 @@ ages
 ## [1] 0.6955073
 ## 
 ## $meth
-##                         MCF7_Cunha_shuffled MCF7_Cunha
-## chr11:6678129-6678158             0.2500000  0.8000000
-## chr11:12030629-12030658           0.2477324  0.8333333
+##                         MCF7_Cunha MCF7_Cunha_shuffled
+## chr11:6678129-6678158    0.8000000           0.2500000
+## chr11:12030629-12030658  0.8333333           0.2477324
 ## 
 ## $coefs
 ##   chr11:6678129-6678158 chr11:12030629-12030658 
@@ -474,8 +456,8 @@ ages
 ## 
 ## $age
 ##                         [,1]
-## MCF7_Cunha_shuffled 34.88742
 ## MCF7_Cunha          33.18896
+## MCF7_Cunha_shuffled 34.88742
 ```
 
 ## Hypermethylation of PRCs and Hypomethylation of PMDs

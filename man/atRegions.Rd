@@ -20,8 +20,8 @@ atRegions(bsseq, regions, mappings = NULL, nm = "POETICname", ...)
 \item{...}{Other arguments to pass to summarizeBsSeqOver}
 }
 \value{
-\preformatted{     Summarized information about the bsseq object for the given
-               DNA regions
+\preformatted{     GRanges with summarized information about the bsseq object
+             for the given DNA regions
 }
 }
 \description{
@@ -41,7 +41,7 @@ regions. Useful for exploring genomic data using cBioPortal.
                  strand = rep("*",5),
                  ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
                                   end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
-                 )
+                )
   regions <- atRegions(bsseq = bisc, regions = reg)
 
 }

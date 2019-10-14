@@ -46,7 +46,7 @@ makeBSseq <- function(tbl,
                       simplify = FALSE,
                       verbose = FALSE) {
 
-  gr <- resize(makeGRangesFromDataFrame(tbl[, 1:3]), 1) 
+  gr <- resize(makeGRangesFromDataFrame(tbl[, c("chr","start","end")]), 1) 
 
   # helper fn  
   matMe <- function(x, gr, verbose = FALSE) {
@@ -69,17 +69,18 @@ makeBSseq <- function(tbl,
 
   # deal with data.table weirdness 
   if (params$how == "data.table") { 
-    betas <- match(params$betaCols, names(tbl))
-    covgs <- match(params$covgCols, names(tbl))
-    M <- matMe(fixNAs(round(tbl[,..betas]*tbl[,..covgs]),y=0,params$sparse), gr)
-    Cov <- matMe(fixNAs(tbl[, ..covgs], y=0, params$sparse), gr)
+    M <- matMe(fixNAs(
+                 round(tbl[,params$betaCols, with=FALSE]*tbl[,params$covgCols,
+                       with=FALSE]),
+                       y=0,params$sparse), gr)
+    Cov <- matMe(fixNAs(tbl[, params$covgCols,with=FALSE], y=0, params$sparse),
+                 gr)
   } else { 
-    M <- with(params, 
-              matMe(x=fixNAs(round(tbl[,betaCols]*tbl[,covgCols]), y=0, sparse),
-                    gr=gr, verbose=verbose))
-    Cov <- with(params, 
-                matMe(x=fixNAs(tbl[, covgCols], y=0, sparse), 
-                      gr=gr, verbose=verbose))
+    M <- matMe(x=fixNAs(round(tbl[,params$betaCols]*tbl[,params$covgCols]),
+                        y=0, params$sparse),
+               gr=gr, verbose=verbose)
+    Cov <- matMe(x=fixNAs(tbl[, params$covgCols], y=0, params$sparse), 
+                 gr=gr, verbose=verbose)
   }
   Cov <- fixNames(Cov, gr, what="Cov", verbose=verbose)
   M <- fixNames(M, gr, what="M", verbose=verbose)

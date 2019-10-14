@@ -32,7 +32,8 @@ condenseSampleNames <- function(tbx,
   samplecols <- cols[setdiff(seq_along(cols), indexcols)]
   nSamples <- length(samplecols) / stride
   idxSample <- rep(seq_len(nSamples), each=stride)
-  SNs <- sapply(split(samplecols, idxSample), function(x) Reduce(.LCSubstr, x))
+  SNs <- vapply(split(samplecols, idxSample), function(x) Reduce(.LCSubstr, x),
+                FUN.VALUE=character(1))
   base::gsub(trailing, "", unname(SNs))
 }
 

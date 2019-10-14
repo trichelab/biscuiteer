@@ -9,9 +9,17 @@ Wait, no, that's [these guys](https://www.biscuiteers.com/). ```biscuiteer```, o
 ## Installing
 
 ```R
+if (!requireNamespace("BiocManager", quietly=TRUE))
     install.packages("BiocManager")
-    library(BiocManager)
-    install("trichelab/biscuiteer")
+BiocManager::install("biscuiteer")
+```
+
+A development version is available on GitHub and can be installed via:
+```R
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("trichelab/biscuiteerData")
+BiocManager::install("trichelab/biscuiteer")
 ```
 
 ## Usage

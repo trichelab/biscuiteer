@@ -71,6 +71,7 @@ getClock <- function(model = c("horvath","horvathshrunk",
   g <- sub("hg37","hg19", sub("GRCh", "hg", genome))
   grcols <- paste0(g, c("chrom","start","end","HMMI","ENSR"))
   data(clocks, package="biscuiteer")
+  clocks <- get("clocks")
     
   clock <- subset(clocks[, c(model, grcols)], !is.na(clocks[, model]))
   gr <- sort(makeGRangesFromDataFrame(clock[-1,], 

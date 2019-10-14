@@ -11,8 +11,8 @@
 #'                    (DEFAULT: "POETICname")
 #' @param ...       Other arguments to pass to summarizeBsSeqOver
 #'
-#' @return          Summarized information about the bsseq object for the given
-#'                    DNA regions
+#' @return          GRanges with summarized information about the bsseq object
+#'                  for the given DNA regions
 #'
 #' @examples
 #'
@@ -27,7 +27,7 @@
 #'                  strand = rep("*",5),
 #'                  ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
 #'                                   end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
-#'                  )
+#'                 )
 #'   regions <- atRegions(bsseq = bisc, regions = reg)
 #'
 #' @export
@@ -42,5 +42,10 @@ atRegions <- function(bsseq,
   regional <- regional[as.character(regions), ]
   rownames(regional) <- names(regions) 
   if (!is.null(mappings)) colnames(regional) <- mappings[colnames(regional), nm]
-  return(regional)
+
+  out <- granges(regions)
+  mcols(out) <- regional
+  names(mcols(out)) <- c("summary")
+
+  return(out)
 }

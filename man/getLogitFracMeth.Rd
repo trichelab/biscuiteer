@@ -22,7 +22,7 @@ getMvals(x, minCov = 3, minSamp = 2, k = 0.1, r = NULL)
 (DEFAULT: NULL)}
 }
 \value{
-\preformatted{    Smoothed logit(M / Cov) matrix with coordinates as row names
+\preformatted{    Smoothed logit(M / Cov) GRanges with coordinates as row names
 }
 }
 \description{

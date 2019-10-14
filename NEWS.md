@@ -1,7 +1,14 @@
-## biscuiteer 0.9.93
+Package: biscuiteer
+===================
 
-* Preparing for initial Bioconductor release
+Version: 1.0.0 [2019-10-11]
 
-## biscuiteer 0.1.0
+CHANGES:
 
-* Initial addition of functions and tests
+  o Package uploaded to Bioconductor for the first time
+
+Version: 0.1.0 [2018-08-07]
+
+CHANGES:
+
+  o Initial addition of functions and tests

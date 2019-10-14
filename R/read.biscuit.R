@@ -35,6 +35,7 @@
 #'
 #' @importFrom data.table fread
 #' @importFrom R.utils gunzip
+#' @importFrom rtracklayer export
 #' @import SummarizedExperiment
 #' @import readr
 #' @import bsseq
@@ -122,18 +123,16 @@ read.biscuit <- function(BEDfile,
         return(x)
       }
       message("Making ",params$passes," passes of ",chunkSize," loci each...")
-      tbl <- with(params,
-                  read_tsv_chunked(tbx$path, DataFrameCallback$new(f), na=".",
-                                   skip=as.numeric(params$hasHeader), 
-                                   col_names=colNames, col_types=colSpec, 
-                                   chunk_size=chunkSize))
+      tbl <- read_tsv_chunked(params$tbx$path, DataFrameCallback$new(f), na=".",
+                              skip=as.numeric(params$hasHeader), 
+                              col_names=params$colNames,
+                              col_types=params$colSpec, chunk_size=chunkSize)
     } else { 
       message("If the following is slow, you may need to decrease chunkSize")
       message("from ",chunkSize," to something smaller & do multiple passes.")
-      tbl <- with(params,
-                  read_tsv(tbx$path, na=".", comment="#",
-                           skip=as.numeric(params$hasHeader), 
-                           col_names=colNames, col_types=colSpec))
+      tbl <- read_tsv(params$tbx$path, na=".", comment="#",
+                      skip=as.numeric(params$hasHeader), 
+                      col_names=params$colNames, col_types=params$colSpec)
     }
     # }}}
   }
@@ -170,5 +169,4 @@ read.biscuit <- function(BEDfile,
 
 #' @describeIn read.biscuit Alias for read.biscuit
 #'
-#' @export
 load.biscuit <- read.biscuit

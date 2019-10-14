@@ -89,20 +89,13 @@ which is a wrapper around the bsseq function, `combine`.
 ```{r}
 shuf_bed <- system.file("extdata", "MCF7_Cunha_chr11p15_shuffled.bed.gz",
                         package="biscuiteer")
-orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
-                        package="biscuiteer")
 shuf_vcf <- system.file("extdata",
                         "MCF7_Cunha_shuffled_header_only.vcf.gz",
                         package="biscuiteer")
-orig_vcf <- system.file("extdata",
-                        "MCF7_Cunha_header_only.vcf.gz",
-                        package="biscuiteer")
-bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
-                      merged = FALSE)
-bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+bisc2 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
                       merged = FALSE)
 
-comb <- unionize(bisc1, bisc2)
+comb <- unionize(bisc, bisc2)
 ```
 
 # Analysis Functionality
