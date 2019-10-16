@@ -10,4 +10,12 @@ data(GRCh37.chromArm, package="biscuiteer")
 \description{
 Chromosome arm locations for GRCh37 genome
 }
+\details{
+Source URL: https://genome.ucsc.edu/cgi-bin/hgTables
+(Cytogenic bands were retrieved using the UCSC Table Browser. The output was
+then exported to a TXT file, where the chromosome arms were combined and
+formed into a GRanges)
+Source type: TXT
+Return type: GRanges
+}
 \keyword{data}

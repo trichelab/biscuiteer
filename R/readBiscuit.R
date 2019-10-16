@@ -43,7 +43,7 @@
 #' @seealso bsseq
 #' @seealso checkBiscuitBED
 #'
-#' @aliases load.biscuit
+#' @aliases loadBiscuit
 #'
 #' @examples
 #'

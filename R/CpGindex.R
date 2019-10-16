@@ -129,11 +129,11 @@ CpGindex <- function(bsseq,
   # summarize both via ratios
   message("Computing indices...") 
   res <- new("CpGindex", 
-             hyperMethRegions=PRCs, 
-             hypoMethRegions=PMDs,
              DataFrame(hyper=hyperMeth, 
                        hypo=hypoMeth, 
-                       ratio=hyperMeth/hypoMeth))
+                       ratio=hyperMeth/hypoMeth),
+             hyperMethRegions=PRCs, 
+             hypoMethRegions=PMDs)
   return(res)
 
 }
@@ -144,26 +144,28 @@ setClass("CpGindex", contains="DataFrame",
                  hypoMethRegions="GenomicRanges"))
 
 # Default show method 
-setMethod("show", "CpGindex", 
-  function(object) {
-    callNextMethod()
-    if (length(slot(object, "hyperMethRegions")) > 0 | 
-        length(slot(object, "hypoMethRegions")) > 0) {
-      cat("  -------\n")
-      cat("This object is just a DataFrame that",
-          "has an idea of where it came from:\n")
-    }
-    if (length(slot(object, "hyperMethRegions")) > 0) { 
-      cat("Hypermethylation was tallied across", 
-          length(slot(object, "hyperMethRegions")), "regions (see", 
-          paste0(as.character(match.call()[[2]]), "@hyperMethRegions)."), "\n")
-    }
-    if (length(slot(object, "hypoMethRegions")) > 0) {
-      cat("Hypomethylation was tallied across", 
-          length(slot(object, "hypoMethRegions")), "regions (see", 
-          paste0(as.character(match.call()[[2]]), "@hypoMethRegions)."), "\n")
-    }
-  }) 
+setMethod("show", "CpGindex", function(object) {
+  callNextMethod()
+  nm <- deparse(substitute(object))
+  if (length(slot(object, "hyperMethRegions")) > 0 |
+      length(slot(object, "hypoMethRegions")) > 0) {
+    cat("  -------\n")
+    cat("This object is just a DataFrame that has an idea of where",
+        "it came from:\n")
+  }
+  if (length(slot(object, "hyperMethRegions")) > 0) {
+    cat("Hypermethylation was tallied across",
+        length(slot(object, "hyperMethRegions")), "region (see",
+        "'object@hyperMethRegions').", "\n")
+    #show(object@hyperMethRegions)
+  }
+  if (length(slot(object, "hypoMethRegions")) > 0) {
+    cat("Hypomethylation was tallied across",
+        length(slot(object, "hypoMethRegions")), "region (see",
+        "'object@hypoMethRegions').", "\n")
+    #show(object@hypoMethRegions)
+  }
+})
 
 # Helper function
 .fetch <- function(x, prefix, suffix) {

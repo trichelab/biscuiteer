@@ -2,7 +2,6 @@
 % Please edit documentation in R/readBiscuit.R
 \name{readBiscuit}
 \alias{readBiscuit}
-\alias{load.biscuit}
 \alias{loadBiscuit}
 \title{Read biscuit output into bsseq object}
 \usage{

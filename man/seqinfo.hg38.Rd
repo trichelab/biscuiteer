@@ -10,4 +10,11 @@ data(seqinfo.hg38, package="biscuiteer")
 \description{
 Seqinfo for hg38 genome
 }
+\details{
+Source URL: http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes
+(The output from this site was downloaded into a TXT file and then loaded
+into a sorted Seqinfo table)
+Source type: TXT
+Return type: Seqinfo
+}
 \keyword{data}

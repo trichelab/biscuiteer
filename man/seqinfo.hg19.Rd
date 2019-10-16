@@ -10,4 +10,11 @@ data(seqinfo.hg19, package="biscuiteer")
 \description{
 Seqinfo for hg19 genome
 }
+\details{
+Source URL: http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes
+(The output from this site was downloaded into a TXT file and then loaded
+into a sorted Seqinfo table)
+Source type: TXT
+Return type: Seqinfo
+}
 \keyword{data}

@@ -10,4 +10,11 @@ data(HMM_CpG_islands.hg19, package="biscuiteer")
 \description{
 Hidden Markov Model-derived CpG islands from hg19 genome
 }
+\details{
+Source URL: https://www.ncbi.nlm.nih.gov/pubmed/20212320
+(Hidden Markov Model CpG islands were produced using the method described in
+this paper. The hg19 genome was used for the CpG island production.)
+Source type: hg19 genome and procedure described in paper
+Return type: GRanges
+}
 \keyword{data}

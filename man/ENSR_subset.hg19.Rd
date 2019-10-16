@@ -10,4 +10,11 @@ data(ENSR_subset.hg19, package="biscuiteer")
 \description{
 Subset of ENSEMBL regulatory build regions for hg19 genome
 }
+\details{
+Source URL: homo_sapiens.GRCh37.Regulatory_Build.regulatory_features.20161117.gff.gz
+(regions that overlap Inifinium annotation manifests - described at
+http://zwdzwd.github.io/InfiniumAnnotation - are selected for final GRanges)
+Source type: GFF
+Return type: GRanges
+}
 \keyword{data}

@@ -1,7 +1,7 @@
 ---
 title: "Biscuiteer User Guide"
-date: "14 October 2019"
-package: "biscuiteer 0.99.1"
+date: "16 October 2019"
+package: "biscuiteer 0.99.2"
 output:
   BiocStyle::html_document:
     highlight: pygments
@@ -61,7 +61,7 @@ NOTE: Both the input BED and VCF files must be tabix'ed before being input to
 `biscuiteer`. This can be done by running `bgzip biscuit_output.xxx` followed by
 `tabix -p xxx biscuit_output.xxx.gz`, where `xxx` is either `bed` or `vcf`.
 
-Data can be loaded using the `read.biscuit` function in `biscuiteer`:
+Data can be loaded using the `readBiscuit` function in `biscuiteer`:
 
 ```r
 library(biscuiteer)
@@ -261,8 +261,8 @@ orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
                         package="biscuiteer")
 orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
                         package="biscuiteer")
-bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-                     merged = FALSE)
+bisc <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                    merged = FALSE)
 ```
 
 ```
@@ -326,8 +326,8 @@ shuf_bed <- system.file("extdata", "MCF7_Cunha_chr11p15_shuffled.bed.gz",
 shuf_vcf <- system.file("extdata",
                         "MCF7_Cunha_shuffled_header_only.vcf.gz",
                         package="biscuiteer")
-bisc2 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
-                      merged = FALSE)
+bisc2 <- readBiscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+                     merged = FALSE)
 ```
 
 ```
@@ -445,14 +445,22 @@ ages
 ## $intercept
 ## [1] 0.6955073
 ## 
-## $meth
-##                         MCF7_Cunha MCF7_Cunha_shuffled
-## chr11:6678129-6678158    0.8000000           0.2500000
-## chr11:12030629-12030658  0.8333333           0.2477324
-## 
-## $coefs
-##   chr11:6678129-6678158 chr11:12030629-12030658 
-##             0.000792206            -0.138857398 
+## $methcoefs
+## GRanges object with 2 ranges and 3 metadata columns:
+##                           seqnames            ranges strand |
+##                              <Rle>         <IRanges>  <Rle> |
+##     chr11:6678129-6678158    chr11   6678129-6678158      * |
+##   chr11:12030629-12030658    chr11 12030629-12030658      * |
+##                                  MCF7_Cunha MCF7_Cunha_shuffled
+##                                   <numeric>           <numeric>
+##     chr11:6678129-6678158               0.8                0.25
+##   chr11:12030629-12030658 0.833333333333333   0.247732426303855
+##                                  coefs
+##                              <numeric>
+##     chr11:6678129-6678158  0.000792206
+##   chr11:12030629-12030658 -0.138857398
+##   -------
+##   seqinfo: 22 sequences from hg19 genome
 ## 
 ## $age
 ##                         [,1]
@@ -509,8 +517,8 @@ show(bisc.CpGindex)
 ## 1 0.0690734126984127 0.199261516805161 0.34664702851757
 ##   -------
 ## This object is just a DataFrame that has an idea of where it came from:
-## Hypermethylation was tallied across 120 regions (see bisc.CpGindex@hyperMethRegions). 
-## Hypomethylation was tallied across 13127 regions (see bisc.CpGindex@hypoMethRegions).
+## Hypermethylation was tallied across 120 region (see 'object@hyperMethRegions'). 
+## Hypomethylation was tallied across 13127 region (see 'object@hypoMethRegions').
 ```
 
 ```r
