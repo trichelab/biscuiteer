@@ -14,7 +14,7 @@
 #' Those add to the methods BSseq inherits from SummarizedExperiment, such as:
 #' `colData`,`rowRanges`,`metadata`,`subset`,`subsetByOverlaps`,`isDisjoint`,&c.
 #'
-#' Most of the biscuiteer methods operate on the VCF header, which read.biscuit
+#' Most of the biscuiteer methods operate on the VCF header, which readBiscuit
 #' likes to stuff into the `metadata` slot of BSseq objects it produces. Some 
 #' may be handy for populating a BSseq object with QC stats, or querying those. 
 #' 

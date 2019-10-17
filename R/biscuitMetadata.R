@@ -20,8 +20,8 @@
 #'                           package="biscuiteer")
 #'   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
 #'                           package="biscuiteer")
-#'   bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-#'                        merged = FALSE)
+#'   bisc <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                       merged = FALSE)
 #'
 #'   meta <- biscuitMetadata(bisc)
 #'   
@@ -51,7 +51,5 @@ biscuitMetadata <- function(bsseq = NULL,
 }
 
 #' @describeIn biscuitMetadata Alias for biscuitMetadata
-#'
-#' @export
 #'
 getBiscuitMetadata <- biscuitMetadata

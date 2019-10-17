@@ -13,7 +13,7 @@
 #' @param r        Regions to collapse over - if NULL, do it by CpG
 #'                   (DEFAULT: NULL)
 #'
-#' @return         Smoothed logit(M / Cov) matrix with coordinates as row names
+#' @return         Smoothed logit(M / Cov) GRanges with coordinates as row names
 #'
 #' @import gtools
 #' @import bsseq
@@ -27,8 +27,8 @@
 #'                           package="biscuiteer")
 #'   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
 #'                           package="biscuiteer")
-#'   bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-#'                        merged = FALSE)
+#'   bisc <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                       merged = FALSE)
 #'
 #'   reg <- GRanges(seqnames = rep("chr11",5),
 #'                  strand = rep("*",5),
@@ -58,10 +58,16 @@ getLogitFracMeth <- function(x,
     
   # construct a subset of the overall BSseq object with smoothed mvalues 
   if (!is.null(r) && is(r, "GenomicRanges")) {
-    getSmoothedLogitFrac(x, k=k, minCov=minCov, r=subset(sort(r), usable))
+    out <- subset(sort(r), usable)
+    smoothed <- getSmoothedLogitFrac(x, k=k, minCov=minCov, r=out)
   } else { 
-    getSmoothedLogitFrac(subset(x, usable), k=k, minCov=minCov)
+    out <- subset(x, usable) # Leave as BSseq object
+    smoothed <- getSmoothedLogitFrac(out, k=k, minCov=minCov)
+    out <- granges(out) # Pull out GRanges portion for output
   } 
+
+  mcols(out) <- as.data.frame(smoothed)
+  return(out)
 
 }
 
@@ -102,7 +108,5 @@ getSmoothedLogitFrac <- function(x,
 }
 
 #' @describeIn getLogitFracMeth Alias for getLogitFracMeth
-#'
-#' @export
 #'
 getMvals <- getLogitFracMeth

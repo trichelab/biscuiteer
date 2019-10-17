@@ -22,7 +22,7 @@ getMvals(x, minCov = 3, minSamp = 2, k = 0.1, r = NULL)
 (DEFAULT: NULL)}
 }
 \value{
-\preformatted{    Smoothed logit(M / Cov) matrix with coordinates as row names
+\preformatted{    Smoothed logit(M / Cov) GRanges with coordinates as row names
 }
 }
 \description{
@@ -43,8 +43,8 @@ logit-transformed methylated-fraction estimates for compartment calling.
                           package="biscuiteer")
   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
                           package="biscuiteer")
-  bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-                       merged = FALSE)
+  bisc <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                      merged = FALSE)
 
   reg <- GRanges(seqnames = rep("chr11",5),
                  strand = rep("*",5),

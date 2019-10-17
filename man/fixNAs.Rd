@@ -4,17 +4,17 @@
 \alias{fixNAs}
 \title{Replace NAs with another value}
 \usage{
-fixNAs(x, y = 0, sparse = FALSE)
+fixNAs(x, y = 0, sparseMatrix = FALSE)
 }
 \arguments{
 \item{x}{The matrix-like object containing NAs to fix}
 
 \item{y}{The value to replace the NAs with (DEFAULT: 0)}
 
-\item{sparse}{Make the result a Matrix object? (DEFAULT: FALSE)}
+\item{sparseMatrix}{Make the result a Matrix object? (DEFAULT: FALSE)}
 }
 \value{
-\preformatted{   x with no NAs (possibly a sparse Matrix)
+\preformatted{         x with no NAs (possibly a sparse Matrix)
 }
 }
 \description{

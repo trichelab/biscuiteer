@@ -23,7 +23,7 @@ a second pass to correct for this.
 \examples{
 
   x <- rnorm(100, mean=0.5, sd=0.15)
-  x <- matrix(x, nrow=50, ncol=50)
+  x <- matrix(x, nrow=50, ncol=2)
 
   ext <- extremality(x, raw=TRUE)
 

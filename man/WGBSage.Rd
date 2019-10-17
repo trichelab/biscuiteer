@@ -41,7 +41,7 @@ WGBSage(bsseq, model = c("horvath", "horvathshrunk", "hannum",
 \item{...}{Arguments to be passed to impute.knn, such as rng.seed}
 }
 \value{
-\preformatted{    A list: call, methylation estimates, coefs, age (estimates)
+\preformatted{    A list with call, methylation estimates, coefs, age estimates
 }
 }
 \description{
@@ -66,10 +66,13 @@ For the 'skinandblood' clock, cite Horvath et al, Aging 2018.
 
 Last but not least, keep track of the parameters YOU used for YOUR estimates.
 The \code{call} element in the returned list of results is for this exact purpose.
-If you need to recover the GRanges object used to average (or impute) DNAme
-values for the model, try \code{as.character(rownames(result$meth))} on a result.
-The coefficients for each of these regions are stored in result$coefs, and
-the age estimates are stored in result$age (named, in case dropBad == TRUE).
+If you need recover the GRanges object used to average(or impute) DNAme
+values for the model, try \code{granges(result$methcoefs)} on a result. The
+methylation fraction and coefficients for each region can be found in the
+GRanges object, result$methcoefs, where each sample has a corresponding
+column with the methylation fraction and the coefficients have their own
+column titled "coefs". Additionally, the age estimates are stored in
+result$age (named, in case dropBad == TRUE).
 }
 \examples{
 
@@ -83,10 +86,10 @@ the age estimates are stored in result$age (named, in case dropBad == TRUE).
   orig_vcf <- system.file("extdata",
                           "MCF7_Cunha_header_only.vcf.gz",
                           package="biscuiteer")
-  bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
-                        merged = FALSE)
-  bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-                        merged = FALSE)
+  bisc1 <- readBiscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+                       merged = FALSE)
+  bisc2 <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                       merged = FALSE)
 
   comb <- unionize(bisc1, bisc2)
   ages <- WGBSage(comb, "horvath")

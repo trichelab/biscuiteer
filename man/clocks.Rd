@@ -10,4 +10,10 @@ data(clocks, package="biscuiteer")
 \description{
 Epigenetic clock data
 }
+\details{
+Source: See inst/scripts/clocks.R for how the clocks data object was
+generated. For more information about sources, see the descriptions in
+?getClock and ?WGBSage.
+Return type: data.frame
+}
 \keyword{data}

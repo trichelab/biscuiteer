@@ -20,10 +20,13 @@
 #' 
 #' Last but not least, keep track of the parameters YOU used for YOUR estimates.
 #' The `call` element in the returned list of results is for this exact purpose.
-#' If you need to recover the GRanges object used to average (or impute) DNAme 
-#' values for the model, try `as.character(rownames(result$meth))` on a result.
-#' The coefficients for each of these regions are stored in result$coefs, and 
-#' the age estimates are stored in result$age (named, in case dropBad == TRUE). 
+#' If you need recover the GRanges object used to average(or impute) DNAme
+#' values for the model, try `granges(result$methcoefs)` on a result. The
+#' methylation fraction and coefficients for each region can be found in the
+#' GRanges object, result$methcoefs, where each sample has a corresponding
+#' column with the methylation fraction and the coefficients have their own
+#' column titled "coefs". Additionally, the age estimates are stored in 
+#' result$age (named, in case dropBad == TRUE).
 #' 
 #' @param bsseq    A bsseq object (must have assays named `M` and `Cov`)
 #' @param model    Which model ("horvath", "horvathshrunk", "hannum",
@@ -45,7 +48,7 @@
 #'                   (DEFAULT: FALSE)
 #' @param ...      Arguments to be passed to impute.knn, such as rng.seed
 #'  
-#' @return         A list: call, methylation estimates, coefs, age (estimates)
+#' @return         A list with call, methylation estimates, coefs, age estimates
 #'
 #' @import impute
 #' @importFrom methods as
@@ -62,10 +65,10 @@
 #'   orig_vcf <- system.file("extdata",
 #'                           "MCF7_Cunha_header_only.vcf.gz",
 #'                           package="biscuiteer")
-#'   bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
-#'                         merged = FALSE)
-#'   bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-#'                         merged = FALSE)
+#'   bisc1 <- readBiscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+#'                        merged = FALSE)
+#'   bisc2 <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                        merged = FALSE)
 #'
 #'   comb <- unionize(bisc1, bisc2)
 #'   ages <- WGBSage(comb, "horvath")
@@ -84,6 +87,15 @@ WGBSage <- function(bsseq,
                     genome = NULL, 
                     dropBad = FALSE,
                     ...) { 
+
+  # Check argument types
+  stopifnot(is.numeric(padding))
+  stopifnot(is.logical(useENSR))
+  stopifnot(is.logical(useHMMI))
+  stopifnot(is.numeric(minCovg))
+  stopifnot(is.logical(impute))
+  stopifnot(is.numeric(minSamp))
+  stopifnot(is.logical(dropBad))
 
   # sort out assemblies
   g <- unique(genome(bsseq))
@@ -123,7 +135,7 @@ WGBSage <- function(bsseq,
   methWGBSage <- getMeth(bsseq, regions=clock$gr, type="raw", what="perRegion")
   rownames(methWGBSage) <- as.character(clock$gr)
   methWGBSage[covgWGBSage < minCovg] <- NA
-  methWGBSage <- as(methWGBSage, "matrix") # 353 x ncol(bsseq) is not too huge
+  methWGBSage <- as(methWGBSage, "matrix")
 
   # drop samples if needed
   droppedSamples <- c()
@@ -147,12 +159,16 @@ WGBSage <- function(bsseq,
   coefs <- clock$gr[rownames(methWGBSage)]$score
   names(coefs) <- rownames(methWGBSage)
   agePredRaw <- (clock$intercept + (t(methWGBSage) %*% coefs))
+
+  redGR <- granges(clock$gr[rownames(methWGBSage)])
+  mcols(redGR) <- as.data.frame(methWGBSage) # One column for each sample
+  redGR$coefs <- coefs # Add a column for the coefficients
+
   res <- list(call=sys.call(), 
               droppedSamples=droppedSamples,
               droppedRegions=droppedRegions,
               intercept=clock$intercept,
-              meth=methWGBSage, 
-              coefs=coefs,
+              methcoefs=redGR, 
               age=clock$cleanup(agePredRaw))
   return(res)
     

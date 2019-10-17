@@ -36,7 +36,7 @@ retrieves the various models.
 \details{
 The remapped coordinates for the Horvath (2012) and Hannum (2013) clocks,
 along with shrunken Horvath (2012) and improved Horvath (2018) models, are
-provided as part of biscuiteer (visit inst/extdata/clocks.R to find out how)
+provided as part of biscuiteer (visit inst/scripts/clocks.R to find out how)
 along with some functionality to make them more usable in RRBS/WGBS data of
 varying coverage along varying genomes. For example, the HMM-based CpG island
 model introduced by Wu (2010) can be used to assign to within-island features

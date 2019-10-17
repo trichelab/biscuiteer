@@ -15,6 +15,7 @@
 #' @seealso RRBSeq
 #'
 #' @importFrom DelayedMatrixStats rowCounts
+#' @importFrom methods is
 #' @import bsseq
 #'
 #' @examples
@@ -29,10 +30,10 @@
 #'   orig_vcf <- system.file("extdata",
 #'                           "MCF7_Cunha_header_only.vcf.gz",
 #'                           package="biscuiteer")
-#'   bisc1 <- read.biscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
-#'                         merged = FALSE)
-#'   bisc2 <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-#'                         merged = FALSE)
+#'   bisc1 <- readBiscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
+#'                        merged = FALSE)
+#'   bisc2 <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                        merged = FALSE)
 #'
 #'   comb <- unionize(bisc1, bisc2)
 #'
@@ -42,6 +43,9 @@
 #'
 filterLoci <- function(bsseq,
                        testCovariate) {
+
+  stopifnot(is(bsseq, "BSseq"))
+  stopifnot(is.character(testCovariate))
 
   filt <- c()
   lev <- unique(pData(bsseq)[[testCovariate]])

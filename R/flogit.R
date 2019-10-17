@@ -9,13 +9,6 @@
 #'
 #' @importFrom gtools logit
 #'
-#' @examples
-#'
-#'   num <- runif(100, min = 0, max = 1)
-#'   log <- flogit(num)
-#'
-#' @export 
-#'
 flogit <- function(x,
                    sqz = 0.000001) {
   x[ which(x < sqz) ] <- sqz 

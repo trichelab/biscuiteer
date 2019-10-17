@@ -20,8 +20,8 @@ atRegions(bsseq, regions, mappings = NULL, nm = "POETICname", ...)
 \item{...}{Other arguments to pass to summarizeBsSeqOver}
 }
 \value{
-\preformatted{     Summarized information about the bsseq object for the given
-               DNA regions
+\preformatted{     GRanges with summarized information about the bsseq object
+             for the given DNA regions
 }
 }
 \description{
@@ -34,14 +34,14 @@ regions. Useful for exploring genomic data using cBioPortal.
                           package="biscuiteer")
   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
                           package="biscuiteer")
-  bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-                       merged = FALSE)
+  bisc <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+                      merged = FALSE)
 
   reg <- GRanges(seqnames = rep("chr11",5),
                  strand = rep("*",5),
                  ranges = IRanges(start = c(0,2.8e6,1.17e7,1.38e7,1.69e7),
                                   end= c(2.8e6,1.17e7,1.38e7,1.69e7,2.2e7))
-                 )
+                )
   regions <- atRegions(bsseq = bisc, regions = reg)
 
 }

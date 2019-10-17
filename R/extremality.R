@@ -14,7 +14,7 @@
 #' @examples
 #'
 #'   x <- rnorm(100, mean=0.5, sd=0.15)
-#'   x <- matrix(x, nrow=50, ncol=50)
+#'   x <- matrix(x, nrow=50, ncol=2)
 #'
 #'   ext <- extremality(x, raw=TRUE)
 #'
@@ -22,13 +22,19 @@
 #'
 extremality <- function(x,
                         raw = FALSE) { 
-# FIXME: this breaks when handed a single-row DelayedArray.
 # extremal <- c(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 # milder   <- c(0.8, 0.2, 0.1, 0.3, 0.7, 0.1, 0.4, 0.1, 0.1, 0.2)
 # 
 # extremality(extremal, raw=TRUE) 
 # extremality(extremal, raw=FALSE) 
 
+  # TODO: Make all number of rows work when using DelayedArrays
+  if (nrow(x) == 1 && is(x, "DelayedArray")) {
+    stop("DelayedArray must have more than 1 row for the time being. If you're ",
+         "using a DelayedArray, then you're probably using an HDF5-backed array ",
+         "which is experimental at this time. Any number of rows with be ",
+         "allowed when HDF5-backing is fully operational.")
+  }
   bernoulliVar <- function(meanx) meanx * (1 - meanx) 
   
   if (is(x, "matrix")) {

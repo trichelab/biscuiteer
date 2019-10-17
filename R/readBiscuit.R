@@ -35,6 +35,7 @@
 #'
 #' @importFrom data.table fread
 #' @importFrom R.utils gunzip
+#' @importFrom rtracklayer export
 #' @import SummarizedExperiment
 #' @import readr
 #' @import bsseq
@@ -42,7 +43,7 @@
 #' @seealso bsseq
 #' @seealso checkBiscuitBED
 #'
-#' @aliases load.biscuit
+#' @aliases loadBiscuit
 #'
 #' @examples
 #'
@@ -50,41 +51,37 @@
 #'                           package="biscuiteer")
 #'   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
 #'                           package="biscuiteer")
-#'   bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-#'                        merged = FALSE)
+#'   bisc <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                       merged = FALSE)
 #'
 #' @export
 #'
-read.biscuit <- function(BEDfile, 
-                         VCFfile, 
-                         merged, 
-                         sampleNames = NULL, 
-                         simplify = FALSE, 
-                         genome = "hg19",
-                         how = c("data.table", "readr"),
-                         hdf5 = FALSE, 
-                         hdf5dir = NULL,
-                         sparse = FALSE,
-                         chunkSize = 1e6, 
-                         chr = NULL,
-                         which = NULL,
-                         verbose = FALSE) { 
+readBiscuit <- function(BEDfile, 
+                        VCFfile, 
+                        merged, 
+                        sampleNames = NULL, 
+                        simplify = FALSE, 
+                        genome = "hg19",
+                        how = c("data.table", "readr"),
+                        hdf5 = FALSE, 
+                        hdf5dir = NULL,
+                        sparse = FALSE,
+                        chunkSize = 1e6, 
+                        chr = NULL,
+                        which = NULL,
+                        verbose = FALSE) { 
 
   # Check if required inputs are missing
   # Print more useful messages if they are
   if (rlang::is_missing(BEDfile))
     stop("Tabix'ed BED file from biscuit is required.\n")
   if (rlang::is_missing(VCFfile)) {
-    err_message <- paste("Tabix'ed VCF file from biscuit is required.",
-                         "Header information is used to set up column names.\n")
-    stop(err_message)
+    stop("Tabix'ed VCF file from biscuit is required. Header information is ",
+         "used to set up column names.")
   }
   if (rlang::is_missing(merged)) {
-    err_message <- paste("merged flag is required.",
-                         "merged = TRUE if 'biscuit mergecg' was",
-                         "run after 'biscuit vcf2bed'.",
-                         "Otherwise use merged = FALSE.\n")
-    stop(err_message)
+    stop("merged flag is required. merged = TRUE if 'biscuit mergecg' was run ",
+         "after 'biscuit vcf2bed'. Otherwise use merged = FALSE.")
   }
 
   how <- match.arg(how)
@@ -122,18 +119,16 @@ read.biscuit <- function(BEDfile,
         return(x)
       }
       message("Making ",params$passes," passes of ",chunkSize," loci each...")
-      tbl <- with(params,
-                  read_tsv_chunked(tbx$path, DataFrameCallback$new(f), na=".",
-                                   skip=as.numeric(params$hasHeader), 
-                                   col_names=colNames, col_types=colSpec, 
-                                   chunk_size=chunkSize))
+      tbl <- read_tsv_chunked(params$tbx$path, DataFrameCallback$new(f), na=".",
+                              skip=as.numeric(params$hasHeader), 
+                              col_names=params$colNames,
+                              col_types=params$colSpec, chunk_size=chunkSize)
     } else { 
       message("If the following is slow, you may need to decrease chunkSize")
       message("from ",chunkSize," to something smaller & do multiple passes.")
-      tbl <- with(params,
-                  read_tsv(tbx$path, na=".", comment="#",
-                           skip=as.numeric(params$hasHeader), 
-                           col_names=colNames, col_types=colSpec))
+      tbl <- read_tsv(params$tbx$path, na=".", comment="#",
+                      skip=as.numeric(params$hasHeader), 
+                      col_names=params$colNames, col_types=params$colSpec)
     }
     # }}}
   }
@@ -168,7 +163,6 @@ read.biscuit <- function(BEDfile,
 }
 
 
-#' @describeIn read.biscuit Alias for read.biscuit
+#' @describeIn readBiscuit Alias for readBiscuit
 #'
-#' @export
-load.biscuit <- read.biscuit
+loadBiscuit <- readBiscuit

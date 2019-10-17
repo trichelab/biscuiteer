@@ -10,4 +10,10 @@ data(hg19.chromArm, package="biscuiteer")
 \description{
 Chromosome arm locations for hg19 genome
 }
+\details{
+Source URL: http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz
+(Chromosome arms were combined to form the final GRanges)
+Source type: TXT
+Return type: GRanges
+}
 \keyword{data}

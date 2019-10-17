@@ -44,8 +44,8 @@
 #'                           package="biscuiteer")
 #'   orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
 #'                           package="biscuiteer")
-#'   bisc <- read.biscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-#'                        merged = FALSE)
+#'   bisc <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
+#'                       merged = FALSE)
 #'
 #'   bc <- binCoverage(bsseq = bisc, bins = bins, which = reg, QDNAseq = FALSE)
 #'
@@ -56,8 +56,12 @@ binCoverage <- function(bsseq,
                         which = NULL,
                         QDNAseq = TRUE,
                         readLen = 100) {
-  # FIXME: turn this into a generic for bsseq objects, for bigWigs, for [...]
-  # FIXME: figure out how to estimate the most likely GCbias ~ DNAme linkage
+  # TODO: turn this into a generic for bsseq objects, for bigWigs, for [...]
+  # TODO: figure out how to estimate the most likely GCbias ~ DNAme linkage
+
+  # Check input types
+  stopifnot(is.logical(QDNAseq))
+  stopifnot(is.numeric(readLen))
 
   # turn QDNAseq bins into an annotated GRanges object 
   if (is(bins, "AnnotatedDataFrame") & # QDNAseq bins 
@@ -74,6 +78,7 @@ binCoverage <- function(bsseq,
   }
   origStyle <- seqlevelsStyle(gr)
   if (!is.null(which)) {
+    stopifnot(is(which, "GenomicRanges"))
     seqlevelsStyle(gr) <- seqlevelsStyle(which)
     gr <- subsetByOverlaps(gr, which)
   }

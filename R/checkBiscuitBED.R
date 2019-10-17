@@ -15,8 +15,15 @@
 #'                       names, data.frame: make pData (DEFAULT: NULL)
 #' @param chunkSize    For files longer than `yieldSize` number of lines long,
 #'                       chunk the file (DEFAULT: 5e7)
-#' @param hdf5         Use HDF5 arrays for backing the data? (DEFAULT: FALSE)
-#' @param sparse       Use sparse Matrix objects for the data? (DEFAULT: TRUE)
+#' @param hdf5         Use HDF5 arrays for backing the data? Using HDF5-backed
+#'                       arrays stores the data in a HDF5 file on disk, rather
+#'                       than loading entire object into memory. This allows
+#'                       for analyses to be done on memory-limited systems at
+#'                       the small cost of slightly reduced return times.
+#'                       (DEFAULT: FALSE)
+#' @param sparse       Use sparse Matrix objects for the data? If TRUE, use a
+#'                       Matrix object for sparse matrices (matrices with many
+#'                       zeroes in them) (DEFAULT: TRUE)
 #' @param how          How to load the data - "data.table" or "readr"?
 #'                       (DEFAULT: data.table)
 #' @param chr          Load a specific chromosome to rbind() later?
@@ -30,7 +37,7 @@
 #' @import Rsamtools
 #' @import readr
 #'
-#' @seealso read.biscuit
+#' @seealso readBiscuit
 #'
 #' @examples
 #'
@@ -56,18 +63,14 @@ checkBiscuitBED <- function(BEDfile,
   # Check if required inputs are missing
   # Print more useful messages if they are
   if (rlang::is_missing(BEDfile))
-    stop("Tabix'ed BED file from biscuit is required.\n")
+    stop("Tabix'ed BED file from biscuit is required.")
   if (rlang::is_missing(VCFfile)) {
-    err_message <- paste("Tabix'ed VCF file from biscuit is required.",
-                         "Header information is used to set up column names.\n")
-    stop(err_message)
+    stop("Tabix'ed VCF file from biscuit is required. Header information is ",
+         "used to set up column names.")
   }
   if (rlang::is_missing(merged)) {
-    err_message <- paste("merged flag is required.",
-                         "merged = TRUE if 'biscuit mergecg' was",
-                         "run after 'biscuit vcf2bed'.",
-                         "Otherwise use merged = FALSE.\n")
-    stop(err_message)
+    stop("merged flag is required. merged = TRUE if 'biscuit mergecg' was run ",
+         "after 'biscuit vcf2bed'. Otherwise use merged = FALSE.")
   }
 
   # eventual result
@@ -78,7 +81,7 @@ checkBiscuitBED <- function(BEDfile,
   params$sparse <- sparse
   params$hdf5 <- hdf5
 
-  # a tabixed BED-like file that is the only mandatory argument to read.biscuit
+  # a tabixed BED-like file that is the only mandatory argument to readBiscuit
   params$BEDfile <- BEDfile
   if (!base::grepl(".gz$", BEDfile)) stop("Only tabix'ed BEDs are supported.")
   message("Checking ", BEDfile, " for import...")
@@ -142,9 +145,9 @@ checkBiscuitBED <- function(BEDfile,
     if (is.null(sampleNames)) sampleNames <- sNames 
     nSamples <- length(sNames)
   } else {
-    message(paste0(BEDfile, " does not have a header. ",
-                   "Using VCF file header information ",
-                   "to help set column names."))
+    message(BEDfile, " does not have a header. ",
+            "Using VCF file header information ",
+            "to help set column names.")
 
     preamble <- read.table(tbx$path, sep="\t", na.strings=".", nrows=3)
     cols <- c("chr","start","end")
@@ -154,15 +157,15 @@ checkBiscuitBED <- function(BEDfile,
     message("Assuming ", ifelse(merged, "merged", "unmerged"),
             " data. Checking now...", appendLF=FALSE)
     if (((ncol(preamble) - 3) %% colsPerSample) != 0) {
-      stop(paste0("Number of columns per sample does not seem to line up. ",
-                  "Double check your merge flag is correct."))
+      stop("Number of columns per sample does not seem to line up. ",
+           "Double check your merge flag is correct.")
     }
     if (nSamples != length(sampleNames)) {
-        stop(paste0("nSamples (", nSamples, ") does not match the ",
-                    "number of sampleNames (", length(sampleNames),")"))
+        stop("nSamples (", nSamples, ") does not match the ",
+             "number of sampleNames (", length(sampleNames),")")
     }
-    message(paste0(" ...The file might be alright. ",
-                   "Double check if you're worried."))
+    message(" ...The file might be alright. ",
+            "Double check if you're worried.")
 
     if (is.null(sampleNames)) sampleNames <- paste0("sample", seq_len(nSamples))
     colSuffixes <- c(".beta",".covg")
@@ -220,29 +223,29 @@ checkBiscuitBED <- function(BEDfile,
   params$contextCols <- grep(".context", params$colNames, value=TRUE) 
   names(params$contextCols) <- rownames(pData)
 
-  # for readr 
-  params$colSpec <- cols_only()
-  params$colSpec[["cols"]][[params$colNames[1]]] <- col_character()
-  params$colSpec[["cols"]][[params$colNames[2]]] <- col_integer()
-  params$colSpec[["cols"]][[params$colNames[3]]] <- col_integer()
-  for ( i in seq_along(rownames(params$pData)) ) {
-    params$colSpec[["cols"]][[params$betaCols[i]]] <- col_double()
-    params$colSpec[["cols"]][[params$covgCols[i]]] <- col_integer()
-  }
-  
-  # for data.table
-  params$colClasses <- c() 
-  params$colClasses[params$colNames[1]] <- "character"
-  params$colClasses[params$colNames[2]] <- "integer"
-  params$colClasses[params$colNames[3]] <- "integer"
-  for ( i in seq_along(rownames(params$pData)) ) {
-    params$colClasses[params$betaCols[i]] <- "double"
-    params$colClasses[params$covgCols[i]] <- "integer"
-    params$colClasses[params$contextCols[i]]  <- "NULL"
-  }
-  params$colClasses <- params$colClasses[params$colNames] 
-  if (params$hasHeader) {
-    names(params$colClasses)[1] <- paste0("#",names(params$colClasses)[1])
+  if (params$how == "data.table") {
+    params$colClasses <- c() 
+    params$colClasses[params$colNames[1]] <- "character"
+    params$colClasses[params$colNames[2]] <- "integer"
+    params$colClasses[params$colNames[3]] <- "integer"
+    for ( i in seq_along(rownames(params$pData)) ) {
+      params$colClasses[params$betaCols[i]] <- "double"
+      params$colClasses[params$covgCols[i]] <- "integer"
+      params$colClasses[params$contextCols[i]]  <- "NULL"
+    }
+    params$colClasses <- params$colClasses[params$colNames] 
+    if (params$hasHeader) {
+      names(params$colClasses)[1] <- paste0("#",names(params$colClasses)[1])
+    }
+  } else {
+    params$colSpec <- cols_only()
+    params$colSpec[["cols"]][[params$colNames[1]]] <- col_character()
+    params$colSpec[["cols"]][[params$colNames[2]]] <- col_integer()
+    params$colSpec[["cols"]][[params$colNames[3]]] <- col_integer()
+    for ( i in seq_along(rownames(params$pData)) ) {
+      params$colSpec[["cols"]][[params$betaCols[i]]] <- col_double()
+      params$colSpec[["cols"]][[params$covgCols[i]]] <- col_integer()
+    }
   }
   return(params) 
 

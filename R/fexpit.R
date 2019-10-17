@@ -9,13 +9,6 @@
 #'
 #' @importFrom gtools inv.logit
 #'
-#' @examples
-#'
-#'   num <- rnorm(100, mean = 0, sd = 100)
-#'   exp <- fexpit(num)
-#'
-#' @export
-#'
 fexpit <- function(x,
                    sqz = 0.000001) {
   tmp <- (gtools::inv.logit(x) * 2) - 1
