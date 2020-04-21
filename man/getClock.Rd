@@ -4,9 +4,13 @@
 \alias{getClock}
 \title{Retrieve 'epigenetic clock' models}
 \usage{
-getClock(model = c("horvath", "horvathshrunk", "hannum", "skinandblood"),
-  padding = 15, genome = c("hg19", "hg38", "GRCh37", "GRCh38"),
-  useENSR = FALSE, useHMMI = FALSE)
+getClock(
+  model = c("horvath", "horvathshrunk", "hannum", "skinandblood"),
+  padding = 15,
+  genome = c("hg19", "hg38", "GRCh37", "GRCh38"),
+  useENSR = FALSE,
+  useHMMI = FALSE
+)
 }
 \arguments{
 \item{model}{One of "horvath", "horvathshrunk", "hannum", or

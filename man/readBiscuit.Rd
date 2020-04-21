@@ -5,15 +5,39 @@
 \alias{loadBiscuit}
 \title{Read biscuit output into bsseq object}
 \usage{
-readBiscuit(BEDfile, VCFfile, merged, sampleNames = NULL,
-  simplify = FALSE, genome = "hg19", how = c("data.table", "readr"),
-  hdf5 = FALSE, hdf5dir = NULL, sparse = FALSE, chunkSize = 1e+06,
-  chr = NULL, which = NULL, verbose = FALSE)
+readBiscuit(
+  BEDfile,
+  VCFfile,
+  merged,
+  sampleNames = NULL,
+  simplify = FALSE,
+  genome = "hg19",
+  how = c("data.table", "readr"),
+  hdf5 = FALSE,
+  hdf5dir = NULL,
+  sparse = FALSE,
+  chunkSize = 1000000,
+  chr = NULL,
+  which = NULL,
+  verbose = FALSE
+)
 
-loadBiscuit(BEDfile, VCFfile, merged, sampleNames = NULL,
-  simplify = FALSE, genome = "hg19", how = c("data.table", "readr"),
-  hdf5 = FALSE, hdf5dir = NULL, sparse = FALSE, chunkSize = 1e+06,
-  chr = NULL, which = NULL, verbose = FALSE)
+loadBiscuit(
+  BEDfile,
+  VCFfile,
+  merged,
+  sampleNames = NULL,
+  simplify = FALSE,
+  genome = "hg19",
+  how = c("data.table", "readr"),
+  hdf5 = FALSE,
+  hdf5dir = NULL,
+  sparse = FALSE,
+  chunkSize = 1000000,
+  chr = NULL,
+  which = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{BEDfile}{A BED-like file - must be compressed and tabix'ed}

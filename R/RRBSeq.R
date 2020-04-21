@@ -9,6 +9,7 @@
 #' @return               A GRanges object (same as from dmrseq)
 #' 
 #' @import dmrseq
+#' @import BiocParallel
 #'
 #' @examples
 #'

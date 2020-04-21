@@ -4,9 +4,17 @@
 \alias{checkBiscuitBED}
 \title{Inspect Biscuit VCF and BED files}
 \usage{
-checkBiscuitBED(BEDfile, VCFfile, merged, sampleNames = NULL,
-  chunkSize = 5e+07, hdf5 = FALSE, sparse = TRUE,
-  how = c("data.table", "readr"), chr = NULL)
+checkBiscuitBED(
+  BEDfile,
+  VCFfile,
+  merged,
+  sampleNames = NULL,
+  chunkSize = 50000000,
+  hdf5 = FALSE,
+  sparse = TRUE,
+  how = c("data.table", "readr"),
+  chr = NULL
+)
 }
 \arguments{
 \item{BEDfile}{A BED-like file - must be compressed and tabix'ed}

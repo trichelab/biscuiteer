@@ -11,7 +11,7 @@ condenseSampleNames(tbx, stride, trailing = "\\\\.$")
 
 \item{stride}{How many columns per sample}
 
-\item{trailing}{Trailing character to trim (DEFAULT: "\.$")}
+\item{trailing}{Trailing character to trim (DEFAULT: "\\.$")}
 }
 \value{
 \preformatted{     A character vector of sample names (longest common

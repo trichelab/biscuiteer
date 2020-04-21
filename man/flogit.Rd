@@ -4,7 +4,7 @@
 \alias{flogit}
 \title{Calculate squeezed logit function}
 \usage{
-flogit(x, sqz = 1e-06)
+flogit(x, sqz = 0.000001)
 }
 \arguments{
 \item{x}{A vector of values between 0 and 1 inclusive}
