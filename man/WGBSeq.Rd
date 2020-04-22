@@ -29,6 +29,6 @@ Wrapper for WGBS settings for dmrseq
   dat <- BS.chr21
 
   wgbs <- WGBSeq(dat[1:500, ], "CellType", cutoff = 0.05,
-                 BPPARAM=SerialParam())
+                 BPPARAM=BiocParallel::SerialParam())
 
 }
