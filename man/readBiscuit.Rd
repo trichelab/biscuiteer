@@ -16,7 +16,7 @@ readBiscuit(
   hdf5 = FALSE,
   hdf5dir = NULL,
   sparse = FALSE,
-  chunkSize = 1000000,
+  chunkSize = 1e+06,
   chr = NULL,
   which = NULL,
   verbose = FALSE
@@ -33,7 +33,7 @@ loadBiscuit(
   hdf5 = FALSE,
   hdf5dir = NULL,
   sparse = FALSE,
-  chunkSize = 1000000,
+  chunkSize = 1e+06,
   chr = NULL,
   which = NULL,
   verbose = FALSE

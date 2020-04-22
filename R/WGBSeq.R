@@ -8,6 +8,7 @@
 #'
 #' @return               A GRanges object (same as from dmrseq)
 #'
+#' @import BiocParallel
 #' @import dmrseq
 #'
 #' @examples
@@ -16,7 +17,7 @@
 #'   dat <- BS.chr21
 #'
 #'   wgbs <- WGBSeq(dat[1:500, ], "CellType", cutoff = 0.05,
-#'                  BPPARAM=SerialParam())
+#'                  BPPARAM=BiocParallel::SerialParam())
 #'
 #' @export
 #'

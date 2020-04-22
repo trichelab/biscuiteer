@@ -11,7 +11,7 @@ Maintainer: "Jacob Morrison" <jacob.morrison@vai.org>
 URL: https://github.com/trichelab/biscuiteer
 BugReports: https://github.com/trichelab/biscuiteer/issues
 License: GPL-3
-Depends: R (>= 3.6.0), 
+Depends: R (>= 4.1), 
          biscuiteerData,
          bsseq
 Imports: readr,

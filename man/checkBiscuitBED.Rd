@@ -9,7 +9,7 @@ checkBiscuitBED(
   VCFfile,
   merged,
   sampleNames = NULL,
-  chunkSize = 50000000,
+  chunkSize = 5e+07,
   hdf5 = FALSE,
   sparse = TRUE,
   how = c("data.table", "readr"),
