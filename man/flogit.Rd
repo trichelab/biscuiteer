@@ -2,19 +2,33 @@
 % Please edit documentation in R/flogit.R
 \name{flogit}
 \alias{flogit}
-\title{Calculate squeezed logit function}
+\title{Helper function: squeezed logit}
 \usage{
-flogit(x, sqz = 1e-06)
+flogit(p, sqz = 1e-06)
 }
 \arguments{
-\item{x}{A vector of values between 0 and 1 inclusive}
+\item{p}{a vector of values between 0 and 1 inclusive}
 
-\item{sqz}{The amount by which to 'squeeze' (DEFAULT: 0.000001)}
+\item{sqz}{the amount by which to 'squeeze', default is .000001}
 }
 \value{
-\preformatted{A vector of values between -Inf and +Inf
+\preformatted{   a vector of values between -Inf and +Inf
 }
 }
 \description{
-Helper function for calculating squeezed logit
+Helper function: squeezed logit
+}
+\examples{
+
+  set.seed(1234)
+  p <- runif(n=1000)
+  summary(p) 
+
+  sqz <- 1 / (10**6)
+  x <- flogit(p, sqz=sqz)
+  summary(x) 
+
+  all( abs(p - fexpit(x, sqz=sqz)) < sqz )
+  all( abs(p - fexpit(flogit(p, sqz=sqz), sqz=sqz)) < sqz ) 
+
 }
