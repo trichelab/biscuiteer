@@ -4,7 +4,14 @@
 \alias{binCoverage}
 \title{Bin CpG or CpH coverage to simplify and improve CNA "sketching"}
 \usage{
-binCoverage(bsseq, bins, which = NULL, QDNAseq = TRUE, readLen = 100)
+binCoverage(
+  bsseq,
+  bins,
+  which = NULL,
+  QDNAseq = TRUE,
+  readLen = 100,
+  paired = TRUE
+)
 }
 \arguments{
 \item{bsseq}{A bsseq object - supplied to getCoverage()}
@@ -19,6 +26,9 @@ binCoverage(bsseq, bins, which = NULL, QDNAseq = TRUE, readLen = 100)
 
 \item{readLen}{Correction factor for coverage - read length in bp
 (DEFAULT: 100)}
+
+\item{paired}{Whether the data are from paired-end sequencing
+(DEFAULT: TRUE)}
 }
 \value{
 \preformatted{    Binned read counts
@@ -31,6 +41,10 @@ Example usage for E-M
 NOTE: As of early Sept 2019, QDNAseq did not have hg38 capabilities. If you
 desire to use the hg38 genome, biscuiteer suggests you use a GRanges object
 to define your bins.
+
+NOTE: As of late July 2020, biscuiteer has started implemented support for
+hg38, hg19, mm10, and mm9 for bisulfite-specific features, including
+adaptive GC-content computation and SV integration for adjusting CNV ends.
 }
 \examples{
 
