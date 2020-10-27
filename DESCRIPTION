@@ -4,7 +4,7 @@ Title: Convenience Functions for Biscuit
 Description: A test harness for bsseq loading of Biscuit output, summarization
              of WGBS data over defined regions and in mappable samples, with or
              without imputation, dropping of mostly-NA rows, age estimates, etc.
-Version: 1.3.0
+Version: 1.4.0
 Date: 2020-04-21
 Author: Tim Triche, Jr. [aut, cre], Wanding Zhou [aut], Ben Johnson [aut], Jacob Morrison [aut], Lyong Heo [aut]
 Maintainer: "Jacob Morrison" <jacob.morrison@vai.org>
