@@ -33,6 +33,7 @@
 #' @export
 #'
 unionize <- function(bs1,
-                     ...) {
-  return(combine(bs1,...))
+...) {
+    bsseq_lst <- list(bs1, ...)
+    return(Reduce(BiocGenerics::combine, bsseq_lst))
 }
