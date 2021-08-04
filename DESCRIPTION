@@ -6,8 +6,12 @@ Description: A test harness for bsseq loading of Biscuit output, summarization
              without imputation, dropping of mostly-NA rows, age estimates, etc.
 Version: 1.7.3
 Date: 2021-08-04
-Author: Tim Triche, Jr. [aut, cre], Wanding Zhou [aut], Ben Johnson [aut], Jacob Morrison [aut], Lyong Heo [aut]
-Maintainer: "Jacob Morrison" <jacob.morrison@vai.org>
+Authors@R: c(person("Tim", "Triche, Jr.", role = c("aut")),
+	     person("Wanding", "Zhou", role = c("aut")),
+             person("Ben", "Johnson", role = c("aut")),
+             person("Jacob", "Morrison", role = c("aut", "cre"),
+             email = "jacob.morrison@vai.org"),
+             person("Lyong", "Heo", role = c("aut")))
 URL: https://github.com/trichelab/biscuiteer
 BugReports: https://github.com/trichelab/biscuiteer/issues
 License: GPL-3
