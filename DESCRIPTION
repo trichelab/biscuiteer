@@ -39,7 +39,8 @@ Imports: readr,
          utils,
          R.utils,
          gtools,
-         BiocParallel
+         BiocParallel,
+	 ggplot2
 Suggests: DSS, 
           covr,
           knitr,
