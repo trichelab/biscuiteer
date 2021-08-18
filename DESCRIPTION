@@ -40,7 +40,8 @@ Imports: readr,
          utils,
          R.utils,
          gtools,
-         BiocParallel
+         BiocParallel,
+	 reshape2
 Suggests: DSS, 
           covr,
           knitr,

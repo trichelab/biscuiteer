@@ -140,6 +140,7 @@ tabulateEpibed <- function(gr) {
 #' @return An epiread ggplot object or list of ggplot objects if plot_read_ave is TRUE
 #' 
 #' @import ggplot2
+#' @importFrom reshape2 melt
 #' 
 #' @export
 #'
