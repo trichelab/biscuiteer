@@ -13,7 +13,8 @@ BugReports: https://github.com/trichelab/biscuiteer/issues
 License: GPL-3
 Depends: R (>= 4.1.0), 
          biscuiteerData,
-         bsseq
+         bsseq,
+	 ggplot2
 Imports: readr,
          qualV,
          Matrix, 
@@ -39,8 +40,7 @@ Imports: readr,
          utils,
          R.utils,
          gtools,
-         BiocParallel,
-	 ggplot2
+         BiocParallel
 Suggests: DSS, 
           covr,
           knitr,
