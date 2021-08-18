@@ -5,13 +5,33 @@
 \title{Plot the results of tabulateEpibed() as a
 quasi-lollipop plot.}
 \usage{
-plotEpiread(mat)
+plotEpiread(
+  mat,
+  plot_read_ave = TRUE,
+  show_readnames = TRUE,
+  show_positions = TRUE,
+  meth_color = "black",
+  unmeth_color = "white",
+  na_color = "lightgray"
+)
 }
 \arguments{
 \item{mat}{Input matrix that comes out of tabulateEpibed()}
+
+\item{plot_read_ave}{Whether to also plot the average methylation state (default: TRUE)}
+
+\item{show_readnames}{Whether to show the read names (default: TRUE)}
+
+\item{show_positions}{Whether to show the genomic positions (default: TRUE)}
+
+\item{meth_color}{What color should the methylated states be (default: 'black')}
+
+\item{unmeth_color}{What color should the unmethylated states be (default: 'white')}
+
+\item{na_color}{What color should the NA values be (default: 'lightgray')}
 }
 \value{
-An epiread plot
+An epiread ggplot object or list of ggplot objects if plot_read_ave is TRUE
 }
 \description{
 Plot the results of tabulateEpibed() as a
