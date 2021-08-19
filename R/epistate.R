@@ -38,9 +38,10 @@ tabulateEpibed <- function(gr) {
   # char shut_acc = 'S';
   
   # we need to build up a table of CGH and GCH
-  cg_table <- .tabulateCGH(gr)
+  # cg_table <- .tabulateCGH(gr)
+  cg_table <- .tabulateRLE(gr, cg = TRUE)
   if (is.nome) {
-    gc_table <- .tabulateGCH(gr)
+    gc_table <- .tabulateRLE(gr, cg = FALSE)
     return(list(cg_table = cg_table,
                 gc_table = gc_table))
   }
@@ -48,82 +49,59 @@ tabulateEpibed <- function(gr) {
   return(cg_table)
 }
 
-# helper to tabulate to a CGH table
-.tabulateCGH <- function(gr) {
+# helper to tabulate to a CGH or GCH table
+.tabulateRLE <- function(gr, cg = TRUE) {
   # there can be duplicate read names if not collapsed to fragment
   # this can occur if reads 1 and 2 originate from the "same" strand
   # make read names unique ahead of time...
   gr$readname <- make.unique(gr$readname)
+  
   # iterate through each read and decompose to position
-  cg_gr <- do.call("c", lapply(X = 1:length(gr), FUN = function(x) {
+  readlvl_gr <- do.call("c", lapply(X = 1:length(gr),
+                                    FUN = function(x) {
     sub_gr <- gr[x]
     # generate a per base array
     pos_vec <- seq(start(sub_gr), end(sub_gr))
-    rle_vec <- unlist(strsplit(sub_gr$CG_decode, split = ""))
+    if (cg) {
+      rle_vec <- unlist(strsplit(sub_gr$CG_decode, split = ""))
+    } else {
+      rle_vec <- unlist(strsplit(sub_gr$GC_decode, split = ""))
+    }
     names(rle_vec) <- pos_vec
-    # keep the CG status
-    rle_vec_cg <- rle_vec[rle_vec %in% c("M", "U")]
+    # keep the C status
+    if (cg) {
+      rle_vec_c <- rle_vec[rle_vec %in% c("M", "U")]
+    } else {
+      rle_vec_c <- rle_vec[rle_vec %in% c("O", "S")]
+    }
+    if (!length(rle_vec_c)) {
+      return()
+    }
     # turn back into GRanges
-    rle_cg_df <- data.frame(chr = seqnames(sub_gr),
-                            start = names(rle_vec_cg),
-                            end = names(rle_vec_cg),
-                            cg_meth_status = rle_vec_cg,
+    rle_c_df <- data.frame(chr = seqnames(sub_gr),
+                            start = names(rle_vec_c),
+                            end = names(rle_vec_c),
+                            meth_status = rle_vec_c,
                             read_id = sub_gr$readname)
-    return(makeGRangesFromDataFrame(rle_cg_df, keep.extra.columns = TRUE))
+    return(makeGRangesFromDataFrame(rle_c_df,
+                                    keep.extra.columns = TRUE))
   }))
-  # find the dimension of collapsed CGs to fill in the matrix
-  cg_gr_len <- length(reduce(cg_gr))
+  
+  # find the dimension of collapsed Cs to fill in the matrix
+  readlvl_gr_len <- length(reduce(readlvl_gr))
   # make an empty matrix to fill in 
-  cg_emp_mat <- matrix(data = NA, nrow = length(unique(cg_gr$read_id)),
-                       ncol = cg_gr_len)
-  rownames(cg_emp_mat) <- unique(cg_gr$read_id)
-  colnames(cg_emp_mat) <- as.character(granges(reduce(cg_gr)))
+  readlvl_emp_mat <- matrix(data = NA,
+                            nrow = length(unique(readlvl_gr$read_id)),
+                            ncol = readlvl_gr_len)
+  rownames(readlvl_emp_mat) <- unique(readlvl_gr$read_id)
+  colnames(readlvl_emp_mat) <- as.character(granges(reduce(readlvl_gr)))
   
   # go by read and extract out methylation states
-  cg_gr_mat <- as.matrix(cbind(as.character(granges(cg_gr)),
-                               cg_gr$read_id,
-                               cg_gr$cg_meth_status))
-  cg_emp_mat[cg_gr_mat[,c(2,1)]] <- cg_gr_mat[,3]
-  return(cg_emp_mat)
-}
-
-# helper to tabulate to a GCH table
-.tabulateGCH <- function(gr) {
-  # there can be duplicate read names if not collapsed to fragment
-  # this can occur if reads 1 and 2 originate from the "same" strand
-  # make read names unique ahead of time...
-  gr$readname <- make.unique(gr$readname)
-  # iterate through each read and decompose to position
-  gc_gr <- do.call("c", lapply(X = 1:length(gr), FUN = function(x) {
-    sub_gr <- gr[x]
-    # generate a per base array
-    pos_vec <- seq(start(sub_gr), end(sub_gr))
-    rle_vec <- unlist(strsplit(sub_gr$GC_decode, split = ""))
-    names(rle_vec) <- pos_vec
-    # keep the GC status
-    rle_vec_gc <- rle_vec[rle_vec %in% c("O", "S")]
-    # turn back into GRanges
-    rle_gc_df <- data.frame(chr = seqnames(sub_gr),
-                            start = names(rle_vec_gc),
-                            end = names(rle_vec_gc),
-                            gc_meth_status = rle_vec_gc,
-                            read_id = sub_gr$readname)
-    return(makeGRangesFromDataFrame(rle_gc_df, keep.extra.columns = TRUE))
-  }))
-  # find the dimension of collapsed gcs to fill in the matrix
-  gc_gr_len <- length(reduce(gc_gr))
-  # make an empty matrix to fill in 
-  gc_emp_mat <- matrix(data = NA, nrow = length(unique(gc_gr$read_id)),
-                       ncol = gc_gr_len)
-  rownames(gc_emp_mat) <- unique(gc_gr$read_id)
-  colnames(gc_emp_mat) <- as.character(granges(reduce(gc_gr)))
-  
-  # go by read and extract out methylation states
-  gc_gr_mat <- as.matrix(cbind(as.character(granges(gc_gr)),
-                               gc_gr$read_id,
-                               gc_gr$gc_meth_status))
-  gc_emp_mat[gc_gr_mat[,c(2,1)]] <- gc_gr_mat[,3]
-  return(gc_emp_mat)
+  readlvl_gr_mat <- as.matrix(cbind(as.character(granges(readlvl_gr)),
+                                    readlvl_gr$read_id,
+                                    readlvl_gr$meth_status))
+  readlvl_emp_mat[readlvl_gr_mat[,c(2,1)]] <- readlvl_gr_mat[,3]
+  return(readlvl_emp_mat)
 }
 
 #' Plot the results of tabulateEpibed() as a 
