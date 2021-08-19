@@ -10,9 +10,10 @@ plotEpiread(
   plot_read_ave = TRUE,
   show_readnames = TRUE,
   show_positions = TRUE,
-  meth_color = "black",
   unmeth_color = "white",
-  na_color = "lightgray"
+  meth_color = "black",
+  na_color = "darkgray",
+  background_color = "#A3D0E9"
 )
 }
 \arguments{
@@ -24,11 +25,13 @@ plotEpiread(
 
 \item{show_positions}{Whether to show the genomic positions (default: TRUE)}
 
-\item{meth_color}{What color should the methylated states be (default: 'black')}
-
 \item{unmeth_color}{What color should the unmethylated states be (default: 'white')}
 
-\item{na_color}{What color should the NA values be (default: 'lightgray')}
+\item{meth_color}{What color should the methylated states be (default: 'black')}
+
+\item{na_color}{What color should the NA values be (default: 'darkgray')}
+
+\item{background_color}{What color the background of the plot should be (default: '#A3D0E9')}
 }
 \value{
 An epiread ggplot object or list of ggplot objects if plot_read_ave is TRUE

@@ -135,7 +135,8 @@ tabulateEpibed <- function(gr) {
 #' @param show_positions Whether to show the genomic positions (default: TRUE)
 #' @param meth_color What color should the methylated states be (default: 'black')
 #' @param unmeth_color What color should the unmethylated states be (default: 'white')
-#' @param na_color What color should the NA values be (default: 'lightgray')
+#' @param na_color What color should the NA values be (default: 'darkgray')
+#' @param background_color What color the background of the plot should be (default: '#A3D0E9')
 #' 
 #' @return An epiread ggplot object or list of ggplot objects if plot_read_ave is TRUE
 #' 
@@ -155,9 +156,10 @@ tabulateEpibed <- function(gr) {
 plotEpiread <- function(mat, plot_read_ave = TRUE,
                         show_readnames = TRUE,
                         show_positions = TRUE,
-                        meth_color = "black",
                         unmeth_color = "white",
-                        na_color = "lightgray") {
+                        meth_color = "black",
+                        na_color = "darkgray",
+                        background_color = "#A3D0E9") {
   
   # check if input is a matrix
   if (!is(mat, "matrix")) {
@@ -172,7 +174,8 @@ plotEpiread <- function(mat, plot_read_ave = TRUE,
                                vjust = 1,
                                hjust = 1),
     panel.grid.major.x = element_blank(),
-    panel.grid.major.y = element_line(color = "black"))
+    panel.grid.major.y = element_line(color = "black"),
+    panel.background = element_rect(fill = background_color))
   
   if (!show_readnames) {
     # set the theme
@@ -233,7 +236,8 @@ plotEpiread <- function(mat, plot_read_ave = TRUE,
   if (plot_read_ave) {
     plt_ave <- ggplot(mat.meth.ave, aes(x = position, y = y)) +
       geom_point(aes(fill = ave_meth), size=6, pch=21, color="black") +
-      scale_fill_gradient(low=unmeth_color, high=meth_color) +
+      scale_fill_gradient(low = unmeth_color,
+                          high = meth_color) +
       guides(color = "legend") +
       ql_theme
     return(list(epistate=plt,
@@ -242,3 +246,4 @@ plotEpiread <- function(mat, plot_read_ave = TRUE,
     return(plt)
   }
 }
+
