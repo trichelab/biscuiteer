@@ -99,3 +99,4 @@ readEpibed <- function(epibed, is.nome = FALSE,
   on.exit(close(x))
   isTRUE(summary(x)$class=='gzfile')
 }
+

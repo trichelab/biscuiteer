@@ -8,10 +8,14 @@ function is the GRanges output from readEpibed().
 It will auto-detect whether this a BS-seq or a
 NOMe-seq run and tabulate accordingly.}
 \usage{
-tabulateEpibed(gr)
+tabulateEpibed(gr, region = NULL, filter_empty_reads = TRUE)
 }
 \arguments{
 \item{gr}{The epibed GRanges object from readEpibed()}
+
+\item{region}{Either a GRanges of regions to subset to or explicit region (e.g. chr6:1555-1900)}
+
+\item{filter_empty_reads}{Whether to filter out reads that contain no methylated sites (default is TRUE)}
 }
 \value{
 A matrix or list of matrices

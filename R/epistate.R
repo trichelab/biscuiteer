@@ -5,6 +5,8 @@
 #' NOMe-seq run and tabulate accordingly.
 #'
 #' @param gr The epibed GRanges object from readEpibed()
+#' @param region Either a GRanges of regions to subset to or explicit region (e.g. chr6:1555-1900)
+#' @param filter_empty_reads Whether to filter out reads that contain no methylated sites (default is TRUE)
 #' 
 #' @return A matrix or list of matrices
 #' @export
@@ -18,7 +20,9 @@
 #'                              genome = "hg19")
 #' epibed.tab.nome <- tabulateEpibed(epibed.nome.gr)
 
-tabulateEpibed <- function(gr) {
+tabulateEpibed <- function(gr,
+                           region = NULL,
+                           filter_empty_reads = TRUE) {
   
   # check if a GRanges
   stopifnot(is(gr, "GRanges"))
@@ -40,8 +44,18 @@ tabulateEpibed <- function(gr) {
   # we need to build up a table of CGH and GCH
   # cg_table <- .tabulateCGH(gr)
   cg_table <- .tabulateRLE(gr, cg = TRUE)
+  cg_table <- .filterToRegion(cg_table,
+                            region = region)
+  if (filter_empty_reads) {
+    cg_table <- .filterEmptyReads(cg_table)
+  }
   if (is.nome) {
     gc_table <- .tabulateRLE(gr, cg = FALSE)
+    gc_table <- .filterToRegion(gc_table,
+                              region = region)
+    if (filter_empty_reads) {
+      gc_table <- .filterEmptyReads(gc_table)
+    }
     return(list(cg_table = cg_table,
                 gc_table = gc_table))
   }
@@ -68,6 +82,8 @@ tabulateEpibed <- function(gr) {
       rle_vec <- unlist(strsplit(sub_gr$GC_decode, split = ""))
     }
     names(rle_vec) <- pos_vec
+    # filter out insertions
+    rle_vec <- .filterInsertions(rle_vec)
     # keep the C status
     if (cg) {
       rle_vec_c <- rle_vec[rle_vec %in% c("M", "U")]
@@ -88,13 +104,13 @@ tabulateEpibed <- function(gr) {
   }))
   
   # find the dimension of collapsed Cs to fill in the matrix
-  readlvl_gr_len <- length(reduce(readlvl_gr))
+  readlvl_gr_len <- length(unique(readlvl_gr))
   # make an empty matrix to fill in 
   readlvl_emp_mat <- matrix(data = NA,
                             nrow = length(unique(readlvl_gr$read_id)),
                             ncol = readlvl_gr_len)
   rownames(readlvl_emp_mat) <- unique(readlvl_gr$read_id)
-  colnames(readlvl_emp_mat) <- as.character(granges(reduce(readlvl_gr)))
+  colnames(readlvl_emp_mat) <- as.character(granges(unique(readlvl_gr)))
   
   # go by read and extract out methylation states
   readlvl_gr_mat <- as.matrix(cbind(as.character(granges(readlvl_gr)),
@@ -102,6 +118,87 @@ tabulateEpibed <- function(gr) {
                                     readlvl_gr$meth_status))
   readlvl_emp_mat[readlvl_gr_mat[,c(2,1)]] <- readlvl_gr_mat[,3]
   return(readlvl_emp_mat)
+}
+
+# helper to filter out indels and softclips
+# this is needed to reset coordinates properly
+.filterInsertions <- function(readlvl_vec) {
+  # the input here is a named vec of positions
+  # we need to pull everything out that is not
+  # a lower case a,c,g,t
+  # we can correct for new starts if someone has
+  # not filtered the first few bases
+  exclude_bases <- c("a", "c",
+                     "g", "t")
+  # note: if a SNP has a base, it will be upper case
+  # case sensitivity matters here
+  # grab the start from the original string
+  strt <- names(readlvl_vec)[1]
+  filtrd_vec <- readlvl_vec[!readlvl_vec %in% exclude_bases]
+  # short circuit if nothing is filtered
+  if (suppressWarnings(all(names(filtrd_vec) == names(readlvl_vec)))) {
+    return(readlvl_vec)
+  }
+  # if the first base is no longer equal to the start
+  # from original read, reset to new start
+  if (strt != names(filtrd_vec)[1]) {
+    strt <- names(filtrd_vec)[1]
+    }
+  names(filtrd_vec) <- seq(as.numeric(strt),
+                           c(as.numeric(strt)+length(filtrd_vec)-1))
+  return(filtrd_vec)
+}
+
+# helper to only keep sites within a given region of interest
+.filterToRegion <- function(mat,
+                            region = NULL) {
+  if (is.null(region)) return(mat)
+  if (!is(region, "GRanges")) {
+    # attempt to parse the standard chr#:start-end
+    if (!grepl("\\:", region) & grepl("\\-", region)) {
+      message("Not sure how to parse ", region)
+      message("region should either be a GRanges of a specfic region or")
+      stop("region should look something like 'chr6:1555-1900'")
+    }
+    chr <- strsplit(region, ":")[[1]][1]
+    coords <- strsplit(region, ":")[[1]][2]
+    strt <- strsplit(coords, "-")[[1]][1]
+    end <- strsplit(coords, "-")[[1]][2]
+    pos_to_include <- paste0(chr, ":",
+                             seq(strt, end))
+  } else {
+    # it's possible that multiple regions could be supplied...
+    if (length(region > 1) & is(region, "GRanges")) {
+      pos_to_include <- do.call(c, lapply(1:length(region), function(r) {
+        region.sub <- region[r]
+        return(paste0(seqnames(region.sub), ":",
+                      seq(start(region),
+                          end(region))))
+      }))
+    } else {
+      # this is if a single region is supplied as a GRanges
+      stopifnot(is(region, "GRanges"))
+      pos_to_include <- paste0(seqnames(chr), ":",
+                               seq(start(region),
+                                   end(region)))
+    }
+  }
+  # subset
+  mat.sub <- mat[,colnames(mat) %in% pos_to_include]
+  # order
+  mat.sub <- mat.sub[,order(colnames(mat.sub))]
+  return(mat.sub)
+}
+
+# helper to remove empty reads
+# an 'empty' read is one with all NAs
+.filterEmptyReads <- function(mat) {
+  # input is a matrix after tabulateEpiread is done
+  # filter reads
+  mat.sub <- mat[rowMeans(is.na(mat)) < 1,]
+  # order
+  mat.sub <- mat.sub[,order(colnames(mat.sub))]
+  return(mat.sub)
 }
 
 #' Plot the results of tabulateEpibed() as a 
