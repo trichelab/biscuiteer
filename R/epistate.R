@@ -312,7 +312,8 @@ plotEpiread <- function(mat, plot_read_ave = TRUE,
     plt_ave <- ggplot(mat.meth.ave, aes(x = position, y = y)) +
       geom_point(aes(fill = ave_meth), size=6, pch=21, color="black") +
       scale_fill_gradient(low = unmeth_color,
-                          high = meth_color) +
+                          high = meth_color,
+                          limits = c(0,1)) +
       guides(color = "legend") +
       ql_theme
     return(list(epistate=plt,
