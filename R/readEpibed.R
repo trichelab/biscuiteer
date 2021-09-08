@@ -87,7 +87,7 @@ readEpibed <- function(epibed, is.nome = FALSE,
                               end = end, is.epibed = TRUE,
                               is.nome = is.nome)
   # comes back as a list
-  raw_epibed <- unlist(raw_epibed)
+  raw_epibed <- raw_epibed[[1]]
   message("Decoding RLE and converting to GRanges")
   # assign colnames
   if (is.nome) {
