@@ -50,7 +50,7 @@ readEpibed <- function(epibed, is.nome = FALSE,
     # colnames should already be loaded if it's nome...
     message("Decoding RLE and converting to GRanges")
     if (is.nome) {
-      epibed_gr <- lapply(raw_epibed, function(x) {
+      epibed.gr <- lapply(raw_epibed, function(x) {
         x$CG_decode <- unlist(lapply(x$CG_RLE, .inv_rle))
         x$GC_decode <- unlist(lapply(x$GC_RLE, .inv_rle))
         x$start <- x$start + 1
