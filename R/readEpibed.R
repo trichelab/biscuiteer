@@ -7,55 +7,93 @@
 #' If not, this will be the equivalent of reading in the entire
 #' BAM. Future work will be to subset to definied regions.
 #'
-#' @param epibed The path to the epibed file
+#' @param epibed The path to the epibed file (must be bgzip and tabix indexed)
 #' @param is.nome Whether the epibed format is derived from NOMe-seq or not
 #' @param genome What genome did this come from (e.g. 'hg19')
+#' @param chr Which chromosome to retrieve
+#' @param start The starting position for a region of interest
+#' @param end The end position for a region of interest
 #'
 #' @return A GRanges object
 #' @export
 #' 
 #' @import GenomicRanges
-#' @importFrom data.table fread
-#' @importFrom R.utils gunzip
 #'
 #' @examples
-#' epibed.nome <- system.file("extdata", "hct116.nome.epiread",
+#' epibed.nome <- system.file("extdata", "hct116.nome.epiread.gz",
 #'                            package="biscuiteer")
-#' epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread",
+#' epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread.gz",
 #'                             package="biscuiteer")
 #' epibed.nome.gr <- readEpibed(epibed = epibed.nome, is.nome = TRUE,
-#'                              genome = "hg19")
+#'                              genome = "hg19", chr = "chr1")
 #' epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq,
-#'                               genome = "hg19")
+#'                               genome = "hg19", chr = "chr1")
 
 readEpibed <- function(epibed, is.nome = FALSE,
-                       genome = NULL) {
-  # check if the file exists
-  stopifnot(file.exists(epibed))
-  # read in the entire file for now because we assume
-  # that the user has done something sane like used
-  # the -g option in biscuit epiread
-  message("Reading in ", epibed)
+                       genome = NULL, chr = NULL,
+                       start = 1, end = 2^28) {
+  # check the input
+  ftype <- .checkTabixFiles(epibed)
   
-  # check if gzipped
-  if (.is_gz(epibed)) {
-    raw_epibed <- fread(gunzip(epibed, remove = FALSE), sep="\t")
-  } else {
-    raw_epibed <- fread(epibed, sep="\t")
+  if (is.null(chr)) {
+    stop("Must specify chromosomes of interest.")
   }
   
+  if (ftype == "multiple") {
+    # read in the raw epibeds
+    raw_epibed <- tabixRetrieve(epibed, chr = chr,
+                                start = start,
+                                end = end, is.epibed = TRUE,
+                                is.nome = is.nome)
+    
+    # decode RLE
+    # colnames should already be loaded if it's nome...
+    message("Decoding RLE and converting to GRanges")
+    if (is.nome) {
+      epibed_gr <- lapply(raw_epibed, function(x) {
+        x$CG_decode <- unlist(lapply(x$CG_RLE, .inv_rle))
+        x$GC_decode <- unlist(lapply(x$GC_RLE, .inv_rle))
+        x$start <- x$start + 1
+        x.gr <- makeGRangesFromDataFrame(x,
+                                         keep.extra.columns = TRUE)
+        genome(x.gr) <- genome
+        strand(x.gr) <- "*"
+        return(sort(x.gr))
+      })
+      # make a GRangesList
+      epibed.grl <- as(epibed.gr, "GRangesList")
+      names(epibed.grl) <- names(raw_epibed)
+    } else {
+      epibed.gr <- lapply(raw_epibed, function(x) {
+        x$CG_decode <- unlist(lapply(x$CG_RLE, .inv_rle))
+        x$start <- x$start + 1
+        x.gr <- makeGRangesFromDataFrame(x,
+                                         keep.extra.columns = TRUE)
+        genome(x.gr) <- genome
+        strand(x.gr) <- "*"
+        return(sort(x.gr))
+      })
+      # make a GRangesList
+      epibed.grl <- as(epibed.gr, "GRangesList")
+      names(epibed.grl) <- names(raw_epibed)
+    }
+    return(epibed.grl)
+  }
+  
+  # in the case of a single epibed
+  # read in the raw epibeds
+  raw_epibed <- tabixRetrieve(epibed, chr = chr,
+                              start = start,
+                              end = end, is.epibed = TRUE,
+                              is.nome = is.nome)
+  # comes back as a list
+  raw_epibed <- unlist(raw_epibed)
   message("Decoding RLE and converting to GRanges")
   # assign colnames
   if (is.nome) {
-    colnames(raw_epibed) <- c("chr", "start", "end",
-                              "readname", "read", "strand",
-                              "CG_RLE", "GC_RLE")
     raw_epibed$CG_decode <- unlist(lapply(raw_epibed$CG_RLE, .inv_rle))
     raw_epibed$GC_decode <- unlist(lapply(raw_epibed$GC_RLE, .inv_rle))
   } else {
-    colnames(raw_epibed) <- c("chr", "start", "end",
-                              "readname", "read", "strand",
-                              "CG_RLE")
     raw_epibed$CG_decode <- unlist(lapply(raw_epibed$CG_RLE, .inv_rle))
   }
   
@@ -75,6 +113,26 @@ readEpibed <- function(epibed, is.nome = FALSE,
   strand(epibed_gr) <- "*"
   
   return(sort(epibed_gr))
+}
+
+# helper
+.checkTabixFiles <- function(x) {
+  if (length(x) > 1) {
+    # check existence 
+    stopifnot(all(unlist(lapply(x, file.exists))))
+    # check if gzip'd
+    stopifnot(all(unlist(lapply(x, .is_gz))))
+    # check for tabix indices
+    stopifnot(all(unlist(lapply(x, function(x) {
+      file.exists(paste0(x, ".tbi"))
+    }))))
+    return("multiple")
+  } else {
+    stopifnot(file.exists(x))
+    stopifnot(.is_gz(x))
+    stopifnot(file.exists(paste0(x, ".tbi")))
+    return("single")
+  }
 }
 
 # helper 
