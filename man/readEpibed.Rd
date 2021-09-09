@@ -12,7 +12,8 @@ readEpibed(
   genome = NULL,
   chr = NULL,
   start = 1,
-  end = 2^28
+  end = 2^28,
+  fragment_level = FALSE
 )
 }
 \arguments{
@@ -27,6 +28,8 @@ readEpibed(
 \item{start}{The starting position for a region of interest}
 
 \item{end}{The end position for a region of interest}
+
+\item{fragment_level}{Whether to collapse reads to the fragment level}
 }
 \value{
 A GRanges object
