@@ -35,10 +35,9 @@ readEpibed(
 A GRanges object
 }
 \description{
-NOTE: it is recommended that you ran biscuit epiallele
-with the -g option enabled to subset to a specific region.
-If not, this will be the equivalent of reading in the entire
-BAM. Future work will be to subset to definied regions.
+Read in and decode the RLE representation of
+the epibed format out of biscuit epiallele
+returning a read-level GRanges object.
 }
 \examples{
 epibed.nome <- system.file("extdata", "hct116.nome.epiread.gz",

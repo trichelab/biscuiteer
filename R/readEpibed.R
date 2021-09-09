@@ -2,10 +2,6 @@
 #' the epibed format out of biscuit epiallele 
 #' returning a read-level GRanges object.
 #' 
-#' NOTE: it is recommended that you ran biscuit epiallele
-#' with the -g option enabled to subset to a specific region.
-#' If not, this will be the equivalent of reading in the entire
-#' BAM. Future work will be to subset to definied regions.
 #'
 #' @param epibed The path to the epibed file (must be bgzip and tabix indexed)
 #' @param is.nome Whether the epibed format is derived from NOMe-seq or not
@@ -239,8 +235,7 @@ readEpibed <- function(epibed, is.nome = FALSE,
   # re-encode the RLE string
   cg_rle <- rle(c(r2_decode, r1_decode))
   cg_rle <- .recode_rle(cg_rle)
-  # NOTE: GRanges width will be 1-based so will always
-  # be 1 less than the length of characters in the RLE
+  # NOTE: we are in 0-based land if collapsing
   collapsed_frag <- GRanges(seqnames = seqnames(r1),
                             ranges = IRanges(start = start(r2),
                                              end = end(r1)),
@@ -302,8 +297,7 @@ readEpibed <- function(epibed, is.nome = FALSE,
     cg_rle <- rle(c(r1_decode, r2_decode))
   }
   cg_rle <- .recode_rle(cg_rle)
-  # NOTE: GRanges width will be 1-based so will always
-  # be 1 less than the length of characters in the RLE
+  # NOTE: we are in 0-based land if collapsing
   collapsed_frag <- GRanges(seqnames = seqnames(r1),
                             ranges = IRanges(start = start(r1),
                                              end = end(r2)),
