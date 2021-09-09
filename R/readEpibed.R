@@ -161,6 +161,7 @@ readEpibed <- function(epibed, is.nome = FALSE,
     len <- x$lengths[l]
     return(paste0(val, len))
   }))
+  return(rec_rle)
 }
 
 # helper
@@ -226,14 +227,32 @@ readEpibed <- function(epibed, is.nome = FALSE,
 # helper
 .collapseDovetail <- function(r1, r2,
                               is.nome = FALSE) {
-  w <- start(r1) - start(r2)
-  r2_decode <- .split_rle(r2$CG_decode)
-  r2_decode <- r2_decode[1:w]
-  r1_decode <- .split_rle(r1$CG_decode)
-  cg_frag <- paste0(Reduce(paste0, r2_decode),
-                    r1$CG_decode)
-  # re-encode the RLE string
-  cg_rle <- rle(c(r2_decode, r1_decode))
+  # first, check if end r2 > start r1
+  if (end(r2) > start(r1)) {
+    w <- start(r1) - start(r2)
+    r2_decode <- .split_rle(r2$CG_decode)
+    r2_decode <- r2_decode[1:w]
+    r1_decode <- .split_rle(r1$CG_decode)
+    cg_frag <- paste0(Reduce(paste0, r2_decode),
+                      r1$CG_decode)
+    # re-encode the RLE string
+    cg_rle <- rle(c(r2_decode, r1_decode))
+  } else {
+    # we are now in a situation where it's a true
+    # proper pair, likely originating from same strand
+    # find padding distance
+    padding <- rep("x", start(r1) - (end(r2) + 1))
+    r2_decode <- .split_rle(r2$CG_decode)
+    r1_decode <- .split_rle(r1$CG_decode)
+    cg_frag <- paste0(r2$CG_decode,
+                      Reduce(paste0, padding),
+                      r1$CG_decode)
+    # re-encode the RLE string
+    cg_rle <- rle(c(r2_decode,
+                    padding,
+                    r1_decode))
+  }
+  
   cg_rle <- .recode_rle(cg_rle)
   # NOTE: we are in 0-based land if collapsing
   collapsed_frag <- GRanges(seqnames = seqnames(r1),
@@ -241,12 +260,27 @@ readEpibed <- function(epibed, is.nome = FALSE,
                                              end = end(r1)),
                             strand = "*")
   if (is.nome) {
-    r2_decode <- .split_rle(r2$GC_decode)
-    r2_decode <- r2_decode[1:w]
-    r1_decode <- .split_rle(r1$GC_decode)
-    gc_frag <- paste0(Reduce(paste0, r2_decode),
-                      r1$GC_decode)
-    gc_rle <- rle(c(r2_decode, r1_decode))
+    if (end(r2) > start(r1)) {
+      r2_decode <- .split_rle(r2$GC_decode)
+      r2_decode <- r2_decode[1:w]
+      r1_decode <- .split_rle(r1$GC_decode)
+      gc_frag <- paste0(Reduce(paste0, r2_decode),
+                        r1$GC_decode)
+      # re-encode the RLE string
+      gc_rle <- rle(c(r2_decode, r1_decode))
+    } else {
+      # we are now in a situation where it's a true
+      # proper pair, likely originating from same strand
+      r2_decode <- .split_rle(r2$GC_decode)
+      r1_decode <- .split_rle(r1$GC_decode)
+      gc_frag <- paste0(r2$GC_decode,
+                        Reduce(paste0, padding),
+                        r1$GC_decode)
+      # re-encode the RLE string
+      gc_rle <- rle(c(r2_decode,
+                      padding,
+                      r1_decode))
+    }
     gc_rle <- .recode_rle(gc_rle)
     collapsed_frag.meta <- data.frame(readname = r1$readname,
                                       read = "fragment",
@@ -335,4 +369,95 @@ readEpibed <- function(epibed, is.nome = FALSE,
   }
   mcols(collapsed_frag) <- collapsed_frag.meta
   return(collapsed_frag)
+}
+
+#' Function to remove insertions to reset genomic coordinates
+#' for plotting of read or fragment level methylation states,
+#' relative to the reference genome.
+#'
+#' @param gr Input is a read or fragment level GRanges out of readEpibed
+#' @param is.nome Whether the input is NOMe-seq or not
+#'
+#' @return A new GRanges object with reset genomic coordinates and filtered
+#' CG and/or GC RLE strings
+#' 
+#' @import GenomicRanges
+#' @export
+#'
+#' @examples
+#' 
+#' epibed.nome <- system.file("extdata", "hct116.nome.epiread.gz",
+#'                            package="biscuiteer")
+#' epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread.gz",
+#'                             package="biscuiteer")
+#' epibed.nome.gr <- readEpibed(epibed = epibed.nome, is.nome = TRUE,
+#'                              genome = "hg19", chr = "chr1")
+#' epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq,
+#'                               genome = "hg19", chr = "chr1")
+#'                               
+#' epibed.nome.filt.gr <- removeInsertions(epibed.nome.gr, is.nome = TRUE)
+#' epibed.bsseq.filt.gr <- removeInsertions(epibed.bsseq.gr)
+
+removeInsertions <- function(gr, is.nome = FALSE) {
+  # wrapper to remove insertions from reads
+  filt_gr <- do.call(c, lapply(1:length(gr), function(x) {
+    sub_gr <- gr[x]
+    # NOTE: input is 1-based
+    start(sub_gr) <- start(sub_gr) - 1
+    # generate a per base array
+    pos_vec <- seq(start(sub_gr), end(sub_gr))
+    if (is.nome) {
+      rle_vec.cg <- .split_rle(sub_gr$CG_decode)
+      rle_vec.gc <- .split_rle(sub_gr$GC_decode)
+    } else {
+      rle_vec.cg <- .split_rle(sub_gr$CG_decode)
+    }
+    names(rle_vec.cg) <- pos_vec
+    if (is.nome) names(rle_vec.gc) <- pos_vec
+    # filter out insertions
+    rle_vec.cg <- .filterInsertions(rle_vec.cg)
+    if (is.nome) rle_vec.gc <- .filterInsertions(rle_vec.gc)
+    # check
+    if (is.nome) stopifnot(all(names(rle_vec.cg) == names(rle_vec.gc)))
+    # add back the new, filtered fragments
+    sub_gr$CG_decode <- Reduce(paste0, rle_vec.cg)
+    if (is.nome) sub_gr$GC_decode <- Reduce(paste0, rle_vec.gc)
+    # reset the RLE string and genomic coords
+    # back to 1-based
+    start(sub_gr) <- as.integer(names(rle_vec.cg)[1]) + 1
+    end(sub_gr) <- as.integer(names(rle_vec.cg)[length(rle_vec.cg)])
+    sub_gr$CG_RLE <- .recode_rle(rle(.split_rle(sub_gr$CG_decode)))
+    if (is.nome) sub_gr$GC_RLE <- .recode_rle(rle(.split_rle(sub_gr$GC_decode)))
+    return(sub_gr)
+  }))
+  return(filt_gr)
+}
+
+# helper to filter out indels
+# this is needed to reset coordinates properly
+.filterInsertions <- function(readlvl_vec) {
+  # the input here is a named vec of positions
+  # we need to pull everything out that is not
+  # a lower case a,c,g,t
+  # we can correct for new starts if someone has
+  # not filtered the first few bases
+  exclude_bases <- c("a", "c",
+                     "g", "t")
+  # note: if a SNP has a base, it will be upper case
+  # case sensitivity matters here
+  # grab the start from the original string
+  strt <- names(readlvl_vec)[1]
+  filtrd_vec <- readlvl_vec[!readlvl_vec %in% exclude_bases]
+  # short circuit if nothing is filtered
+  if (suppressWarnings(all(names(filtrd_vec) == names(readlvl_vec)))) {
+    return(readlvl_vec)
+  }
+  # if the first base is no longer equal to the start
+  # from original read, reset to new start
+  if (strt != names(filtrd_vec)[1]) {
+    strt <- names(filtrd_vec)[1]
+  }
+  names(filtrd_vec) <- seq(as.numeric(strt),
+                           c(as.numeric(strt)+length(filtrd_vec)-1))
+  return(filtrd_vec)
 }
