@@ -14,10 +14,15 @@ vignette: >
   %\VignetteEncoding[utf8]{inputenc}
 ---
 
+knitr::opts_chunk$set(
+    warning=FALSE,
+    message=FALSE
+  )
+
 # Biscuiteer
 
 `biscuiteer` is package to process output from
-[biscuit](https://github.com/zwdzwd/biscuit) into
+[biscuit](https://github.com/huishenlab/biscuit) into
 [bsseq](https://bioconductor.org/packages/bsseq) objects. It includes a number
 of features, such as VCF header parsing, shrunken M-value calculations (which
 can be used for compartment inference), and age inference are included. However,
