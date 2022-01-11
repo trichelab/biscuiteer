@@ -81,8 +81,10 @@ readEpibed <- function(epibed, is.nome = FALSE,
 .inv_rle <- function(x)
 {
   lengths <- as.numeric(unlist(strsplit(x, "[[:alpha:]]")))
+  lengths <- lengths[-1]
+  lengths[is.na(lengths)] <- 1
   lengths <- lengths[!is.na(lengths)]
-  values <- unlist(strsplit(x, "[[:digit:]]"))
+  values <- unlist(strsplit(gsub("[0-9]", "", x), ""))
   values <- values[values != ""]
   uncompressed <- inverse.rle(list(lengths=lengths, values=values))
   paste(uncompressed, collapse="")
