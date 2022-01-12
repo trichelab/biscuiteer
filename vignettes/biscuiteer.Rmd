@@ -45,7 +45,7 @@ BiocManager::install("trichelab/biscuiteer")
 
 ## Loading Data
 
-`biscuiteer` can load either headered of header-free BED files produced from
+`biscuiteer` can load either headered or header-free BED files produced from
 `biscuit vcf2bed` or `biscuit mergecg`. In either case, a VCF file is needed
 when loading `biscuit` output. For practical purposes, only the VCF header is
 for `biscuiteer`. However, it is encouraged that the user keep the entire VCF,
