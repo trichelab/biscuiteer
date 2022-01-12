@@ -139,7 +139,7 @@ CpGindex <- function(bsseq,
 }
 
 # Class definition
-setClass("CpGindex", contains="DataFrame",
+setClass("CpGindex", contains="DFrame",
          slots=c(hyperMethRegions="GenomicRanges", 
                  hypoMethRegions="GenomicRanges"))
 
