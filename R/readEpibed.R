@@ -159,6 +159,7 @@ readEpibed <- function(epibed, is.nome = FALSE,
   rec_rle <- Reduce(paste0, lapply(1:length(x$values), function(l) {
     val <- x$values[l]
     len <- x$lengths[l]
+    len[len == 1] <- ""
     return(paste0(val, len))
   }))
   return(rec_rle)
