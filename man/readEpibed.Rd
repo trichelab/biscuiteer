@@ -6,31 +6,46 @@
 the epibed format out of biscuit epiallele
 returning a read-level GRanges object.}
 \usage{
-readEpibed(epibed, is.nome = FALSE, genome = NULL)
+readEpibed(
+  epibed,
+  is.nome = FALSE,
+  genome = NULL,
+  chr = NULL,
+  start = 1,
+  end = 2^28,
+  fragment_level = FALSE
+)
 }
 \arguments{
-\item{epibed}{The path to the epibed file}
+\item{epibed}{The path to the epibed file (must be bgzip and tabix indexed)}
 
 \item{is.nome}{Whether the epibed format is derived from NOMe-seq or not}
 
 \item{genome}{What genome did this come from (e.g. 'hg19')}
+
+\item{chr}{Which chromosome to retrieve}
+
+\item{start}{The starting position for a region of interest}
+
+\item{end}{The end position for a region of interest}
+
+\item{fragment_level}{Whether to collapse reads to the fragment level}
 }
 \value{
 A GRanges object
 }
 \description{
-NOTE: it is recommended that you ran biscuit epiallele
-with the -g option enabled to subset to a specific region.
-If not, this will be the equivalent of reading in the entire
-BAM. Future work will be to subset to definied regions.
+Read in and decode the RLE representation of
+the epibed format out of biscuit epiallele
+returning a read-level GRanges object.
 }
 \examples{
-epibed.nome <- system.file("extdata", "hct116.nome.epiread",
+epibed.nome <- system.file("extdata", "hct116.nome.epiread.gz",
                            package="biscuiteer")
-epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread",
+epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread.gz",
                             package="biscuiteer")
 epibed.nome.gr <- readEpibed(epibed = epibed.nome, is.nome = TRUE,
-                             genome = "hg19")
+                             genome = "hg19", chr = "chr1")
 epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq,
-                              genome = "hg19")
+                              genome = "hg19", chr = "chr1")
 }
