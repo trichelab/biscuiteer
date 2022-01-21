@@ -229,7 +229,8 @@ readEpibed <- function(epibed, is.nome = FALSE,
 .collapseDovetail <- function(r1, r2,
                               is.nome = FALSE) {
   # first, check if end r2 > start r1
-  if (end(r2) > start(r1)) {
+  # or end r2 == start r1
+  if (end(r2) >= start(r1)) {
     w <- start(r1) - start(r2)
     r2_decode <- .split_rle(r2$CG_decode)
     r2_decode <- r2_decode[1:w]
