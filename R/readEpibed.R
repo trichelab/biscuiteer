@@ -51,7 +51,6 @@ readEpibed <- function(epibed, is.nome = FALSE,
       epibed.gr <- lapply(raw_epibed, function(x) {
         x$CG_decode <- unlist(lapply(x$CG_RLE, .inv_rle))
         x$GC_decode <- unlist(lapply(x$GC_RLE, .inv_rle))
-        x$start <- x$start + 1
         x.gr <- makeGRangesFromDataFrame(x,
                                          keep.extra.columns = TRUE)
         genome(x.gr) <- genome
@@ -64,7 +63,6 @@ readEpibed <- function(epibed, is.nome = FALSE,
     } else {
       epibed.gr <- lapply(raw_epibed, function(x) {
         x$CG_decode <- unlist(lapply(x$CG_RLE, .inv_rle))
-        x$start <- x$start + 1
         x.gr <- makeGRangesFromDataFrame(x,
                                          keep.extra.columns = TRUE)
         genome(x.gr) <- genome
@@ -114,9 +112,6 @@ readEpibed <- function(epibed, is.nome = FALSE,
     epibed_gr <- .collapseToFragment(epibed_gr,
                                      is.nome = is.nome)
   }
-  
-  # shift to 1-based since this is a bed
-  start(epibed_gr) <- start(epibed_gr) + 1
   
   # make sure it's sorted
   return(sort(epibed_gr))
