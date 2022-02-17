@@ -142,10 +142,11 @@ readBiscuit <- function(BEDfile,
     tbl <- tbl[rowSums(is.na(tbl)) == 0, ]
   }
 
-  message("Loaded ", params$tbx$path, ". Creating bsseq object...")
+  message("Loaded ", params$tbx$path, ". Creating bsseq object...", appendLF=FALSE)
   res <- makeBSseq(tbl, params, simplify=simplify, verbose=verbose)
   metadata(res)$vcfHeader <- params$vcfHeader
   genome(rowRanges(res)) <- genome
+  message("...Done!")
 
   if (hdf5) {
     if (is.null(hdf5dir)) {
