@@ -25,9 +25,9 @@ knitr::opts_chunk$set(
 [biscuit](https://github.com/huishenlab/biscuit) into
 [bsseq](https://bioconductor.org/packages/bsseq) objects. It includes a number
 of features, such as VCF header parsing, shrunken M-value calculations (which
-can be used for compartment inference), and age inference are included. However,
-the task of locus- and region-level differential methylation inference is
-delegated to other packages (such as `dmrseq`).
+can be used for compartment inference), and age inference. However, the task of
+locus- and region-level differential methylation inference is delegated to
+other packages (such as `dmrseq`).
 
 # Quick Start
 
@@ -48,7 +48,7 @@ BiocManager::install("trichelab/biscuiteerData")
 BiocManager::install("trichelab/biscuiteer")
 ```
 
-## Loading Data
+## Loading Methylation Data
 
 `biscuiteer` can load either headered or header-free BED files produced from
 `biscuit vcf2bed` or `biscuit mergecg`. In either case, a VCF file is needed
@@ -86,11 +86,11 @@ If further information about the VCF header is desired,
 metadata(bisc)$vcfHeader
 ```
 
-## Combining Results
+## Combining Methylation Results
 
 In the instance where you have two separate BED files that you would like to
 analyze in a single bsseq object, you can combine the files using `unionize`,
-which is a wrapper around the bsseq function, `combine`.
+which is a wrapper around the BiocGenerics function, `combine`.
 ```{r}
 shuf_bed <- system.file("extdata", "MCF7_Cunha_chr11p15_shuffled.bed.gz",
                         package="biscuiteer")
@@ -101,6 +101,25 @@ bisc2 <- readBiscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
                      merged = FALSE)
 
 comb <- unionize(bisc, bisc2)
+```
+
+## Loading epiBED files
+
+The epiBED file format provides an easy way to analyze read- or fragment-level
+methylation and genetic information at the same time. `readEpibed` provides
+functionality for parsing the RLE strings found in the epiBED file into a
+GRanges object for analysis in R.
+
+NOTE: The input file must be bgzip'ed and tabix'ed.
+```{r}
+epibed.nome <- system.file("extdata", "hct116.nome.epiread.gz",
+                           package="biscuiteer")
+epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread.gz",
+                            package="biscuiteer")
+epibed.nome.gr <- readEpibed(epibed = epibed.nome, is.nome = TRUE,
+                             genome = "hg19", chr = "chr1")
+epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq,
+                              genome = "hg19", chr = "chr1")
 ```
 
 # Analysis Functionality
@@ -128,7 +147,6 @@ reg <- GRanges(seqnames = rep("chr11",5),
 frac <- getLogitFracMeth(bisc, minSamp = 1, r = reg)
 frac
 ```
-
 
 ## Age Estimation
 
