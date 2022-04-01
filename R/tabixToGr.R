@@ -1,6 +1,6 @@
 #' Read from tabix-indexed bed file to list objects
 #' 
-#' @param path path(s) to the bed files
+#' @param paths path(s) to the bed files
 #' @param chr  chromosome name
 #' @param start   start coordinate of region of interest
 #' @param end   end coordinate of region of interest
@@ -19,7 +19,6 @@ tabixRetrieve <- function(paths,
                           chr,
                           start = 1,
                           end = 2^28,
-                          min_depth = 0,
                           sample_names = NULL,
                           is.epibed = FALSE,
                           is.nome = FALSE,
@@ -71,8 +70,9 @@ tabixRetrieve <- function(paths,
 
     ## make sure the coordinates are the same
     ## this is when multiple sample names or files are passed
-    same_coordinates <- sapply(seq_len(length(df_list)-1),
-                               function(i) identical(df_list[[i]][,1:3], df_list[[i+1]][,1:3]))
+    same_coordinates <- vapply(seq_len(length(df_list)-1),
+                               function(i) identical(df_list[[i]][,seq_len(3)], df_list[[i+1]][,seq_len(3)]),
+                               FUN.VALUE=logical(1))
     stopifnot(all(same_coordinates))
 
     ## set sample names

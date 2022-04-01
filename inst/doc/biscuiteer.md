@@ -1,7 +1,7 @@
 ---
 title: "Biscuiteer User Guide"
-date: "17 February 2022"
-package: "biscuiteer 1.9.5"
+date: "1 April 2022"
+package: "biscuiteer 1.9.6"
 output:
   BiocStyle::html_document:
     highlight: pygments

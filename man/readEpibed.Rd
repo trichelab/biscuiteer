@@ -2,9 +2,8 @@
 % Please edit documentation in R/readEpibed.R
 \name{readEpibed}
 \alias{readEpibed}
-\title{Read in and decode the RLE representation of
-the epibed format out of biscuit epiallele
-returning a read-level GRanges object.}
+\title{Read in and decode the RLE representation of the epibed format out of biscuit
+epiread}
 \usage{
 readEpibed(
   epibed,
@@ -19,27 +18,27 @@ readEpibed(
 \arguments{
 \item{epibed}{The path to the epibed file (must be bgzip and tabix indexed)}
 
-\item{is.nome}{Whether the epibed format is derived from NOMe-seq or not}
+\item{is.nome}{Whether the epibed format is derived from NOMe-seq or not (default: False)}
 
-\item{genome}{What genome did this come from (e.g. 'hg19')}
+\item{genome}{What genome did this come from (e.g. 'hg19') (default: NULL)}
 
-\item{chr}{Which chromosome to retrieve}
+\item{chr}{Which chromosome to retrieve (default: NULL)}
 
-\item{start}{The starting position for a region of interest}
+\item{start}{The starting position for a region of interest (default: 1)}
 
-\item{end}{The end position for a region of interest}
+\item{end}{The end position for a region of interest (default: 2^28)}
 
-\item{fragment_level}{Whether to collapse reads to the fragment level}
+\item{fragment_level}{Whether to collapse reads to the fragment level (default: FALSE)}
 }
 \value{
 A GRanges object
 }
 \description{
-Read in and decode the RLE representation of
-the epibed format out of biscuit epiallele
-returning a read-level GRanges object.
+Read in and decode the RLE representation of the epibed format out of biscuit
+epiread
 }
 \examples{
+
 epibed.nome <- system.file("extdata", "hct116.nome.epiread.gz",
                            package="biscuiteer")
 epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread.gz",
@@ -48,4 +47,5 @@ epibed.nome.gr <- readEpibed(epibed = epibed.nome, is.nome = TRUE,
                              genome = "hg19", chr = "chr1")
 epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq,
                               genome = "hg19", chr = "chr1")
+
 }

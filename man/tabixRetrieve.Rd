@@ -9,7 +9,6 @@ tabixRetrieve(
   chr,
   start = 1,
   end = 2^28,
-  min_depth = 0,
   sample_names = NULL,
   is.epibed = FALSE,
   is.nome = FALSE,
@@ -17,6 +16,8 @@ tabixRetrieve(
 )
 }
 \arguments{
+\item{paths}{path(s) to the bed files}
+
 \item{chr}{chromosome name}
 
 \item{start}{start coordinate of region of interest}
@@ -30,8 +31,6 @@ tabixRetrieve(
 \item{is.nome}{whether the input is NOMe-seq data}
 
 \item{BPPARAM}{how to parallelize}
-
-\item{path}{path(s) to the bed files}
 }
 \value{
 a list object with DNA methylation level and depth

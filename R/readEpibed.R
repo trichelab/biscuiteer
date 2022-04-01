@@ -13,6 +13,7 @@
 #' @export
 #'
 #' @import GenomicRanges
+#' @import IRanges
 #'
 #' @examples
 #'
@@ -164,7 +165,7 @@ readEpibed <- function(epibed,
     rec_rle <- Reduce(
         paste0,
         lapply(
-            1:length(x$values),
+            seq_len(length(x$values)),
             function(l) {
                 val <- x$values[l]
                 len <- x$lengths[l]
@@ -245,7 +246,7 @@ readEpibed <- function(epibed,
     if (end(r2) >= start(r1)) {
         w <- start(r1) - start(r2)
         r2_decode <- .split_rle(r2$CG_decode)
-        r2_decode <- r2_decode[1:w]
+        r2_decode <- r2_decode[seq_len(w)]
         r1_decode <- .split_rle(r1$CG_decode)
         cg_frag <- paste0(Reduce(paste0, r2_decode), r1$CG_decode)
 
@@ -274,7 +275,7 @@ readEpibed <- function(epibed,
     if (is.nome) {
         if (end(r2) > start(r1)) {
             r2_decode <- .split_rle(r2$GC_decode)
-            r2_decode <- r2_decode[1:w]
+            r2_decode <- r2_decode[seq_len(w)]
             r1_decode <- .split_rle(r1$GC_decode)
             gc_frag <- paste0(Reduce(paste0, r2_decode), r1$GC_decode)
 
