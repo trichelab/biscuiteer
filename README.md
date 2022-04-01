@@ -1,10 +1,10 @@
 # biscuiteer
 
-[![Build Status](https://travis-ci.org/ttriche/biscuiteer.png?branch=master)](https://travis-ci.org/ttriche/biscuiteer)  [![codecov](https://codecov.io/gh/ttriche/biscuiteer/branch/master/graph/badge.svg)](https://codecov.io/gh/ttriche/biscuiteer)
+[![Build Status](https://travis-ci.org/ttriche/biscuiteer.png?branch=master)](https://travis-ci.org/ttriche/biscuiteer)  [![codecov](https://app.codecov.io/gh/ttriche/biscuiteer/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ttriche/biscuiteer)
 
 ## The original luxury biscuit boutique
 
-Wait, no, that's [these guys](https://www.biscuiteers.com/). ```biscuiteer```, on the other hand, is a package to process [biscuit](https://github.com/zwdzwd/biscuit) output quickly into [bsseq](https://bioconductor.org/packages/bsseq) objects. A number of features such as VCF header parsing, shrunken M-value calculations (for compartment inference), and tumor/normal copy number segmentation are also included, but the task of locus- and region-level differential methylation inference is delegated to other packages (such as ```dmrseq```).
+Wait, no, that's [these guys](https://www.biscuiteers.com/). ```biscuiteer```, on the other hand, is a package to process [biscuit](https://github.com/huishenlab/biscuit) output quickly into [bsseq](https://bioconductor.org/packages/bsseq) objects. A number of features such as VCF header parsing, shrunken M-value calculations (for compartment inference), and tumor/normal copy number segmentation are also included, but the task of locus- and region-level differential methylation inference is delegated to other packages (such as ```dmrseq```).
 
 ## Installing
 
@@ -116,4 +116,4 @@ bisc.CpGindex@hyperMethRegions
 
 ### Updating documentation
 
-`$ make doc`. Requires the [roxygen2](https://github.com/klutometis/roxygen) package.
+`$ make doc`. Requires the [roxygen2](https://github.com/r-lib/roxygen2) package.
