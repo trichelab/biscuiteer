@@ -171,14 +171,3 @@ NOTE: Please cite the appropriate papers for the epigenetic "clock" chosen:
 ages <- WGBSage(comb, "horvath")
 ages
 ```
-
-## Hypermethylation of PRCs and Hypomethylation of PMDs
-
-To generate a shorthand summary of the hypermethylation of PRCs and
-hypomethylation of PMDs, the `CpGindex` function in `biscuiteer` can be used.
-
-```{r}
-bisc.CpGindex <- CpGindex(bisc)
-show(bisc.CpGindex)
-bisc.CpGindex@hyperMethRegions
-```

@@ -1,6 +1,6 @@
 ---
 title: "Biscuiteer User Guide"
-date: "1 April 2022"
+date: "5 April 2022"
 package: "biscuiteer 1.9.6"
 output:
   BiocStyle::html_document:
@@ -505,80 +505,4 @@ ages
 ##                         [,1]
 ## MCF7_Cunha          33.18896
 ## MCF7_Cunha_shuffled 34.88742
-```
-
-## Hypermethylation of PRCs and Hypomethylation of PMDs
-
-To generate a shorthand summary of the hypermethylation of PRCs and
-hypomethylation of PMDs, the `CpGindex` function in `biscuiteer` can be used.
-
-
-```r
-bisc.CpGindex <- CpGindex(bisc)
-```
-
-```
-## Computing hypermethylation indices...
-```
-
-```
-## Loading HMM_CpG_islands.hg19...
-```
-
-```
-## Loading H9state23unmeth.hg19...
-```
-
-```
-## Computing hypomethylation indices...
-```
-
-```
-## Loading PMDs.hg19.rda from biscuiteerData...
-```
-
-```
-## Loading Zhou_solo_WCGW_inCommonPMDs.hg19.rda from biscuiteerData...
-```
-
-```
-## Computing indices...
-```
-
-```r
-show(bisc.CpGindex)
-```
-
-```
-## CpGindex with 1 row and 3 columns
-##   hyper.MCF7_Cunha hypo.MCF7_Cunha ratio.MCF7_Cunha
-##          <numeric>       <numeric>        <numeric>
-## 1        0.0690734        0.199262         0.346647
-##   -------
-## This object is just a DataFrame that has an idea of where it came from:
-## Hypermethylation was tallied across 120 region (see 'object@hyperMethRegions'). 
-## Hypomethylation was tallied across 13127 region (see 'object@hypoMethRegions').
-```
-
-```r
-bisc.CpGindex@hyperMethRegions
-```
-
-```
-## GRanges object with 120 ranges and 1 metadata column:
-##       seqnames            ranges strand |     score
-##          <Rle>         <IRanges>  <Rle> | <numeric>
-##     1     chr1 32230201-32230224      * |      0.04
-##     2     chr1 43638401-43638449      * |      0.04
-##     3     chr1 44884001-44884005      * |      0.04
-##     4     chr1 46860401-46860406      * |      0.06
-##     5     chr1 51435801-51436075      * |      0.05
-##   ...      ...               ...    ... .       ...
-##   116    chr20   8112392-8112400      * |     0.030
-##   117    chr20 17207801-17208191      * |     0.060
-##   118    chr22 20004801-20004802      * |     0.035
-##   119    chr22 37252601-37252731      * |     0.060
-##   120    chr22 43781850-43781952      * |     0.045
-##   -------
-##   seqinfo: 21 sequences from hg19 genome
 ```
