@@ -26,9 +26,11 @@ CpGindex(bsseq, CGIs = NULL, PRCs = NULL, WCGW = NULL, PMDs = NULL)
 }
 }
 \description{
-Measures hypermethylation at PRCs in CGIs or hypomethylation at WCGWs in PMDs
+WARNING: This function will be deprecated in the next Bioconductor release
 }
 \details{
+Measures hypermethylation at PRCs in CGIs or hypomethylation at WCGWs in PMDs
+
 At some point in some conference call somewhere, a collaborator suggested
 that a simple index of Polycomb repressor complex (PRC) binding site hyper-
 methylation and CpG-poor "partially methylated domain" (PMD) hypomethylation
@@ -90,16 +92,4 @@ By providing different targets and/or regions, users can customize as needed.
 The return value is a CpGindex object, which is really just a DataFrame that
 knows about the regions at which it was summarized, and reminds the user of
 this when they implicitly call the \code{show} method on it.
-}
-\examples{
-
-  orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",
-                          package="biscuiteer")
-  orig_vcf <- system.file("extdata", "MCF7_Cunha_header_only.vcf.gz",
-                          package="biscuiteer")
-  bisc <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
-                      merged = FALSE)
-
-  cpg <- CpGindex(bisc)
-
 }
