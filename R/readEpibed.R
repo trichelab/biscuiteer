@@ -233,6 +233,10 @@ readEpibed <- function(epibed,
     # need to put the collapsed fragments and unpaired reads back together
     # make 'read' in mcols 'fragment'
     collapsed_reads <- do.call(c, collapsed_reads)
+    # check and see if no orphan reads exist in the deduped_gr obj
+    if (!length(deduped_gr)) {
+      return(sort(collapsed_reads))
+    }
     deduped_gr$read <- "fragment"
     collapsed_frags <- sort(c(deduped_gr, collapsed_reads))
 
