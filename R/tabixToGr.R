@@ -34,11 +34,13 @@ tabixRetrieve <- function(paths,
             )
             if (is.epibed) {
                 if (is.nome) {
+                    if (ncol(df) != 8) stop("ERROR: Input is not from a NOMe-seq derived epibed")
                     ## this is NOMe-seq with GpC column
                     colnames(df) <- c("chr", "start", "end",
                                       "readname", "read", "strand",
                                       "CG_RLE", "GC_RLE")
                 } else {
+                    if (ncol(df) != 7) stop("ERROR: Input is not from a WGBS derived epibed")
                     ## this is WGMS
                     colnames(df) <- c("chr", "start", "end",
                                       "readname", "read", "strand",
