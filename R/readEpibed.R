@@ -152,6 +152,9 @@ readEpibed <- function(epibed,
     lengths <- lengths[-1]
     lengths[is.na(lengths)] <- 1
     lengths <- lengths[!is.na(lengths)]
+    if (!grepl("[0-9]$", x)) {
+        lengths <- c(lengths, 1)
+    }
 
     values <- unlist(strsplit(gsub("[0-9]", "", x), ""))
     values <- values[values != ""]
