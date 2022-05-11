@@ -212,10 +212,15 @@ readEpibed <- function(epibed,
             r2 <- dupe_pair[dupe_pair$read == "2",]
 
             ## still need to deal with padding between non-overlapping proper pairs
-            if (start(r1) == start(r2) & end(r1) == end(r2)) {
-                # these reads perfectly overlap and should return read 1
-                r1$read <- "fragment"
-                return(r1)
+            if (start(r1) == start(r2)) {
+                if (end(r1) >= end(r2)) {
+                    # these reads perfectly overlap and should return read 1
+                    r1$read <- "fragment"
+                    return(r1)
+                } else {
+                    # this is the extreme of being considered a proper pair
+                    return(.collapseProperPair(r1, r2, is.nome = is.nome))
+                }
             }
             if (start(r1) > start(r2)) {
                 # these reads are the dovetail scenario
