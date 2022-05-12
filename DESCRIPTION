@@ -4,8 +4,8 @@ Title: Convenience Functions for Biscuit
 Description: A test harness for bsseq loading of Biscuit output, summarization
              of WGBS data over defined regions and in mappable samples, with or
              without imputation, dropping of mostly-NA rows, age estimates, etc.
-Version: 1.11.1
-Date: 2022-05-06
+Version: 1.11.2
+Date: 2022-05-12
 Authors@R: c(person("Tim", "Triche", role = c("aut")),
              person("Wanding", "Zhou", role = c("aut")),
              person("Benjamin", "Johnson", role = c("aut")),
@@ -57,7 +57,8 @@ Suggests: DSS,
           roxygen2,
           testthat,
           QDNAseq.hg19,
-          QDNAseq.mm10
+          QDNAseq.mm10,
+          BiocStyle
 biocViews: DataImport, MethylSeq, DNAMethylation
 Encoding: UTF-8
 RoxygenNote: 7.1.2
