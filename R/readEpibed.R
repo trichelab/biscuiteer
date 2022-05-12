@@ -196,6 +196,7 @@ readEpibed <- function(epibed,
 }
 
 # helper
+# TODO: The collapsing functions can probably use some refactoring to improve readability and reduce duplicate code
 .collapseToFragment <- function(gr, is.nome = FALSE) {
     # input is a GRanges at the read level
     # assumption is that reads from the same fragment that also overlap the given
@@ -222,7 +223,7 @@ readEpibed <- function(epibed,
                     return(r1)
                 } else {
                     # this is the extreme of being considered a proper pair
-                    return(.collapseProperPair(r1, r2, is.nome = is.nome))
+                    return(.collapseCanonicalProperPair(r1, r2, is.nome = is.nome))
                 }
             }
             if (start(r1) > start(r2)) {
@@ -231,9 +232,14 @@ readEpibed <- function(epibed,
                 return(.collapseDovetail(r1, r2, is.nome = is.nome))
             }
             if (start(r1) < start(r2)) {
-                # these reads are prototypical
-                # read 2 needs to be appended to end of r1
-                return(.collapseProperPair(r1, r2, is.nome = is.nome))
+                if (end(r1) >= end(r2)) {
+                    r1$read <- "fragment"
+                    return(r1)
+                } else {
+                    # these reads are prototypical
+                    # read 2 needs to be appended to end of r1
+                    return(.collapseCanonicalProperPair(r1, r2, is.nome = is.nome))
+                }
             }
         }
     )
@@ -323,7 +329,7 @@ readEpibed <- function(epibed,
 }
 
 # helper
-.collapseProperPair <- function(r1, r2, is.nome = is.nome) {
+.collapseCanonicalProperPair <- function(r1, r2, is.nome = is.nome) {
     # the add 1 is necessary as the end pos of read 1
     # overlaps read 2 and should be filtered and thus
     # not included in the appended RLE from read 2
