@@ -75,6 +75,7 @@
 #'
 #' @export
 #'
+
 WGBSage <- function(bsseq,
                     model = c("horvath","horvathshrunk",
                               "hannum","skinandblood"),
