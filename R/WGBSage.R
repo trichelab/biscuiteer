@@ -117,17 +117,19 @@ WGBSage <- function(bsseq,
   message("Assessing coverage across age-associated regions...") 
   covgWGBSage <- getCoverage(bsseq, regions=clock$gr, what="perRegionTotal")
   rownames(covgWGBSage) <- names(clock$gr)
-  NAs <- which(as.matrix(covgWGBSage) < minCovg, arr.ind=TRUE)
-
+  NAs <- rbind(which(as.matrix(covgWGBSage) < minCovg, arr.ind=TRUE), # these are turned to NAs because coverage < minCovg
+           which(is.na(as.matrix(covgWGBSage)), arr.ind=TRUE) # these are true NAs with 0 coverage which are not in the bsseq
+  )
   # for sample/region dropping
   subM <- rep(FALSE, nrow(covgWGBSage)) # subM not being used elsewhere!
   names(subM) <- rownames(covgWGBSage) # subM not being used elsewhere!
 
   # tabulate for above
+  percent_missing <- round(100*(nrow(NAs) / (nrow(covgWGBSage) * ncol(covgWGBSage))),2)
   if (nrow(NAs) > 0) {
     # either way, probably a good idea to fix stuff 
     message("You have NAs. Change `padding` (",padding,"), `minCovg` (",
-            minCovg,"), `useHMMI`, and/or `useENSR`.",paste(" You have",nrow(NAs),"positions in coverage matrix (regions x samples) with less than",minCovg,"minCovg"))
+            minCovg,"), `useHMMI`, and/or `useENSR`.",paste(" You have",nrow(NAs),"positions in coverage matrix (regions x samples) with less than",minCovg,"minCovg. This represents",percent_missing,"% missing data"))
   } else { 
     message("All regions in all samples appear to be sufficiently covered.") 
   }
