@@ -75,6 +75,7 @@
 #'
 #' @export
 #'
+
 WGBSage <- function(bsseq,
                     model = c("horvath","horvathshrunk",
                               "hannum","skinandblood"),
@@ -153,7 +154,8 @@ WGBSage <- function(bsseq,
   # impute, if requested, any sites with insufficient coverage
   if (impute) methWGBSage <- impute.knn(methWGBSage, k=minSamp, ...)$data
   keep <- (rowSums2(is.na(methWGBSage)) < 1)
-  if (!all(keep)) methWGBSage <- methWGBSage[which(keep), ] 
+  if (!all(keep)) methWGBSage <- methWGBSage[which(keep), ]
+  methWGBSage <- as(methWGBSage, "matrix")
 
   names(clock$gr) <- as.character(granges(clock$gr))
   coefs <- clock$gr[rownames(methWGBSage)]$score
