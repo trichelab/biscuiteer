@@ -120,14 +120,14 @@ WGBSage <- function(bsseq,
   NAs <- which(as.matrix(covgWGBSage) < minCovg, arr.ind=TRUE)
 
   # for sample/region dropping
-  subM <- rep(FALSE, nrow(covgWGBSage))
-  names(subM) <- rownames(covgWGBSage)
+  subM <- rep(FALSE, nrow(covgWGBSage)) # subM not being used elsewhere!
+  names(subM) <- rownames(covgWGBSage) # subM not being used elsewhere!
 
   # tabulate for above
   if (nrow(NAs) > 0) {
     # either way, probably a good idea to fix stuff 
     message("You have NAs. Change `padding` (",padding,"), `minCovg` (",
-            minCovg,"), `useHMMI`, and/or `useENSR`.")
+            minCovg,"), `useHMMI`, and/or `useENSR`.",paste(" You have",nrow(NAs),"positions in coverage matrix (regions x samples) with less than",minCovg,"minCovg"))
   } else { 
     message("All regions in all samples appear to be sufficiently covered.") 
   }
@@ -153,15 +153,19 @@ WGBSage <- function(bsseq,
   
   # impute, if requested, any sites with insufficient coverage
   if (impute) methWGBSage <- impute.knn(methWGBSage, k=minSamp, ...)$data
-  keep <- (rowSums2(is.na(methWGBSage)) < 1)
-  if (!all(keep)) methWGBSage <- methWGBSage[which(keep), ]
+  # keep <- (rowSums2(is.na(methWGBSage)) < 1) # no longer removing rows with any NAs
+  # if (!all(keep)) methWGBSage <- methWGBSage[which(keep), ] # no longer removing rows with any NAs
   methWGBSage <- as(methWGBSage, "matrix")
 
   names(clock$gr) <- as.character(granges(clock$gr))
   coefs <- clock$gr[rownames(methWGBSage)]$score
   names(coefs) <- rownames(methWGBSage)
-  agePredRaw <- (clock$intercept + (t(methWGBSage) %*% coefs))
-
+  # agePredRaw <- (clock$intercept + (t(methWGBSage) %*% coefs)) # errors with NAs
+  # this is the same estimates, but allows NAs (no longer removing rows with NAs)
+  agePredRaw <- (clock$intercept + (apply(methWGBSage,MARGIN=2,FUN=function(x){
+    sum(x * coefs,na.rm=TRUE)
+  })))
+  
   redGR <- granges(clock$gr[rownames(methWGBSage)])
   mcols(redGR) <- as.data.frame(methWGBSage) # One column for each sample
   redGR$coefs <- coefs # Add a column for the coefficients
