@@ -6,7 +6,6 @@
 #' @param end   end coordinate of region of interest
 #' @param sample_names sample names, just use paths if not specified
 #' @param is.epibed whether the input is epibed format
-#' @param is.nome whether the input is NOMe-seq data
 #' @param BPPARAM how to parallelize
 #' @return a list object with DNA methylation level and depth
 #'
@@ -21,7 +20,6 @@ tabixRetrieve <- function(paths,
                           end = 2^28,
                           sample_names = NULL,
                           is.epibed = FALSE,
-                          is.nome = FALSE,
                           BPPARAM = SerialParam()) {
   
     input_range <- GRanges(chr, IRanges(start, end))
@@ -33,19 +31,24 @@ tabixRetrieve <- function(paths,
                 stringsAsFactors = FALSE
             )
             if (is.epibed) {
-                if (is.nome) {
-                    if (ncol(df) != 8) stop("ERROR: Input is not from a NOMe-seq derived epibed")
-                    ## this is NOMe-seq with GpC column
+                if (ncol(df) < 7 || ncol(df) > 9) stop("ERROR: Improperly formatted epiBED.")
+                if (ncol(df) == 7) { # handle old format
                     colnames(df) <- c("chr", "start", "end",
-                                      "readname", "read", "strand",
-                                      "CG_RLE", "GC_RLE")
-                } else {
-                    if (ncol(df) != 7) stop("ERROR: Input is not from a WGBS derived epibed")
-                    ## this is WGMS
+                                    "readname", "read", "strand",
+                                    "CG_RLE")
+                    df$GC_RLE = '.'
+                    df$VAR_RLE = '.'
+                } else if (ncol(df) == 8) { # handle old format
                     colnames(df) <- c("chr", "start", "end",
-                                      "readname", "read", "strand",
-                                      "CG_RLE")
+                                    "readname", "read", "strand",
+                                    "CG_RLE", "GC_RLE")
+                    df$VAR_RLE = '.'
+                } else { # new format
+                    colnames(df) <- c("chr", "start", "end",
+                                    "readname", "read", "strand",
+                                    "CG_RLE", "GC_RLE", "VAR_RLE")
                 }
+                df[df == '.'] <- NA # replace empty strings with NA
             } else {
                 colnames(df) <- c('chr','start','end','beta','depth')
             }
