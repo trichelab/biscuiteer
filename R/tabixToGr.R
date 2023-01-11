@@ -34,18 +34,18 @@ tabixRetrieve <- function(paths,
                 if (ncol(df) < 7 || ncol(df) > 9) stop("ERROR: Improperly formatted epiBED.")
                 if (ncol(df) == 7) { # handle old format
                     colnames(df) <- c("chr", "start", "end",
-                                    "readname", "read", "strand",
+                                    "readname", "read", "bsstrand",
                                     "CG_RLE")
                     df$GC_RLE = '.'
                     df$VAR_RLE = '.'
                 } else if (ncol(df) == 8) { # handle old format
                     colnames(df) <- c("chr", "start", "end",
-                                    "readname", "read", "strand",
+                                    "readname", "read", "bsstrand",
                                     "CG_RLE", "GC_RLE")
                     df$VAR_RLE = '.'
                 } else { # new format
                     colnames(df) <- c("chr", "start", "end",
-                                    "readname", "read", "strand",
+                                    "readname", "read", "bsstrand",
                                     "CG_RLE", "GC_RLE", "VAR_RLE")
                 }
                 df[df == '.'] <- NA # replace empty strings with NA
