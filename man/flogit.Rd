@@ -12,8 +12,8 @@ flogit(p, sqz = 1e-06)
 \item{sqz}{the amount by which to 'squeeze', default is .000001}
 }
 \value{
-\preformatted{   a vector of values between -Inf and +Inf
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{   a vector of values between -Inf and +Inf
+}\if{html}{\out{</div>}}
 }
 \description{
 Helper function: squeezed logit

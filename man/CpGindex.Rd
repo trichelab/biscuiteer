@@ -22,8 +22,8 @@ CpGindex(bsseq, CGIs = NULL, PRCs = NULL, WCGW = NULL, PMDs = NULL)
 (DEFAULT: NULL)}
 }
 \value{
-\preformatted{  A CpGindex (DataFrame w/cols `hyper`, `hypo`, `ratio` + 2 GRs)
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  A CpGindex (DataFrame w/cols `hyper`, `hypo`, `ratio` + 2 GRs)
+}\if{html}{\out{</div>}}
 }
 \description{
 WARNING: This function will be deprecated in the next Bioconductor release

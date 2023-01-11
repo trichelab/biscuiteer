@@ -48,8 +48,8 @@ zeroes in them) (DEFAULT: TRUE)}
 (DEFAULT: NULL)}
 }
 \value{
-\preformatted{        Parameters to be supplied to makeBSseq
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{        Parameters to be supplied to makeBSseq
+}\if{html}{\out{</div>}}
 }
 \description{
 A BED checker for Biscuit CpG/CpH output (BED-like format with 2 or 3

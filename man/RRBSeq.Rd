@@ -18,8 +18,8 @@ RRBSeq(bsseq, testCovariate, cutoff = 0.2, bpSpan = 750, ...)
 \item{...}{Other arguments to pass along to dmrseq}
 }
 \value{
-\preformatted{          A GRanges object (same as from dmrseq)
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{          A GRanges object (same as from dmrseq)
+}\if{html}{\out{</div>}}
 }
 \description{
 (e)RRBS settings for dmrseq

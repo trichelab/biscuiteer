@@ -17,8 +17,8 @@ WGBSeq(bsseq, testCovariate, bpSpan = 1000, ...)
 \item{...}{Other arguments to pass along to dmrseq}
 }
 \value{
-\preformatted{          A GRanges object (same as from dmrseq)
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{          A GRanges object (same as from dmrseq)
+}\if{html}{\out{</div>}}
 }
 \description{
 Wrapper for WGBS settings for dmrseq

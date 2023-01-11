@@ -22,8 +22,8 @@ getMvals(x, minCov = 3, minSamp = 2, k = 0.1, r = NULL)
 (DEFAULT: NULL)}
 }
 \value{
-\preformatted{    Smoothed logit(M / Cov) GRanges with coordinates as row names
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{    Smoothed logit(M / Cov) GRanges with coordinates as row names
+}\if{html}{\out{</div>}}
 }
 \description{
 Want an object with nominally Gaussian error for compartment inference, so
@@ -34,9 +34,9 @@ logit-transformed methylated-fraction estimates for compartment calling.
 }
 \section{Functions}{
 \itemize{
-\item \code{getMvals}: Alias for getLogitFracMeth
-}}
+\item \code{getMvals()}: Alias for getLogitFracMeth
 
+}}
 \examples{
 
   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",

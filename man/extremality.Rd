@@ -12,8 +12,8 @@ extremality(x, raw = FALSE)
 \item{raw}{Skip the correction pass? (DEFAULT: FALSE)}
 }
 \value{
-\preformatted{The extremality of each row (if more than one) of the object
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{The extremality of each row (if more than one) of the object
+}\if{html}{\out{</div>}}
 }
 \description{
 Works efficiently on matrices and DelayedMatrix objects. Note that it is

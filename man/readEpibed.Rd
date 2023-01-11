@@ -2,12 +2,10 @@
 % Please edit documentation in R/readEpibed.R
 \name{readEpibed}
 \alias{readEpibed}
-\title{Read in and decode the RLE representation of the epibed format out of biscuit
-epiread}
+\title{Read in and decode the RLE representation of the epibed format out of biscuit epiread}
 \usage{
 readEpibed(
   epibed,
-  is.nome = FALSE,
   genome = NULL,
   chr = NULL,
   start = 1,
@@ -17,8 +15,6 @@ readEpibed(
 }
 \arguments{
 \item{epibed}{The path to the epibed file (must be bgzip and tabix indexed)}
-
-\item{is.nome}{Whether the epibed format is derived from NOMe-seq or not (default: False)}
 
 \item{genome}{What genome did this come from (e.g. 'hg19') (default: NULL)}
 
@@ -34,18 +30,14 @@ readEpibed(
 A GRanges object
 }
 \description{
-Read in and decode the RLE representation of the epibed format out of biscuit
-epiread
+Read in and decode the RLE representation of the epibed format out of biscuit epiread
 }
 \examples{
 
-epibed.nome <- system.file("extdata", "hct116.nome.epiread.gz",
-                           package="biscuiteer")
-epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread.gz",
-                            package="biscuiteer")
-epibed.nome.gr <- readEpibed(epibed = epibed.nome, is.nome = TRUE,
-                             genome = "hg19", chr = "chr1")
-epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq,
-                              genome = "hg19", chr = "chr1")
+epibed.nome <- system.file("extdata", "hct116.nome.epiread.gz", package="biscuiteer")
+epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread.gz", package="biscuiteer")
+
+epibed.nome.gr <- readEpibed(epibed = epibed.nome, genome = "hg19", chr = "chr1")
+epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq, genome = "hg19", chr = "chr1")
 
 }

@@ -17,8 +17,8 @@ segToGr(seg, genome = "hg19", name = "ID", score = "seg.mean")
 (DEFAULT: "seg.mean")}
 }
 \value{
-\preformatted{   A GRanges object
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{   A GRanges object
+}\if{html}{\out{</div>}}
 }
 \description{
 Reverse of grToSeg

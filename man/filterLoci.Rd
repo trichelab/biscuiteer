@@ -12,8 +12,8 @@ filterLoci(bsseq, testCovariate)
 \item{testCovariate}{The name of the pData column dmrseq will test on}
 }
 \value{
-\preformatted{          A bsseq object ready for dmrseq to use
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{          A bsseq object ready for dmrseq to use
+}\if{html}{\out{</div>}}
 }
 \description{
 Function potentially used to be a part of dmrseq. Included here to avoid

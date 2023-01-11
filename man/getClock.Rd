@@ -29,9 +29,9 @@ getClock(
 (DEFAULT: FALSE)}
 }
 \value{
-\preformatted{    a List with elements `model`, `gr`, `intercept`,
+\if{html}{\out{<div class="sourceCode">}}\preformatted{    a List with elements `model`, `gr`, `intercept`,
               and `cleanup`
-}
+}\if{html}{\out{</div>}}
 }
 \description{
 Biscuiteer supports several 'epigenetic clock' models. This function

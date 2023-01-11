@@ -14,8 +14,8 @@ byExtremality(bsseq, r = NULL, k = 500)
 \item{k}{How many rows/regions to return (DEFAULT: 500)}
 }
 \value{
-\preformatted{  A GRanges object with methylation values sorted by extremality
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  A GRanges object with methylation values sorted by extremality
+}\if{html}{\out{</div>}}
 }
 \description{
 This function finds the k most extremal features (features above a certain

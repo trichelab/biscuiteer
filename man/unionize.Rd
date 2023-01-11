@@ -12,8 +12,8 @@ unionize(bs1, ...)
 \item{...}{One or more bsseq objects to combine with bs1}
 }
 \value{
-\preformatted{A larger and more sparse bsseq object
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{A larger and more sparse bsseq object
+}\if{html}{\out{</div>}}
 }
 \description{
 Wrapper for the combine(bsseq1, ...) method in bsseq

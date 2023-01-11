@@ -11,7 +11,6 @@ tabixRetrieve(
   end = 2^28,
   sample_names = NULL,
   is.epibed = FALSE,
-  is.nome = FALSE,
   BPPARAM = SerialParam()
 )
 }
@@ -27,8 +26,6 @@ tabixRetrieve(
 \item{sample_names}{sample names, just use paths if not specified}
 
 \item{is.epibed}{whether the input is epibed format}
-
-\item{is.nome}{whether the input is NOMe-seq data}
 
 \item{BPPARAM}{how to parallelize}
 }

@@ -12,8 +12,8 @@ fixAge(x, adult = 21)
 \item{adult}{Age of adulthood (DEFAULT: 21)}
 }
 \value{
-\preformatted{  Transformed prediction(s)
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  Transformed prediction(s)
+}\if{html}{\out{</div>}}
 }
 \description{
 Uses Horvath-type 'epigenetic clock' raw output to project into actual ages

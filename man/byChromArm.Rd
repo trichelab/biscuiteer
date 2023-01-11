@@ -12,8 +12,8 @@ byChromArm(x, arms = NULL)
 \item{arms}{Another GRanges, but specifying chromosome arms (DEFAULT: NULL)}
 }
 \value{
-\preformatted{ A list, List, or *list, with pieces of x by chromosome arm
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ A list, List, or *list, with pieces of x by chromosome arm
+}\if{html}{\out{</div>}}
 }
 \description{
 This function splits an object by chromosome arm, which tends to make

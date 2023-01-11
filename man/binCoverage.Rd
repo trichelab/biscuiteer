@@ -31,8 +31,8 @@ binCoverage(
 (DEFAULT: TRUE)}
 }
 \value{
-\preformatted{    Binned read counts
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{    Binned read counts
+}\if{html}{\out{</div>}}
 }
 \description{
 Example usage for E-M

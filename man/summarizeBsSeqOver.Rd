@@ -17,8 +17,8 @@ summarizeBsSeqOver(bsseq, segs, dropNA = FALSE, impute = FALSE)
 \item{impute}{Whether to impute NAs/NaNs (DEFAULT: FALSE)}
 }
 \value{
-\preformatted{   A matrix of regional methylation fractions
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{   A matrix of regional methylation fractions
+}\if{html}{\out{</div>}}
 }
 \description{
 Used for bsseq objects. Mostly a local wrapp for getMeth.

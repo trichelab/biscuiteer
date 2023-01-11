@@ -32,8 +32,8 @@
 \item{x}{A bsseq object, preferably with !is.null(metadata(x)$vcfHeader)}
 }
 \value{
-\preformatted{  Depends on the method - usually a List-like object of some sort
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  Depends on the method - usually a List-like object of some sort
+}\if{html}{\out{</div>}}
 }
 \description{
 See biscuiteer manpage for package description

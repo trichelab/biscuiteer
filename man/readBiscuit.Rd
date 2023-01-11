@@ -78,8 +78,8 @@ similar) (DEFAULT: FALSE)}
 \item{verbose}{Print extra statements? (DEFAULT: FALSE)}
 }
 \value{
-\preformatted{        A bsseq::BSseq object
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{        A bsseq::BSseq object
+}\if{html}{\out{</div>}}
 }
 \description{
 Takes BED-like format with 2 or 3 columns per sample. Unmerged CpG files
@@ -92,9 +92,9 @@ NOTE: Requires header from VCF file to detect sample names
 }
 \section{Functions}{
 \itemize{
-\item \code{loadBiscuit}: Alias for readBiscuit
-}}
+\item \code{loadBiscuit()}: Alias for readBiscuit
 
+}}
 \examples{
 
   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",

@@ -50,8 +50,8 @@ WGBSage(
 \item{...}{Arguments to be passed to impute.knn, such as rng.seed}
 }
 \value{
-\preformatted{    A list with call, methylation estimates, coefs, age estimates
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{    A list with call, methylation estimates, coefs, age estimates
+}\if{html}{\out{</div>}}
 }
 \description{
 See Horvath, Genome Biology, 2013 for more information

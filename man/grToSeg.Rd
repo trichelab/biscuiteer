@@ -14,9 +14,9 @@ grToSeg(gr, filename = NULL, minAbs = NULL)
 \item{minAbs}{Minimum absolute gain/loss cutoff (DEFAULT: NULL)}
 }
 \value{
-\preformatted{     A data.frame with columns:
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     A data.frame with columns:
                (ID, chrom, loc.start, loc.end, num.mark, seg.mean)
-}
+}\if{html}{\out{</div>}}
 }
 \description{
 Output data.frame can be written to a .seg file if supplied with filename

@@ -20,9 +20,9 @@ atRegions(bsseq, regions, mappings = NULL, nm = "POETICname", ...)
 \item{...}{Other arguments to pass to summarizeBsSeqOver}
 }
 \value{
-\preformatted{     GRanges with summarized information about the bsseq object
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     GRanges with summarized information about the bsseq object
              for the given DNA regions
-}
+}\if{html}{\out{</div>}}
 }
 \description{
 Calls summarizeBsSeqOver to summarize a bsseq object over provided DNA

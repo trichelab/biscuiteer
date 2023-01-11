@@ -14,8 +14,8 @@ fixNAs(x, y = 0, sparseMatrix = FALSE)
 \item{sparseMatrix}{Make the result a Matrix object? (DEFAULT: FALSE)}
 }
 \value{
-\preformatted{         x with no NAs (possibly a sparse Matrix)
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{         x with no NAs (possibly a sparse Matrix)
+}\if{html}{\out{</div>}}
 }
 \description{
 Useful for coercing matrices into how bsseq is expecting the M matrix to be.

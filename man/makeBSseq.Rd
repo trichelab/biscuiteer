@@ -17,8 +17,8 @@ similar) (DEFAULT: FALSE)}
 \item{verbose}{Print extra statements? (DEFAULT: FALSE)}
 }
 \value{
-\preformatted{     An in-memory bsseq object
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     An in-memory bsseq object
+}\if{html}{\out{</div>}}
 }
 \description{
 Beware that any reasonably large BED files may not fit into memory!

@@ -17,8 +17,8 @@ from which the bsseq vcfHeader element is derived
 (DEFAULT: NULL)}
 }
 \value{
-\preformatted{  Information regarding the Biscuit run
-}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  Information regarding the Biscuit run
+}\if{html}{\out{</div>}}
 }
 \description{
 Returns metadata from a Biscuit run using either a supplied VCF file or
@@ -26,9 +26,9 @@ the vcfHeader metadata element from the bsseq object
 }
 \section{Functions}{
 \itemize{
-\item \code{getBiscuitMetadata}: Alias for biscuitMetadata
-}}
+\item \code{getBiscuitMetadata()}: Alias for biscuitMetadata
 
+}}
 \examples{
 
   orig_bed <- system.file("extdata", "MCF7_Cunha_chr11p15.bed.gz",

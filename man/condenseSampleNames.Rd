@@ -14,9 +14,9 @@ condenseSampleNames(tbx, stride, trailing = "\\\\.$")
 \item{trailing}{Trailing character to trim (DEFAULT: "\\.$")}
 }
 \value{
-\preformatted{     A character vector of sample names (longest common
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     A character vector of sample names (longest common
                substrings)
-}
+}\if{html}{\out{</div>}}
 }
 \description{
 Utility function for extracting sample names from tabix'ed sample columns,
