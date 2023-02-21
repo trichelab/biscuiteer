@@ -112,14 +112,10 @@ GRanges object for analysis in R.
 
 NOTE: The input file must be bgzip'ed and tabix'ed.
 ```{r}
-epibed.nome <- system.file("extdata", "hct116.nome.epiread.gz",
-                           package="biscuiteer")
-epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread.gz",
-                            package="biscuiteer")
-epibed.nome.gr <- readEpibed(epibed = epibed.nome, is.nome = TRUE,
-                             genome = "hg19", chr = "chr1")
-epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq,
-                              genome = "hg19", chr = "chr1")
+epibed.nome <- system.file("extdata", "hct116.nome.epibed.gz", package="biscuiteer")
+epibed.bsseq <- system.file("extdata", "hct116.bsseq.epibed.gz", package="biscuiteer")
+epibed.nome.gr <- readEpibed(epibed = epibed.nome, genome = "hg19", chr = "chr1")
+epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq, genome = "hg19", chr = "chr1")
 ```
 
 # Analysis Functionality

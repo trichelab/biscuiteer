@@ -10,7 +10,7 @@ readEpibed(
   chr = NULL,
   start = 1,
   end = 2^28,
-  fragment_level = FALSE
+  fragment_level = TRUE
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ readEpibed(
 
 \item{end}{The end position for a region of interest (default: 2^28)}
 
-\item{fragment_level}{Whether to collapse reads to the fragment level (default: FALSE)}
+\item{fragment_level}{Whether to collapse reads to the fragment level (default: TRUE)}
 }
 \value{
 A GRanges object
@@ -34,8 +34,8 @@ Read in and decode the RLE representation of the epibed format out of biscuit ep
 }
 \examples{
 
-epibed.nome <- system.file("extdata", "hct116.nome.epiread.gz", package="biscuiteer")
-epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread.gz", package="biscuiteer")
+epibed.nome <- system.file("extdata", "hct116.nome.epibed.gz", package="biscuiteer")
+epibed.bsseq <- system.file("extdata", "hct116.bsseq.epibed.gz", package="biscuiteer")
 
 epibed.nome.gr <- readEpibed(epibed = epibed.nome, genome = "hg19", chr = "chr1")
 epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq, genome = "hg19", chr = "chr1")

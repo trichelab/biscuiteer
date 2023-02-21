@@ -1,7 +1,7 @@
 ---
 title: "Biscuiteer User Guide"
-date: "7 April 2022"
-package: "biscuiteer 1.9.8"
+date: "21 February 2023"
+package: "biscuiteer 1.13.0"
 output:
   BiocStyle::html_document:
     highlight: pygments
@@ -85,20 +85,8 @@ library(biscuiteer)
 ```
 
 ```
-## Loading required package: parallel
-```
-
-```
 ## 
 ## Attaching package: 'BiocGenerics'
-```
-
-```
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
 ```
 
 ```
@@ -110,12 +98,12 @@ library(biscuiteer)
 ```
 ## The following objects are masked from 'package:base':
 ## 
-##     anyDuplicated, append, as.data.frame, basename, cbind, colnames,
-##     dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
-##     grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
-##     union, unique, unsplit, which.max, which.min
+##     anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+##     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+##     get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
+##     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
+##     Position, rank, rbind, Reduce, rownames, sapply, setdiff, sort,
+##     table, tapply, union, unique, unsplit, which.max, which.min
 ```
 
 ```
@@ -124,6 +112,10 @@ library(biscuiteer)
 
 ```
 ## Loading required package: BiocFileCache
+```
+
+```
+## Warning: package 'BiocFileCache' was built under R version 4.2.2
 ```
 
 ```
@@ -143,11 +135,19 @@ library(biscuiteer)
 ```
 
 ```
+## Warning: package 'GenomicRanges' was built under R version 4.2.2
+```
+
+```
 ## Loading required package: stats4
 ```
 
 ```
 ## Loading required package: S4Vectors
+```
+
+```
+## Warning: package 'S4Vectors' was built under R version 4.2.2
 ```
 
 ```
@@ -167,6 +167,10 @@ library(biscuiteer)
 
 ```
 ## Loading required package: GenomeInfoDb
+```
+
+```
+## Warning: package 'GenomeInfoDb' was built under R version 4.2.2
 ```
 
 ```
@@ -260,13 +264,8 @@ library(biscuiteer)
 ```
 
 ```
-## Warning: replacing previous import 'BiocParallel::bpstart' by 'QDNAseq::bpstart'
-## when loading 'biscuiteer'
-```
-
-```
-## Warning: replacing previous import 'AnnotationHub::hubUrl' by
-## 'rtracklayer::hubUrl' when loading 'annotatr'
+## Warning: replacing previous import 'BiocParallel::bpstart' by
+## 'QDNAseq::bpstart' when loading 'biscuiteer'
 ```
 
 ```r
@@ -279,24 +278,24 @@ bisc <- readBiscuit(BEDfile = orig_bed, VCFfile = orig_vcf,
 ```
 
 ```
-## Checking /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz for import...
+## Checking /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz for import...
 ```
 
 ```
-## Extracting sample names from /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_header_only.vcf.gz...
+## Extracting sample names from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_header_only.vcf.gz...
 ```
 
 ```
-## /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz does not have a header. Using VCF file header information to help set column names.
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz does not have a header. Using VCF file header information to help set column names.
 ```
 
 ```
 ## Assuming unmerged data. Checking now... ...The file might be alright. Double check if you're worried.
-## /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz has 254147 indexed loci.
-## /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz looks valid for import.
-## Reading unmerged input from /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz...
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz has 254147 indexed loci.
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz looks valid for import.
+## Reading unmerged input from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz...
 ## Excluding CpG sites with uniformly zero coverage...
-## Loaded /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz. Creating bsseq object......Done!
+## Loaded /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15.bed.gz. Creating bsseq object......Done!
 ```
 
 Metadata from the `biscuit` output can be viewed via:
@@ -344,24 +343,24 @@ bisc2 <- readBiscuit(BEDfile = shuf_bed, VCFfile = shuf_vcf,
 ```
 
 ```
-## Checking /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz for import...
+## Checking /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz for import...
 ```
 
 ```
-## Extracting sample names from /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_shuffled_header_only.vcf.gz...
+## Extracting sample names from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_shuffled_header_only.vcf.gz...
 ```
 
 ```
-## /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz does not have a header. Using VCF file header information to help set column names.
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz does not have a header. Using VCF file header information to help set column names.
 ```
 
 ```
 ## Assuming unmerged data. Checking now... ...The file might be alright. Double check if you're worried.
-## /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz has 254147 indexed loci.
-## /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz looks valid for import.
-## Reading unmerged input from /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz...
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz has 254147 indexed loci.
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz looks valid for import.
+## Reading unmerged input from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz...
 ## Excluding CpG sites with uniformly zero coverage...
-## Loaded /Library/Frameworks/R.framework/Versions/4.1/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz. Creating bsseq object......Done!
+## Loaded /Library/Frameworks/R.framework/Versions/4.2/Resources/library/biscuiteer/extdata/MCF7_Cunha_chr11p15_shuffled.bed.gz. Creating bsseq object......Done!
 ```
 
 ```r
@@ -378,25 +377,37 @@ GRanges object for analysis in R.
 NOTE: The input file must be bgzip'ed and tabix'ed.
 
 ```r
-epibed.nome <- system.file("extdata", "hct116.nome.epiread.gz",
-                           package="biscuiteer")
-epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread.gz",
-                            package="biscuiteer")
-epibed.nome.gr <- readEpibed(epibed = epibed.nome, is.nome = TRUE,
-                             genome = "hg19", chr = "chr1")
+epibed.nome <- system.file("extdata", "hct116.nome.epibed.gz", package="biscuiteer")
+epibed.bsseq <- system.file("extdata", "hct116.bsseq.epibed.gz", package="biscuiteer")
+epibed.nome.gr <- readEpibed(epibed = epibed.nome, genome = "hg19", chr = "chr1")
 ```
 
 ```
 ## Decoding RLE and converting to GRanges
+```
+
+```
+## Collapsing to fragment level
+```
+
+```
+## This will take some time if a large region is being analyzed
 ```
 
 ```r
-epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq,
-                              genome = "hg19", chr = "chr1")
+epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq, genome = "hg19", chr = "chr1")
 ```
 
 ```
 ## Decoding RLE and converting to GRanges
+```
+
+```
+## Collapsing to fragment level
+```
+
+```
+## This will take some time if a large region is being analyzed
 ```
 
 # Analysis Functionality
@@ -468,7 +479,7 @@ ages <- WGBSage(comb, "horvath")
 ```
 
 ```
-## All regions in all samples appear to be sufficiently covered.
+## You have NAs. Change `padding` (15), `minCovg` (5), `useHMMI`, and/or `useENSR`. You have 702 positions in coverage matrix (regions x samples) with less than 5 minCovg. This represents 99.43 % missing data
 ```
 
 ```r
@@ -489,20 +500,37 @@ ages
 ## [1] 0.6955073
 ## 
 ## $methcoefs
-## GRanges object with 2 ranges and 3 metadata columns:
+## GRanges object with 353 ranges and 3 metadata columns:
 ##                           seqnames            ranges strand | MCF7_Cunha
 ##                              <Rle>         <IRanges>  <Rle> |  <numeric>
-##     chr11:6678129-6678158    chr11   6678129-6678158      * |   0.800000
-##   chr11:12030629-12030658    chr11 12030629-12030658      * |   0.833333
-##                           MCF7_Cunha_shuffled        coefs
-##                                     <numeric>    <numeric>
-##     chr11:6678129-6678158            0.250000  0.000792206
-##   chr11:12030629-12030658            0.247732 -0.138857398
+##      chr1:1168022-1168051     chr1   1168022-1168051      * |         NA
+##    chr1:19746550-19746579     chr1 19746550-19746579      * |         NA
+##    chr1:23858021-23858050     chr1 23858021-23858050      * |         NA
+##    chr1:32084950-32084979     chr1 32084950-32084979      * |         NA
+##    chr1:32687553-32687582     chr1 32687553-32687582      * |         NA
+##                       ...      ...               ...    ... .        ...
+##   chr22:42322132-42322161    chr22 42322132-42322161      * |         NA
+##   chr22:43506007-43506036    chr22 43506007-43506036      * |         NA
+##   chr22:46449447-46449476    chr22 46449447-46449476      * |         NA
+##   chr22:46450093-46450122    chr22 46450093-46450122      * |         NA
+##   chr22:50968329-50968358    chr22 50968329-50968358      * |         NA
+##                           MCF7_Cunha_shuffled      coefs
+##                                     <numeric>  <numeric>
+##      chr1:1168022-1168051                  NA  0.6285003
+##    chr1:19746550-19746579                  NA  0.0138482
+##    chr1:23858021-23858050                  NA -0.1663978
+##    chr1:32084950-32084979                  NA  0.0989124
+##    chr1:32687553-32687582                  NA  0.0358242
+##                       ...                 ...        ...
+##   chr22:42322132-42322161                  NA  0.7000011
+##   chr22:43506007-43506036                  NA  0.1270524
+##   chr22:46449447-46449476                  NA -0.1662689
+##   chr22:46450093-46450122                  NA -0.0912389
+##   chr22:50968329-50968358                  NA  0.1373155
 ##   -------
 ##   seqinfo: 22 sequences from hg19 genome
 ## 
 ## $age
-##                         [,1]
-## MCF7_Cunha          33.18896
-## MCF7_Cunha_shuffled 34.88742
+##          MCF7_Cunha MCF7_Cunha_shuffled 
+##            33.18896            34.88742
 ```
