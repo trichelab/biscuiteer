@@ -5,7 +5,7 @@
 #' @param chr Which chromosome to retrieve (default: NULL)
 #' @param start The starting position for a region of interest (default: 1)
 #' @param end The end position for a region of interest (default: 2^28)
-#' @param fragment_level Whether to collapse reads to the fragment level (default: FALSE)
+#' @param fragment_level Whether to collapse reads to the fragment level (default: TRUE)
 #'
 #' @return A GRanges object
 #' @export
@@ -15,8 +15,8 @@
 #'
 #' @examples
 #'
-#' epibed.nome <- system.file("extdata", "hct116.nome.epiread.gz", package="biscuiteer")
-#' epibed.bsseq <- system.file("extdata", "hct116.bsseq.epiread.gz", package="biscuiteer")
+#' epibed.nome <- system.file("extdata", "hct116.nome.epibed.gz", package="biscuiteer")
+#' epibed.bsseq <- system.file("extdata", "hct116.bsseq.epibed.gz", package="biscuiteer")
 #'
 #' epibed.nome.gr <- readEpibed(epibed = epibed.nome, genome = "hg19", chr = "chr1")
 #' epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq, genome = "hg19", chr = "chr1")
@@ -26,7 +26,7 @@ readEpibed <- function(epibed,
                        chr = NULL,
                        start = 1,
                        end = 2^28,
-                       fragment_level = FALSE) {
+                       fragment_level = TRUE) {
     # check the input
     ftype <- .checkTabixFiles(epibed)
 
@@ -190,6 +190,10 @@ readEpibed <- function(epibed,
         dupe_reads,
         function(d) {
             dupe_pair <- gr[gr$readname == d,]
+            if (length(dupe_pair) > 2) {
+                message("There seems to be secondary reads for reads with read name (", d, ").")
+                stop("Please rerun with fragment_level = FALSE")
+            }
             r1 <- dupe_pair[dupe_pair$read == "1",]
             r2 <- dupe_pair[dupe_pair$read == "2",]
 
