@@ -139,7 +139,7 @@ readBiscuit <- function(BEDfile,
   # Remove CpG sites with zero-coverage
   if(!params$sparse) {
     message("Excluding CpG sites with uniformly zero coverage...")
-    tbl <- tbl[rowSums(is.na(tbl)) == 0, ]
+    tbl <- tbl[rowSums(is.na(tbl)) < params$nSamples, ]
   }
 
   message("Loaded ", params$tbx$path, ". Creating bsseq object...", appendLF=FALSE)
