@@ -156,6 +156,7 @@ parameters set by the user. As such, the defaults (as shown in the example
 below) should only be used as a starting point for exploration by the user.
 
 NOTE: Please cite the appropriate papers for the epigenetic "clock" chosen:
+
 * For `horvath` or `horvathshrunk`
     * Horvath, Genome Biology, 2013
 * For `hannum`
