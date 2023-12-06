@@ -81,11 +81,6 @@ Metadata from the `biscuit` output can be viewed via:
 biscuitMetadata(bisc)
 ```
 
-If further information about the VCF header is desired,
-```{r}
-metadata(bisc)$vcfHeader
-```
-
 ## Combining Methylation Results
 
 In the instance where you have two separate BED files that you would like to
