@@ -121,7 +121,7 @@ epibed.bsseq.gr <- readEpibed(epibed = epibed.bsseq, genome = "hg19", chr = "chr
 # Analysis Functionality
 
 A handful of analysis paths are available in `biscuiteer`, including A/B
-comparment inference, age estimation from WGBS data, hypermethylation of
+compartment inference, age estimation from WGBS data, hypermethylation of
 Polycomb Repressor Complex (PRC) binding sites, and hypomethylation of
 CpG-poor "partially methylated domains" (PMDs).
 
@@ -146,7 +146,7 @@ frac
 
 ## Age Estimation
 
-`biscuiteer` has the functionalitity to guess the age of the sample(s) provided
+`biscuiteer` has the functionality to guess the age of the sample(s) provided
 using the Horvath-style "clock" models (see
 [Horvath, 2013](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2013-14-10-r115)
 for more information).
@@ -156,6 +156,7 @@ parameters set by the user. As such, the defaults (as shown in the example
 below) should only be used as a starting point for exploration by the user.
 
 NOTE: Please cite the appropriate papers for the epigenetic "clock" chosen:
+
 * For `horvath` or `horvathshrunk`
     * Horvath, Genome Biology, 2013
 * For `hannum`
