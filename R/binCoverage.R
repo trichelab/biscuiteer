@@ -103,8 +103,7 @@ binCoverage <- function(bsseq,
                             row.names=colnames(gr$score),
                             stringsAsFactors=FALSE)
     phenodata$total.reads <- colSums(score(gr), na.rm=TRUE)
-    if (!exists("use")) use <- seq_len(length(gr))
-    phenodata$used.reads <- colSums(score(subset(gr, use)), na.rm=TRUE)
+    phenodata$used.reads <- colSums(score(gr), na.rm=TRUE)
     object <- new("QDNAseqReadCounts", 
                   bins=subset(bins, featureNames(bins) %in% names(gr)),
                   counts=gr$score, phenodata=phenodata)
@@ -118,7 +117,6 @@ binCoverage <- function(bsseq,
                                 packageVersion("biscuiteer"))
     return(object) 
   } else { 
-    if (!exists("use")) use <- seq_len(length(gr))
-    return(subset(gr, rowSums(is.na(gr$score)) < ncol(bsseq) & use))
+    return(subset(gr, rowSums(is.na(gr$score)) < ncol(bsseq)))
   }
 }
