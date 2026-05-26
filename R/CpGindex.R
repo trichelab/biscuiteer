@@ -79,7 +79,6 @@
 #' @return       A CpGindex (DataFrame w/cols `hyper`, `hypo`, `ratio` + 2 GRs)
 #'
 #' @importFrom methods callNextMethod slot as new
-#' @importFrom utils data
 #' @import biscuiteerData
 #' @import GenomeInfoDb
 #' @import GenomicRanges

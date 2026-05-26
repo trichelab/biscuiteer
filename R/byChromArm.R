@@ -11,7 +11,6 @@
 #'
 #' @return      A list, List, or *list, with pieces of x by chromosome arm
 #'
-#' @importFrom utils data
 #' @import SummarizedExperiment
 #'
 #' @examples
