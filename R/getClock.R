@@ -50,7 +50,6 @@
 #' @return         a List with elements `model`, `gr`, `intercept`,
 #'                   and `cleanup`
 #' 
-#' @importFrom utils data
 #' @import GenomeInfoDb
 #'
 #' @examples
