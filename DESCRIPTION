@@ -4,8 +4,8 @@ Title: Convenience Functions for Biscuit
 Description: A test harness for bsseq loading of Biscuit output, summarization
              of WGBS data over defined regions and in mappable samples, with or
              without imputation, dropping of mostly-NA rows, age estimates, etc.
-Version: 1.27.0
-Date: 2026-04-09
+Version: 1.27.1
+Date: 2026-10-23
 Authors@R: c(person("Tim", "Triche", role = c("aut")),
              person("Wanding", "Zhou", role = c("aut")),
              person("Benjamin", "Johnson", role = c("aut")),
